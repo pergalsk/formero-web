@@ -1,0 +1,10 @@
+<label [attr.for]="props.key" [formGroup]="form">
+  <strong><span [textContent]="props.label"></span></strong><br />
+  <em><span [textContent]="props.description"></span></em><br />
+
+  <input type="checkbox" [formControlName]="props.key" [value]="props.value" [id]="props.key" />
+  {{ props.options }} </label
+><br />
+
+<app-formero-field-messages [control]="form.controls[this.props.key]" [label]="props.label">
+</app-formero-field-messages>

@@ -1,0 +1,12 @@
+<span *ngIf="control.invalid && (control.touched || control.dirty)">
+  {{ label }}:
+  <span *ngIf="control.errors?.required">Pole je povinné.</span>
+  <span *ngIf="control.errors?.maxlength"
+    >Pole môže obsahovať maximálne {{ control.errors?.maxlength.requiredLength }} znakov.</span
+  >
+  <span *ngIf="control.errors?.minlength"
+    >Pole musí obsahovať minimálne {{ control.errors?.minlength.requiredLength }} znakov.</span
+  >
+  <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
+  <span *ngIf="control.errors?.checked">Povinné pole.</span>
+</span>

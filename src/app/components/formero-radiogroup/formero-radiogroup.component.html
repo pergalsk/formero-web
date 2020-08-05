@@ -1,0 +1,18 @@
+<div [formGroup]="form">
+  <strong><span [textContent]="props.label"></span></strong><br />
+  <em><span [textContent]="props.description"></span></em><br />
+
+  <label *ngFor="let option of props.options; index as i" [attr.for]="props.key + '_' + i">
+    <input
+      type="radio"
+      [formControlName]="props.key"
+      [value]="option.value"
+      [id]="props.key + '_' + i"
+    />
+    {{ option.label }}
+    <br />
+  </label>
+</div>
+
+<app-formero-field-messages [control]="form.controls[this.props.key]" [label]="props.label">
+</app-formero-field-messages>

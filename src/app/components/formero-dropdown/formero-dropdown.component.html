@@ -1,0 +1,13 @@
+<label [attr.for]="props.key" [formGroup]="form">
+  <strong><span [textContent]="props.label"></span></strong><br />
+  <em><span [textContent]="props.description"></span></em><br />
+
+  <select [formControlName]="props.key" [id]="props.key" [name]="props.key">
+    <option *ngFor="let option of props.options" [value]="option.value">
+      {{ option.label }}
+    </option>
+  </select>
+</label>
+
+<app-formero-field-messages [control]="form.controls[this.props.key]" [label]="props.label">
+</app-formero-field-messages>

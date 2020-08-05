@@ -1,0 +1,223 @@
+{
+  "title": "Prihláška na DBT 2020",
+  "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
+  "validators": [{ "type": "atLeastOneContactValidator", "params": null }],
+  "blocks": [
+    {
+      "type": "title",
+      "key": "section-0-title",
+      "content": "Základné informácie",
+      "order": 1
+    },
+    {
+      "type": "blocktext",
+      "key": "section-0-text",
+      "content": "<p><strong>Organizátor</strong>: Cirkevný zbor ECAV Prešov</p><p><strong>Termín</strong>: 27.7.2020 - 1.8.2020</p><p><strong>Miesto konania</strong>: Mníchovský potok (pri Bardejove)</p><p><em>Vypĺňajte pozorne. V prípade nejasností alebo požiadavke doplňujúcich informácií nás kontaktujte na telefónnom čísle: 0948 411 263, alebo 0908 987 664.</em></p>",
+      "order": 1
+    },
+    {
+      "type": "title",
+      "key": "section-1-title",
+      "content": "Informácie o prihlasovanom dieťati",
+      "order": 1
+    },
+    {
+      "type": "textbox",
+      "key": "firstName",
+      "label": "Meno",
+      "description": "Popis mena",
+      "value": "Ján",
+      "order": 1,
+      "quickInfo": true,
+      "validators": [
+        { "type": "required", "params": null },
+        { "type": "maxLength", "params": [30] }
+      ]
+    },
+    {
+      "type": "textbox",
+      "key": "lastName",
+      "label": "Priezvisko",
+      "description": "Popis priezviska",
+      "value": "Sabol",
+      "order": 2,
+      "quickInfo": true,
+      "validators": [
+        { "type": "required", "params": null },
+        { "type": "maxLength", "params": [30] }
+      ]
+    },
+    {
+      "type": "textbox",
+      "key": "address",
+      "label": "Adresa",
+      "description": "Popis adresy",
+      "value": "Laca Novomestského 23, Prešov 08001",
+      "order": 3,
+      "quickInfo": true,
+      "shared": true,
+      "validators": [
+        { "type": "required", "params": null },
+        { "type": "maxLength", "params": [50] }
+      ]
+    },
+    {
+      "type": "textbox",
+      "key": "idNumber",
+      "label": "Rodné číslo",
+      "description": "Popis rodného čísla",
+      "value": "880622/9195",
+      "order": 4,
+      "quickInfo": true,
+      "validators": [
+        { "type": "required", "params": null },
+        { "type": "maxLength", "params": [15] }
+      ]
+    },
+    {
+      "type": "textarea",
+      "key": "info",
+      "label": "Čo by sme mali o dieťati vedieť?",
+      "description": "Popis dieťaťa",
+      "value": " wierugowiuergh oweug iwuerguiwehrgihrig rug werg",
+      "order": 5,
+      "validators": [{ "type": "maxLength", "params": [2500] }]
+    },
+    {
+      "type": "radiogroup",
+      "key": "churchEvent",
+      "label": "Program v kostole",
+      "description": "Popis programu v kostole",
+      "value": 0,
+      "order": 6,
+      "shared": true,
+      "options": [
+        { "value": 1, "label": "Áno" },
+        { "value": 0, "label": "Nie" },
+        { "value": -1, "label": "Neviem" }
+      ],
+      "validators": [{ "type": "required", "params": null }]
+    },
+    {
+      "type": "title",
+      "key": "section-2-title",
+      "content": "Kontakty na rodičov / zákonných zástupcov",
+      "order": 7
+    },
+    {
+      "type": "blocktext",
+      "key": "section-2-text",
+      "content": "<p>Dôležité! Pomocou týchto kontaktov Vás budeme informovať o prípadných zmenách, alebo pri potrebe doplniť údaje do prihlášky a pod.</p><p>Povinný je aspoň jeden email a telefón.</p>",
+      "order": 7
+    },
+    {
+      "type": "textbox",
+      "key": "phoneNumberMother",
+      "label": "Telefónne číslo matky",
+      "description": "Popis rodného čísla",
+      "value": "0906229195",
+      "shared": true,
+      "order": 7,
+      "validators": [{ "type": "maxLength", "params": [25] }]
+    },
+    {
+      "type": "textbox",
+      "key": "emailMother",
+      "label": "Email matky",
+      "description": "Popis rodného čísla",
+      "value": "kvetinka.mala099@gmail.com",
+      "inputType": "email",
+      "shared": true,
+      "order": 8,
+      "validators": [
+        { "type": "email", "params": null },
+        { "type": "maxLength", "params": [50] }
+      ]
+    },
+    {
+      "type": "textbox",
+      "key": "phoneNumberFather",
+      "label": "Telefónne číslo otca",
+      "description": "Popis rodného čísla",
+      "value": "0908 990 903",
+      "shared": true,
+      "order": 9,
+      "validators": [{ "type": "maxLength", "params": [25] }]
+    },
+    {
+      "type": "textbox",
+      "key": "emailFather",
+      "label": "Email otca",
+      "description": "Popis rodného čísla",
+      "value": "kvetinka.mala099@gmail.com",
+      "inputType": "email",
+      "shared": true,
+      "order": 10,
+      "validators": [
+        { "type": "email", "params": null },
+        { "type": "maxLength", "params": [50] }
+      ]
+    },
+    {
+      "type": "title",
+      "key": "section-3-title",
+      "content": "Doplňujúce otázky",
+      "order": 11
+    },
+    {
+      "type": "blocktext",
+      "key": "section-3-text",
+      "content": "<p>Informácie z tejto sekcie budú slúžiť na zlepšenie služieb, našej propagácie a nie sú povinné. Ďakujeme za Váš názor.</p>",
+      "order": 11
+    },
+    {
+      "type": "dropdown",
+      "key": "channel",
+      "label": "Informácie o tábore",
+      "description": "Vyberte niečo zo zoznamu",
+      "value": -1,
+      "order": 11,
+      "shared": true,
+      "options": [
+        { "value": 1, "label": "Z internetovej stránky ECAV Prešov" },
+        { "value": 2, "label": "Z Facebookovej stránky ECAV Prešov" },
+        { "value": 3, "label": "Z detskej besiedky" },
+        { "value": 4, "label": "Z oznamov v kostole" },
+        { "value": 5, "label": "Od známych, spolužiakov" },
+        { "value": -1, "label": "Iné" }
+      ],
+      "validators": [{ "type": "required", "params": null }]
+    },
+    {
+      "type": "textarea",
+      "key": "note",
+      "label": "Poznámka",
+      "description": "Popis poznámka",
+      "value": "fghjfghj fghj fghj fghj fghj fgj",
+      "order": 12,
+      "validators": [{ "type": "maxLength", "params": [2500] }]
+    },
+    {
+      "type": "title",
+      "key": "section-4-title",
+      "content": "Informácie a upozornenia",
+      "order": 11
+    },
+    {
+      "type": "blocktext",
+      "key": "section-4-text",
+      "content": "<p>Pracovníci detského tábora si vyhradzujú právo na rozmiestnenie ubytovania jednotlivých detí. Zohľadňujeme vekovú kategóriu, celkovú organizáciu a efektívne fungovanie tábora. Našim záujmom je, aby sa každé dieťa medzi nami cítilo príjemne, preto aj táto stránka musí podliehať širším súvislostiam a celkovým vzťahom počas celého týždňa. Ďakujeme za porozumenie.</p>",
+      "order": 11
+    },
+    {
+      "type": "agreement",
+      "key": "confirmation",
+      "label": "Potvrdenie",
+      "description": "Popis <strong>potvrdenia</strong>",
+      "value": null,
+      "order": 13,
+      "options": "Vyhlasujem, že som si všetko poriadne prečítal/a a všetkému porozumel/a a som si vedomý/á prípadných následkov pri uvedení nepravdivých informácií.",
+      "validators": [{ "type": "checkedValidator", "params": null }]
+    }
+  ]
+}
