@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormeroQuestionDropdown } from '../../Question/formero-question-dropdown';
 import { FormGroup } from '@angular/forms';
+import { FormeroQuestionDropdown } from '../../../Question';
 
 @Component({
   selector: 'app-formero-dropdown',

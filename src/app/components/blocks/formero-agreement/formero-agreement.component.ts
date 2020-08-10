@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormeroQuestionAgreementCheckbox } from '../../Question/formero-question-agreement-checkbox';
 import { FormGroup } from '@angular/forms';
+import { FormeroQuestionAgreementCheckbox } from '../../../Question';
 
 @Component({
   selector: 'app-formero-agreement',

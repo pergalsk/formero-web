@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormeroBlockText } from '../../Blocks/formero-block-text';
+import { FormeroBlockText } from '../../../Blocks';
 
 @Component({
   selector: 'app-formero-blocktext',

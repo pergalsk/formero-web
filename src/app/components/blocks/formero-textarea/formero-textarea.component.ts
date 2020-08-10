@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormeroQuestionTextarea } from '../../Question/formero-question-textarea';
+import { FormeroQuestionTextarea } from '../../../Question';
 
 @Component({
   selector: 'app-formero-textarea',

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormeroQuestionRadiogroup } from '../../Question/formero-question-radiogroup';
 import { FormGroup } from '@angular/forms';
+import { FormeroQuestionRadiogroup } from '../../../Question';
 
 @Component({
   selector: 'app-formero-radiogroup',

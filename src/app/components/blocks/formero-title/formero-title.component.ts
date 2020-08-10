@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormeroBlockTitle } from '../../Blocks/formero-block-title';
+import { FormeroBlockTitle } from '../../../Blocks';
 
 @Component({
   selector: 'app-formero-title',
