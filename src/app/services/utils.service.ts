@@ -6,7 +6,11 @@ import { Injectable } from '@angular/core';
 export class UtilsService {
   constructor() {}
 
-  sortByOrderProp = (a, b) => a.order - b.order;
+  sortByOrderProp = (a, b): number => a.order - b.order;
+
+  scrollToTop(): void {
+    window.scrollTo(0, 0); // todo: not direct DOM call
+  }
 
   // Copy only listed properties.
   copyObjectByKeys(sourceObject, keysToCopy: string[]) {

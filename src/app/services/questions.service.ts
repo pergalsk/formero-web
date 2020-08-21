@@ -40,7 +40,7 @@ export class QuestionsService {
   ) {}
 
   loadFormSchema(): Observable<any> {
-    return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(2500));
+    return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
   }
 
   getQuestions() {
@@ -138,16 +138,22 @@ export class QuestionsService {
 
   // Get keys of shared form fields.
   // todo: private, static ?
-  extractSharedControlNames(formBlocks): string[] {
+  extractSharedControlKeys(formBlocks): string[] {
     return formBlocks && formBlocks.length
       ? formBlocks.filter((formBlock) => formBlock.shared).map((formBlock) => formBlock.key)
+      : [];
+  }
+
+  extractQuickInfoControlKeys(formBlocks): string[] {
+    return formBlocks && formBlocks.length
+      ? formBlocks.filter((formBlock) => formBlock.quickInfo).map((formBlock) => formBlock.key)
       : [];
   }
 
   submitAnswers(answersData): Observable<any> {
     return this.httpClient
       .post('http://localhost:4004/formero/public/form?XDEBUG_SESSION_START=PHPSTORM', answersData)
-      .pipe(catchError(this.handleError('Pri odosielaní prihlášky nastala chyba.')));
+      .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')));
   }
 
   handleError(message: string) {
@@ -168,39 +174,26 @@ export class QuestionsService {
     // <Password>test@test.test</Password>
 
     const data = `<BySquareXmlDocuments xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-
-
-
-
-
-  <Username>pergalsk@gmail.com</Username>
-  <Password>rent*jeck-skab0TROO</Password>
-  
-  
-   
-  
-  
-  
-
+  <Username></Username>
+  <Password></Password>
   <Documents>
     <Pay xsi:type="Pay" xmlns="http://www.bysquare.com/bysquare"> 
       <Payments>
       <Payment>
         <BankAccounts>
           <BankAccount>
-            <IBAN>SK2902000000002148829658</IBAN>
+            <IBAN></IBAN>
           </BankAccount>
         </BankAccounts>
-        <VariableSymbol>111</VariableSymbol>
-        <ConstantSymbol>222</ConstantSymbol>
-        <SpecificSymbol>333</SpecificSymbol>
-        <BeneficiaryAddressLine1>Lesn&#xED;cka 4, Pre&#x161;ov</BeneficiaryAddressLine1>
-        <Amount>1</Amount>
-        <CurrencyCode>EUR</CurrencyCode>
-        <PaymentNote>QR k&#xF3;d - Spr&#xE1;va pre prij&#xED;mate&#x13E;a</PaymentNote>
-        <BeneficiaryName>pergalsk</BeneficiaryName>
-        <PaymentOptions>paymentorder</PaymentOptions>
+        <VariableSymbol></VariableSymbol>
+        <ConstantSymbol></ConstantSymbol>
+        <SpecificSymbol></SpecificSymbol>
+        <BeneficiaryAddressLine1></BeneficiaryAddressLine1>
+        <Amount></Amount>
+        <CurrencyCode></CurrencyCode>
+        <PaymentNote></PaymentNote>
+        <BeneficiaryName></BeneficiaryName>
+        <PaymentOptions></PaymentOptions>
       </Payment>
     </Payments> 
     </Pay>

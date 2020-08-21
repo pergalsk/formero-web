@@ -1,0 +1,9 @@
+<table *ngIf="reducedItems && reducedItems.length">
+  <tr *ngFor="let reducedItem of reducedItems; let i = index">
+    <td *ngFor="let property of reducedItem | keyvalue: keepOriginalOrder">
+      {{ property.value }}
+    </td>
+    <td><button type="button" (click)="handleEdit(i)" [disabled]="disabled">Upraviť</button></td>
+    <td><button type="button" (click)="handleDelete(i)" [disabled]="disabled">Zmazať</button></td>
+  </tr>
+</table>

@@ -15,6 +15,7 @@ import {
   FormeroTitleComponent,
   FormeroBlocktextComponent,
 } from './components';
+import { QuickInfoComponent } from './components/common/quick-info/quick-info.component';
 // import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
 @NgModule({
@@ -28,6 +29,7 @@ import {
     FormeroAgreementComponent,
     FormeroTitleComponent,
     FormeroBlocktextComponent,
+    QuickInfoComponent,
     // RestrictLengthDirective
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],

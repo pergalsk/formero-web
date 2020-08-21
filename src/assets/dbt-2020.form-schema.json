@@ -67,7 +67,7 @@
       "label": "Rodné číslo",
       "description": "Popis rodného čísla",
       "value": "880622/9195",
-      "order": 4,
+      "order": 2,
       "quickInfo": true,
       "validators": [
         { "type": "required", "params": null },
@@ -194,7 +194,7 @@
       "label": "Poznámka",
       "description": "Popis poznámka",
       "value": "fghjfghj fghj fghj fghj fghj fgj",
-      "order": 12,
+      "order": 11,
       "validators": [{ "type": "maxLength", "params": [2500] }]
     },
     {
@@ -206,6 +206,12 @@
     {
       "type": "blocktext",
       "key": "section-4-text",
+      "content": "Prihláška do detského biblického tábora je platná až<ol><li>PO UHRADENÍ POPLATKU:<ul>číslo účtu zboru: SK91 0900 0000 0000 9628 9004</ul><ul>variabilný symbol: 1111</ul><ul>do poznámky uveďte meno a priezvisko dieťaťa (detí) za ktoré vykonávate platbu</ul><ul>suma: 92€ (+ 72€ za každého ďalšieho súrodenca)<br />(je možnosť platiť aj v hotovosti na evanjelickom farskom úrade: Svätoplukova 11, Prešov)</ul></li><li>PO ODOVZDANÍ PRI NÁSTUPE DO TÁBORA:<ul>Potvrdenie o zdravotnej spôsobilosti od lekára pre deti a dorast</ul></li><li>PO PODPISE ZÁKONNÉHO ZÁSTUPCU TEJTO PRIHLÁŠKY PRI NÁSTUPE DO TÁBORA<br />Prihlášku Vám vytlačíme spolu s:<ul>vyplnenými údajmi v prihláške,</ul><ul>súhlasom o poskytnutí osobných údajov (viď nižšie)</ul><ul>vyhlásením o bezinfekčnosti.</ul></li></ol>\n",
+      "order": 11
+    },
+    {
+      "type": "blocktext",
+      "key": "section-5-text",
       "content": "<p>Pracovníci detského tábora si vyhradzujú právo na rozmiestnenie ubytovania jednotlivých detí. Zohľadňujeme vekovú kategóriu, celkovú organizáciu a efektívne fungovanie tábora. Našim záujmom je, aby sa každé dieťa medzi nami cítilo príjemne, preto aj táto stránka musí podliehať širším súvislostiam a celkovým vzťahom počas celého týždňa. Ďakujeme za porozumenie.</p>",
       "order": 11
     },

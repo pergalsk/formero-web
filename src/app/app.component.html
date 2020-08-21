@@ -12,12 +12,6 @@
   <p *ngFor="let error of errors">{{ error }}</p>
 </div>
 
-<!-- Batch form items list -->
-<div *ngIf="(status === STATUS.InitSuccess || status === STATUS.Submitting) && batchItems.length">
-  <pre *ngFor="let batchItem of batchItems">{{ batchItem | json }}</pre>
-  <button type="button" (click)="deleteBatchItem()">Zmazať položku</button>
-</div>
-
 <!-- Form blocks -->
 <div
   *ngIf="
@@ -25,7 +19,7 @@
   "
 >
   <!--<h2>Prihlasovací formulár</h2>-->
-  <form [formGroup]="formData" (ngSubmit)="onSubmit()" autocomplete="off">
+  <form [formGroup]="formData" (ngSubmit)="onSubmit($event)" autocomplete="off">
     <p *ngFor="let question of questions.blocks">
       <app-formero-title
         *ngIf="question.blockType === 'title'"
@@ -89,26 +83,68 @@
       </span>
     </p>
 
+    <!-- Buttons -->
     <button type="reset" (click)="resetForm()" [disabled]="status === STATUS.Submitting">
-      Vymazať
+      Vymazať polia
     </button>
     <button
       type="button"
       (click)="addBatchItem()"
       [disabled]="!formData.valid || status === STATUS.Submitting"
     >
-      Pridať ďalšieho člena domácnosti
+      Pridať {{ batchItems.length ? 'ďalšieho ' : 'ako  ' }}člena domácnosti
     </button>
-    <button type="submit" [disabled]="!formData.valid || status === STATUS.Submitting">
-      Odoslať
+    <button
+      *ngIf="!batchItems.length"
+      type="submit"
+      [name]="ACTION.SubmitOne"
+      [disabled]="!formData.valid || status === STATUS.Submitting"
+    >
+      Odoslať samostatne
     </button>
-    <button type="submit" disabled>Odoslať (not disabled)</button>
-    <button type="button" (click)="generateQR()" disabled>Generovať QR</button>
 
-    <pre>{{ formData.value | json }}</pre>
+    <!--<button type="submit" disabled>Odoslať (not disabled)</button>-->
+    <!--<button type="button" (click)="generateQR()" disabled>Generovať QR</button>-->
+
+    <!-- Batch form items list -->
+    <div
+      *ngIf="(status === STATUS.InitSuccess || status === STATUS.Submitting) && batchItems.length"
+    >
+      <hr />
+      <h2>Na odoslanie:</h2>
+
+      <app-quick-info
+        [items]="batchItems"
+        [keys]="quickInfoFieldsKeys"
+        [disabled]="status === STATUS.Submitting"
+        (edit)="onEditBatchItem($event)"
+        (delete)="onDeleteBatchItem($event)"
+      ></app-quick-info>
+
+      <button
+        type="button"
+        (click)="deleteAllBatchItems()"
+        [disabled]="status === STATUS.Submitting"
+      >
+        Zmazať všetky ({{ batchItems.length }})
+      </button>
+      <!-- Todo: Submit all -->
+      <button
+        type="submit"
+        [name]="ACTION.SubmitMultiple"
+        [disabled]="status === STATUS.Submitting"
+      >
+        Odoslať všetky ({{ batchItems.length }})
+      </button>
+    </div>
   </form>
 </div>
 
+<!-- LOG form data-->
+<hr />
+<pre>{{ formData && formData.value | json }}</pre>
+
+<!-- Todo: Move to own route -->
 <div *ngIf="status === STATUS.SubmitSuccess">
   <div [innerHTML]="questions.successInfo"></div>
   <p><a href="#" (click)="startAgain()">Vypniť ďalšiu prihlášku</a></p>

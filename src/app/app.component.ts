@@ -12,6 +12,11 @@ export enum Status {
   SubmitSuccess = 'SUBMIT_SUCCESS',
 }
 
+export enum Action {
+  SubmitOne = 'SUBMIT_ONE',
+  SubmitMultiple = 'SUBMIT_MULTIPLE',
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -23,18 +28,24 @@ export class AppComponent implements OnInit {
 
   batchItems: Array<any> = [];
   sharedFieldsKeys: Array<string> = [];
+  quickInfoFieldsKeys: Array<string> = [];
   errors: Array<string> = [];
   status: Status = Status.Initializing;
   STATUS = Status;
+  ACTION = Action;
 
   constructor(private questionsService: QuestionsService, private utilsService: UtilsService) {}
 
   ngOnInit(): void {
     // todo: unsubscribe
+    this.utilsService.scrollToTop();
     this.questionsService.getQuestions().subscribe(
       (data) => {
         this.questions = data; // todo: clone
-        this.sharedFieldsKeys = this.questionsService.extractSharedControlNames(
+        this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(
+          this.questions.blocks
+        );
+        this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
           this.questions.blocks
         );
         this.formData = this.questionsService.buildForm(this.questions);
@@ -42,38 +53,72 @@ export class AppComponent implements OnInit {
       },
       (error) => {
         this.status = Status.InitError;
-        this.errors.push(error);
-        this.scrollToTop();
+        this.errors = [...this.errors, error];
       }
     );
   }
 
-  onSubmit(): void {
+  onSubmit($event): void {
+    if (!$event || $event.type !== 'submit') {
+      return;
+    }
+
+    let data: any[];
+    const action = $event.submitter.name;
+
+    console.log('Submit action: ', action);
+
+    if (action === Action.SubmitOne) {
+      data = [this.formData.value];
+    } else if (action === Action.SubmitMultiple) {
+      data = [...this.batchItems];
+    } else {
+      return;
+    }
+
+    this.batchSubmit(data);
+  }
+
+  batchSubmit(data: any[]): void {
     this.errors = [];
     this.status = Status.Submitting;
 
-    this.questionsService.submitAnswers(this.formData.value).subscribe(
+    if (!data.length) {
+      return;
+    }
+
+    console.table(data);
+
+    this.questionsService.submitAnswers(data).subscribe(
       (resp) => {
         this.status = Status.SubmitSuccess;
         console.log(resp);
       },
       (error) => {
         this.status = Status.SubmitError;
-        this.errors.push(error);
-        this.scrollToTop();
+        this.errors = [...this.errors, error];
+        this.utilsService.scrollToTop();
       }
     );
   }
 
   addBatchItem(): void {
-    this.batchItems.push(this.formData.value);
+    this.batchItems = [...this.batchItems, this.formData.value];
     this.resetNonSharedForm(this.formData.value);
     this.status = Status.InitSuccess;
-    this.scrollToTop();
+    // this.utilsService.scrollToTop();
   }
 
-  deleteBatchItem(): void {
-    alert('deleteBatchItem()');
+  deleteAllBatchItems() {
+    this.batchItems = [];
+  }
+
+  onEditBatchItem(index: number): void {
+    alert(`editBatchItem(${index})`);
+  }
+
+  onDeleteBatchItem(index: number): void {
+    this.batchItems = [...this.batchItems.slice(0, index), ...this.batchItems.slice(index + 1)];
   }
 
   startAgain(): void {
@@ -85,20 +130,16 @@ export class AppComponent implements OnInit {
   resetForm(): void {
     this.errors = [];
     this.formData.reset();
-    this.scrollToTop();
+    this.utilsService.scrollToTop();
   }
 
-  resetNonSharedForm(formDataValue) {
+  resetNonSharedForm(formDataValue): void {
     const initValue = this.utilsService.copyObjectByKeys(formDataValue, this.sharedFieldsKeys);
     this.formData.reset(initValue);
   }
 
   generateQR(): void {
     this.questionsService.generateQR().subscribe();
-  }
-
-  scrollToTop(): void {
-    window.scrollTo(0, 0); // todo: not direct DOM call
   }
 
   get phoneNumberMother() {
