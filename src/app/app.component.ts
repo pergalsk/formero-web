@@ -83,10 +83,6 @@ export class AppComponent implements OnInit {
     this.errors = [];
     this.status = Status.Submitting;
 
-    if (!data.length) {
-      return;
-    }
-
     console.table(data);
 
     this.questionsService.submitAnswers(data).subscribe(

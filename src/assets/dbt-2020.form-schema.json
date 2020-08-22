@@ -2,6 +2,9 @@
   "title": "Prihláška na DBT 2020",
   "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
   "validators": [{ "type": "atLeastOneContactValidator", "params": null }],
+  "options": {
+    "batch": true
+  },
   "blocks": [
     {
       "type": "title",

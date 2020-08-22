@@ -20,6 +20,7 @@ export interface FormBlocksSet {
   title: string;
   successInfo: string;
   validators: Validators[];
+  options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet)[];
 }
 

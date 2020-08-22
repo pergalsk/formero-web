@@ -88,6 +88,7 @@
       Vymazať polia
     </button>
     <button
+      *ngIf="questions.options?.batch"
       type="button"
       (click)="addBatchItem()"
       [disabled]="!formData.valid || status === STATUS.Submitting"
