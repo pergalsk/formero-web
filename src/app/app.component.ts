@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
         );
         this.formData = this.questionsService.buildForm(this.questions);
         this.status = Status.InitSuccess;
+        console.log('Form schema successfully loaded');
       },
       (error) => {
         this.status = Status.InitError;
@@ -80,6 +81,10 @@ export class AppComponent implements OnInit {
   }
 
   batchSubmit(data: any[]): void {
+    if (!data.length) {
+      return;
+    }
+
     this.errors = [];
     this.status = Status.Submitting;
 

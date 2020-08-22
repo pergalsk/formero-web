@@ -87,14 +87,16 @@
     <button type="reset" (click)="resetForm()" [disabled]="status === STATUS.Submitting">
       Vymazať polia
     </button>
+
     <button
       *ngIf="questions.options?.batch"
       type="button"
       (click)="addBatchItem()"
       [disabled]="!formData.valid || status === STATUS.Submitting"
     >
-      Pridať {{ batchItems.length ? 'ďalšieho ' : 'ako  ' }}člena domácnosti
+      {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
     </button>
+
     <button
       *ngIf="!batchItems.length"
       type="submit"
