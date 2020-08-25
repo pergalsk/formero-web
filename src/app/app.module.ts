@@ -16,6 +16,7 @@ import {
   FormeroBlocktextComponent,
 } from './components';
 import { QuickInfoComponent } from './components/common/quick-info/quick-info.component';
+import { interceptorProviders } from './interceptors';
 // import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
 @NgModule({
@@ -33,7 +34,7 @@ import { QuickInfoComponent } from './components/common/quick-info/quick-info.co
     // RestrictLengthDirective
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
-  providers: [],
+  providers: [interceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
