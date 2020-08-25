@@ -52,7 +52,9 @@ export class AppComponent implements OnInit {
         );
         this.formData = this.questionsService.buildForm(this.questions);
         this.status = Status.InitSuccess;
-        console.log('Form schema successfully loaded');
+        console.log(
+          `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`
+        );
       },
       (error) => {
         this.status = Status.InitError;

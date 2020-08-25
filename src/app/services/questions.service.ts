@@ -17,6 +17,7 @@ import {
 } from '../Question';
 
 export interface FormBlocksSet {
+  id: number;
   title: string;
   successInfo: string;
   validators: Validators[];
