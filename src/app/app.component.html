@@ -15,7 +15,10 @@
 <!-- Form blocks -->
 <div
   *ngIf="
-    status === STATUS.InitSuccess || status === STATUS.Submitting || status === STATUS.SubmitError
+    status === STATUS.InitSuccess ||
+    status === STATUS.Submitting ||
+    status === STATUS.SubmitError ||
+    status === STATUS.Editing
   "
 >
   <!--<h2>Prihlasovací formulár</h2>-->
@@ -89,12 +92,25 @@
     </button>
 
     <button
-      *ngIf="questions.options?.batch"
+      *ngIf="questions.options?.batch && status !== STATUS.Editing"
       type="button"
       (click)="addBatchItem()"
       [disabled]="!formData.valid || status === STATUS.Submitting"
     >
       {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
+    </button>
+
+    <button *ngIf="status === STATUS.Editing" type="button" (click)="cancelBatchItemChanges()">
+      Zrušiť zmeny
+    </button>
+
+    <button
+      *ngIf="status === STATUS.Editing"
+      type="button"
+      [disabled]="!formData.valid"
+      (click)="saveBatchItemChanges()"
+    >
+      Potvrdiť zmeny
     </button>
 
     <button
@@ -111,7 +127,12 @@
 
     <!-- Batch form items list -->
     <div
-      *ngIf="(status === STATUS.InitSuccess || status === STATUS.Submitting) && batchItems.length"
+      *ngIf="
+        (status === STATUS.InitSuccess ||
+          status === STATUS.Submitting ||
+          status === STATUS.Editing) &&
+        batchItems.length
+      "
     >
       <hr />
       <h2>Na odoslanie:</h2>
@@ -119,7 +140,7 @@
       <app-quick-info
         [items]="batchItems"
         [keys]="quickInfoFieldsKeys"
-        [disabled]="status === STATUS.Submitting"
+        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
         (edit)="onEditBatchItem($event)"
         (delete)="onDeleteBatchItem($event)"
       ></app-quick-info>
@@ -127,7 +148,7 @@
       <button
         type="button"
         (click)="deleteAllBatchItems()"
-        [disabled]="status === STATUS.Submitting"
+        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
       >
         Zmazať všetky ({{ batchItems.length }})
       </button>
@@ -135,7 +156,7 @@
       <button
         type="submit"
         [name]="ACTION.SubmitMultiple"
-        [disabled]="status === STATUS.Submitting"
+        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
       >
         Odoslať všetky ({{ batchItems.length }})
       </button>

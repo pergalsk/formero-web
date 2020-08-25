@@ -10,6 +10,7 @@ export enum Status {
   Submitting = 'SUBMITTING',
   SubmitError = 'SUBMIT_ERROR',
   SubmitSuccess = 'SUBMIT_SUCCESS',
+  Editing = 'EDITING',
 }
 
 export enum Action {
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
   questions: FormBlocksSet;
 
   batchItems: Array<any> = [];
+  editedBatchItem: number | null = null;
   sharedFieldsKeys: Array<string> = [];
   quickInfoFieldsKeys: Array<string> = [];
   errors: Array<string> = [];
@@ -69,12 +71,15 @@ export class AppComponent implements OnInit {
 
     console.log('Submit action: ', action);
 
-    if (action === Action.SubmitOne) {
-      data = [this.formData.value];
-    } else if (action === Action.SubmitMultiple) {
-      data = [...this.batchItems];
-    } else {
-      return;
+    switch (action) {
+      case Action.SubmitOne:
+        data = [this.formData.value];
+        break;
+      case Action.SubmitMultiple:
+        data = [...this.batchItems];
+        break;
+      default:
+        return;
     }
 
     this.batchSubmit(data);
@@ -106,8 +111,8 @@ export class AppComponent implements OnInit {
   addBatchItem(): void {
     this.batchItems = [...this.batchItems, this.formData.value];
     this.resetNonSharedForm(this.formData.value);
-    this.status = Status.InitSuccess;
     // this.utilsService.scrollToTop();
+    this.status = Status.InitSuccess;
   }
 
   deleteAllBatchItems() {
@@ -115,7 +120,26 @@ export class AppComponent implements OnInit {
   }
 
   onEditBatchItem(index: number): void {
-    alert(`editBatchItem(${index})`);
+    alert(`This will rewrite all form content - editBatchItem(${index}).`);
+    this.editedBatchItem = index;
+    this.formData.reset(this.batchItems[index]);
+    this.utilsService.scrollToTop();
+    this.status = Status.Editing;
+  }
+
+  cancelBatchItemChanges() {
+    alert('Chcete zrušiť zmeny ?');
+    this.editedBatchItem = null;
+    this.formData.reset();
+    this.status = Status.InitSuccess;
+  }
+
+  saveBatchItemChanges() {
+    this.batchItems[this.editedBatchItem] = { ...this.formData.value };
+    this.editedBatchItem = null;
+    this.formData.reset();
+    // this.utilsService.scrollToTop();
+    this.status = Status.InitSuccess;
   }
 
   onDeleteBatchItem(index: number): void {
