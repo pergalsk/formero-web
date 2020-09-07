@@ -8,6 +8,13 @@ export class UtilsService {
 
   sortByOrderProp = (a, b): number => a.order - b.order;
 
+  toArray = (value: any): any[] =>
+    Array.isArray(value) ? [...value] : typeof value !== 'undefined' ? [value] : [];
+
+  onlyTruthy = (values: any[]): boolean[] => values.filter(Boolean);
+
+  isAllTruthy = (values: any[]): boolean => values.every((value) => !!value);
+
   scrollToTop(): void {
     window.scrollTo(0, 0); // todo: not direct DOM call
   }

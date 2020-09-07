@@ -18,6 +18,11 @@ export enum Action {
   SubmitMultiple = 'SUBMIT_MULTIPLE',
 }
 
+// This kind of event is not defined in TypeScript
+interface SubmitEvent extends Event {
+  submitter: HTMLFormElement;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -27,12 +32,14 @@ export class AppComponent implements OnInit {
   formData: FormGroup;
   questions: FormBlocksSet;
 
+  initValue: { [key: string]: any } = {};
   batchItems: Array<any> = [];
   editedBatchItem: number | null = null;
   sharedFieldsKeys: Array<string> = [];
   quickInfoFieldsKeys: Array<string> = [];
   errors: Array<string> = [];
   status: Status = Status.Initializing;
+
   STATUS = Status;
   ACTION = Action;
 
@@ -40,80 +47,61 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // todo: unsubscribe
+    this.questionsService.getQuestions().subscribe(this.getQuestionSuccess, this.getQuestionError);
     this.utilsService.scrollToTop();
-    this.questionsService.getQuestions().subscribe(
-      (data) => {
-        this.questions = data; // todo: clone
-        this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(
-          this.questions.blocks
-        );
-        this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
-          this.questions.blocks
-        );
-        this.formData = this.questionsService.buildForm(this.questions);
-        this.status = Status.InitSuccess;
-        console.log(
-          `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`
-        );
-      },
-      (error) => {
-        this.status = Status.InitError;
-        this.errors = [...this.errors, error];
-      }
-    );
   }
 
-  onSubmit($event): void {
+  getQuestionSuccess = (data) => {
+    this.questions = data; // todo: clone
+    this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
+    this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions.blocks);
+    this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
+      this.questions.blocks
+    );
+    this.formData = this.questionsService.buildForm(this.questions);
+    this.status = Status.InitSuccess;
+    console.log(
+      `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`
+    );
+  };
+
+  getQuestionError = (error) => {
+    this.status = Status.InitError;
+    this.errors = [...this.errors, error];
+  };
+
+  onSubmit($event: SubmitEvent): void {
     if (!$event || $event.type !== 'submit') {
       return;
     }
 
-    let data: any[];
-    const action = $event.submitter.name;
+    let batchFormData: any[];
+    const action: Action = $event.submitter.name as Action;
 
     console.log('Submit action: ', action);
 
     switch (action) {
       case Action.SubmitOne:
-        data = [this.formData.value];
+        batchFormData = [{ ...this.formRawValue }];
         break;
       case Action.SubmitMultiple:
-        data = [...this.batchItems];
+        batchFormData = [...this.batchItems]; // todo: need to deep clone ?
         break;
       default:
         return;
     }
 
-    this.batchSubmit(data);
+    this.batchSubmit(batchFormData);
   }
 
-  batchSubmit(data: any[]): void {
-    if (!data.length) {
-      return;
-    }
-
-    this.errors = [];
-    this.status = Status.Submitting;
-
-    console.table(data);
-
-    this.questionsService.submitAnswers(data).subscribe(
-      (resp) => {
-        this.status = Status.SubmitSuccess;
-        console.log(resp);
-      },
-      (error) => {
-        this.status = Status.SubmitError;
-        this.errors = [...this.errors, error];
-        this.utilsService.scrollToTop();
-      }
-    );
+  onReset($event: Event) {
+    $event.preventDefault();
+    this.resetForm();
   }
 
   addBatchItem(): void {
-    this.batchItems = [...this.batchItems, this.formData.value];
-    this.resetNonSharedForm(this.formData.value);
-    // this.utilsService.scrollToTop();
+    this.batchItems = [...this.batchItems, { ...this.formRawValue }];
+    this.resetNonSharedForm(this.formRawValue);
     this.status = Status.InitSuccess;
   }
 
@@ -124,7 +112,7 @@ export class AppComponent implements OnInit {
   onEditBatchItem(index: number): void {
     alert(`This will rewrite all form content - editBatchItem(${index}).`);
     this.editedBatchItem = index;
-    this.formData.reset(this.batchItems[index]);
+    this.formData.setValue(this.batchItems[index]);
     this.utilsService.scrollToTop();
     this.status = Status.Editing;
   }
@@ -132,15 +120,14 @@ export class AppComponent implements OnInit {
   cancelBatchItemChanges() {
     alert('Chcete zrušiť zmeny ?');
     this.editedBatchItem = null;
-    this.formData.reset();
+    this.formData.reset(this.initValue);
     this.status = Status.InitSuccess;
   }
 
   saveBatchItemChanges() {
-    this.batchItems[this.editedBatchItem] = { ...this.formData.value };
+    this.batchItems[this.editedBatchItem] = { ...this.formRawValue };
     this.editedBatchItem = null;
-    this.formData.reset();
-    // this.utilsService.scrollToTop();
+    this.formData.reset(this.initValue);
     this.status = Status.InitSuccess;
   }
 
@@ -154,30 +141,62 @@ export class AppComponent implements OnInit {
     this.status = Status.InitSuccess;
   }
 
-  resetForm(): void {
+  private batchSubmit(batchFormData: any[]): void {
+    if (!batchFormData.length) {
+      return;
+    }
+
     this.errors = [];
-    this.formData.reset();
+    this.status = Status.Submitting;
+
+    const submitData = this.questionsService.prepareSubmitData(batchFormData, this.questions);
+
+    console.table(submitData);
+
+    this.questionsService.submitAnswers(submitData).subscribe(
+      (resp) => {
+        this.status = Status.SubmitSuccess;
+        console.log(resp);
+      },
+      (error) => {
+        this.status = Status.SubmitError;
+        this.errors = [...this.errors, error];
+        this.utilsService.scrollToTop();
+      }
+    );
+  }
+
+  private resetForm(): void {
+    this.errors = [];
+    this.formData.reset(this.initValue);
     this.utilsService.scrollToTop();
   }
 
-  resetNonSharedForm(formDataValue): void {
-    const initValue = this.utilsService.copyObjectByKeys(formDataValue, this.sharedFieldsKeys);
-    this.formData.reset(initValue);
+  private resetNonSharedForm(formDataValue): void {
+    const sharedValue = this.utilsService.copyObjectByKeys(formDataValue, this.sharedFieldsKeys);
+    this.formData.reset(Object.assign({}, this.initValue, sharedValue));
   }
 
   generateQR(): void {
     this.questionsService.generateQR().subscribe();
   }
 
+  get formRawValue() {
+    return this.formData.getRawValue();
+  }
+
   get phoneNumberMother() {
     return this.formData.get('phoneNumberMother');
   }
+
   get phoneNumberFather() {
     return this.formData.get('phoneNumberFather');
   }
+
   get emailMother() {
     return this.formData.get('emailMother');
   }
+
   get emailFather() {
     return this.formData.get('emailFather');
   }

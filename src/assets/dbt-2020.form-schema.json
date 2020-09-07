@@ -2,7 +2,7 @@
   "id": 13405,
   "title": "Prihláška na DBT 2020",
   "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
-  "validators": [{ "type": "atLeastOneContactValidator", "params": null }],
+  "validators": [{ "type": "atLeastOneContactValidator", "params": [] }],
   "options": {
     "batch": true
   },
@@ -29,12 +29,13 @@
       "type": "textbox",
       "key": "firstName",
       "label": "Meno",
-      "description": "Popis mena",
-      "value": "Ján",
+      "description": "Sem zadajte aj prípadné stredné meno/mená",
+      "value": "",
       "order": 1,
       "quickInfo": true,
+      "shared": false,
       "validators": [
-        { "type": "required", "params": null },
+        { "type": "required", "params": [] },
         { "type": "maxLength", "params": [30] }
       ]
     },
@@ -43,11 +44,12 @@
       "key": "lastName",
       "label": "Priezvisko",
       "description": "Popis priezviska",
-      "value": "Sabol",
+      "value": "",
       "order": 2,
       "quickInfo": true,
+      "shared": false,
       "validators": [
-        { "type": "required", "params": null },
+        { "type": "required", "params": [] },
         { "type": "maxLength", "params": [30] }
       ]
     },
@@ -56,12 +58,12 @@
       "key": "address",
       "label": "Adresa",
       "description": "Popis adresy",
-      "value": "Laca Novomestského 23, Prešov 08001",
+      "value": "",
       "order": 3,
       "quickInfo": true,
       "shared": true,
       "validators": [
-        { "type": "required", "params": null },
+        { "type": "required", "params": [] },
         { "type": "maxLength", "params": [50] }
       ]
     },
@@ -70,21 +72,38 @@
       "key": "idNumber",
       "label": "Rodné číslo",
       "description": "Popis rodného čísla",
-      "value": "880622/9195",
+      "value": "",
       "order": 2,
       "quickInfo": true,
+      "shared": false,
       "validators": [
-        { "type": "required", "params": null },
+        { "type": "required", "params": [] },
         { "type": "maxLength", "params": [15] }
       ]
+    },
+    {
+      "type": "checkgroup",
+      "key": "accommodation",
+      "label": "Ubytovanie",
+      "description": "Vyberte príslušné položky",
+      "value": null,
+      "order": 3,
+      "shared": true,
+      "options": [
+        { "key": "night1", "value": false, "label": "29.9.2020", "disabled": false },
+        { "key": "night2", "value": true, "label": "30.9.2020", "disabled": true },
+        { "key": "night3", "value": false, "label": "31.9.2020", "disabled": false }
+      ],
+      "validators": [{ "type": "minCheckedValidator", "params": [2] }]
     },
     {
       "type": "textarea",
       "key": "info",
       "label": "Čo by sme mali o dieťati vedieť?",
       "description": "Popis dieťaťa",
-      "value": " wierugowiuergh oweug iwuerguiwehrgihrig rug werg",
+      "value": "",
       "order": 5,
+      "shared": false,
       "validators": [{ "type": "maxLength", "params": [2500] }]
     },
     {
@@ -92,7 +111,7 @@
       "key": "churchEvent",
       "label": "Program v kostole",
       "description": "Popis programu v kostole",
-      "value": 0,
+      "value": null,
       "order": 6,
       "shared": true,
       "options": [
@@ -100,7 +119,26 @@
         { "value": 0, "label": "Nie" },
         { "value": -1, "label": "Neviem" }
       ],
-      "validators": [{ "type": "required", "params": null }]
+      "validators": [{ "type": "required", "params": [] }]
+    },
+    {
+      "type": "checkgroup",
+      "key": "diet",
+      "label": "Strava",
+      "description": "Vyberte príslušné položky",
+      "value": null,
+      "order": 6,
+      "shared": true,
+      "options": [
+        { "key": "pon", "value": false, "label": "Pondelok", "disabled": false },
+        { "key": "uto", "value": false, "label": "Utorok", "disabled": false },
+        { "key": "str", "value": true, "label": "Streda", "disabled": true },
+        { "key": "stv", "value": true, "label": "Štvrtok", "disabled": true },
+        { "key": "pia", "value": true, "label": "Piatok", "disabled": true },
+        { "key": "sob", "value": false, "label": "Sobota", "disabled": false },
+        { "key": "ned", "value": false, "label": "Nedeľa", "disabled": false }
+      ],
+      "validators": [{ "type": "minCheckedValidator", "params": [3] }]
     },
     {
       "type": "title",
@@ -119,7 +157,7 @@
       "key": "phoneNumberMother",
       "label": "Telefónne číslo matky",
       "description": "Popis rodného čísla",
-      "value": "0906229195",
+      "value": "",
       "shared": true,
       "order": 7,
       "validators": [{ "type": "maxLength", "params": [25] }]
@@ -129,12 +167,12 @@
       "key": "emailMother",
       "label": "Email matky",
       "description": "Popis rodného čísla",
-      "value": "kvetinka.mala099@gmail.com",
+      "value": "",
       "inputType": "email",
       "shared": true,
       "order": 8,
       "validators": [
-        { "type": "email", "params": null },
+        { "type": "email", "params": [] },
         { "type": "maxLength", "params": [50] }
       ]
     },
@@ -143,7 +181,7 @@
       "key": "phoneNumberFather",
       "label": "Telefónne číslo otca",
       "description": "Popis rodného čísla",
-      "value": "0908 990 903",
+      "value": "",
       "shared": true,
       "order": 9,
       "validators": [{ "type": "maxLength", "params": [25] }]
@@ -153,12 +191,12 @@
       "key": "emailFather",
       "label": "Email otca",
       "description": "Popis rodného čísla",
-      "value": "kvetinka.mala099@gmail.com",
+      "value": "",
       "inputType": "email",
       "shared": true,
       "order": 10,
       "validators": [
-        { "type": "email", "params": null },
+        { "type": "email", "params": [] },
         { "type": "maxLength", "params": [50] }
       ]
     },
@@ -179,7 +217,7 @@
       "key": "channel",
       "label": "Informácie o tábore",
       "description": "Vyberte niečo zo zoznamu",
-      "value": -1,
+      "value": null,
       "order": 11,
       "shared": true,
       "options": [
@@ -190,15 +228,16 @@
         { "value": 5, "label": "Od známych, spolužiakov" },
         { "value": -1, "label": "Iné" }
       ],
-      "validators": [{ "type": "required", "params": null }]
+      "validators": [{ "type": "required", "params": [] }]
     },
     {
       "type": "textarea",
       "key": "note",
       "label": "Poznámka",
       "description": "Popis poznámka",
-      "value": "fghjfghj fghj fghj fghj fghj fgj",
+      "value": "",
       "order": 11,
+      "shared": false,
       "validators": [{ "type": "maxLength", "params": [2500] }]
     },
     {
@@ -225,9 +264,10 @@
       "label": "Potvrdenie",
       "description": "Popis <strong>potvrdenia</strong>",
       "value": null,
+      "shared": true,
       "order": 13,
       "options": "Vyhlasujem, že som si všetko poriadne prečítal/a a všetkému porozumel/a a som si vedomý/á prípadných následkov pri uvedení nepravdivých informácií.",
-      "validators": [{ "type": "checkedValidator", "params": null }]
+      "validators": [{ "type": "checkedValidator", "params": [] }]
     }
   ]
 }

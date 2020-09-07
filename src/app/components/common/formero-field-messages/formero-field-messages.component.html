@@ -1,12 +1,30 @@
 <span *ngIf="control.invalid && (control.touched || control.dirty)">
   {{ label }}:
   <span *ngIf="control.errors?.required">Pole je povinné.</span>
+  <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
   <span *ngIf="control.errors?.maxlength"
     >Pole môže obsahovať maximálne {{ control.errors?.maxlength.requiredLength }} znakov.</span
   >
   <span *ngIf="control.errors?.minlength"
     >Pole musí obsahovať minimálne {{ control.errors?.minlength.requiredLength }} znakov.</span
   >
-  <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
-  <span *ngIf="control.errors?.checked">Povinné pole.</span>
+  <span *ngIf="control.errors?.checked && control.errors?.checked.requiredChecked === 1"
+    >Povinné pole.</span
+  >
+  <span *ngIf="control.errors?.checked && control.errors?.checked.requiredChecked !== 1"
+    >Potrebné označiť {{ control.errors?.checked.requiredChecked }} položiek.</span
+  >
+  <span *ngIf="control.errors?.minChecked"
+    >Potrebné označiť minimálne {{ control.errors?.minChecked.requiredChecked }} položky.</span
+  >
+  <span *ngIf="control.errors?.maxChecked"
+    >Môžu byť označené maximálne {{ control.errors?.maxChecked.requiredChecked }} položky.</span
+  >
 </span>
+
+<!--<pre>
+control.errors:  {{ control.errors | json }}
+control.invalid: {{ control.invalid | json }}
+control.touched: {{ control.touched | json }}
+control.dirty:   {{ control.dirty | json }}</pre
+>-->

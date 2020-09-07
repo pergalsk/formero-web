@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControlOptions,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 
@@ -12,6 +20,7 @@ import {
   FormeroQuestionTextarea,
   FormeroQuestionDropdown,
   FormeroQuestionRadiogroup,
+  FormeroQuestionCheckgroup,
   FormeroQuestionAgreementCheckbox,
   FormQuestionBlocksSet,
 } from '../Question';
@@ -20,7 +29,7 @@ export interface FormBlocksSet {
   id: number;
   title: string;
   successInfo: string;
-  validators: Validators[];
+  validators: ValidatorFn[];
   options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet)[];
 }
@@ -28,6 +37,10 @@ export interface FormBlocksSet {
 export interface RawValidatorInfo {
   type: string;
   params: Array<any> | null;
+}
+
+export interface CheckGroupsKeys {
+  [key: string]: string[];
 }
 
 @Injectable({
@@ -75,12 +88,14 @@ export class QuestionsService {
         .filter((validator) => validator); // filter falsy values
     }
 
+    // todo: move to separate directory as exported constant
     const blockTypeMap = new Map<string, any>([
       ['title', FormeroBlockTitle],
       ['blocktext', FormeroBlockText],
       ['textbox', FormeroQuestionTextbox],
       ['textarea', FormeroQuestionTextarea],
       ['radiogroup', FormeroQuestionRadiogroup],
+      ['checkgroup', FormeroQuestionCheckgroup],
       ['dropdown', FormeroQuestionDropdown],
       ['agreement', FormeroQuestionAgreementCheckbox],
     ]);
@@ -110,7 +125,15 @@ export class QuestionsService {
         break;
 
       case 'checkedValidator':
-        validatorFn = this.validatorsService.checkedValidator;
+        validatorFn = this.validatorsService.checkedValidator(rawValidator.params[0]);
+        break;
+
+      case 'minCheckedValidator':
+        validatorFn = this.validatorsService.minCheckedValidator(rawValidator.params[0]);
+        break;
+
+      case 'maxCheckedValidator':
+        validatorFn = this.validatorsService.maxCheckedValidator(rawValidator.params[0]);
         break;
 
       case 'atLeastOneContactValidator':
@@ -125,27 +148,58 @@ export class QuestionsService {
   }
 
   buildForm(questions: FormBlocksSet): FormGroup {
-    const controlsConfig = {};
-    const options = { validators: questions.validators }; // form global validators
+    const controlsConfig: { [key: string]: any } = {};
+    const options: AbstractControlOptions | { [key: string]: any } = {
+      validators: questions.validators,
+    }; // form global validators
 
     for (const question of questions.blocks) {
+      // todo: refactor to switch-case
       if (!(question instanceof FormeroBlockText || question instanceof FormeroBlockTitle)) {
-        const { key, value, validators } = question;
-        controlsConfig[key] = [value, validators];
+        if (question instanceof FormeroQuestionCheckgroup) {
+          const { key, options, validators } = question;
+          const controls: FormControl[] = options.map(
+            (option) =>
+              new FormControl({ value: option.value || false, disabled: option.disabled || false })
+          );
+          controlsConfig[key] = new FormArray(controls, validators);
+        } else {
+          const { key, value, validators } = question;
+          controlsConfig[key] = [value, validators];
+        }
       }
     }
 
     return this.formBuilder.group(controlsConfig, options);
   }
 
+  extractFormInitValue(formBlocks): { [key: string]: any } {
+    const initValue: { [key: string]: any } = {};
+
+    for (const formBlock of formBlocks) {
+      // todo: refactor to switch-case
+      if (!(formBlock instanceof FormeroBlockText || formBlock instanceof FormeroBlockTitle)) {
+        if (formBlock instanceof FormeroQuestionCheckgroup) {
+          const { key, options } = formBlock;
+          initValue[key] = options.map((option) => option.value);
+        } else {
+          const { key, value } = formBlock;
+          initValue[key] = value;
+        }
+      }
+    }
+
+    return initValue;
+  }
+
   // Get keys of shared form fields.
-  // todo: private, static ?
   extractSharedControlKeys(formBlocks): string[] {
     return formBlocks && formBlocks.length
       ? formBlocks.filter((formBlock) => formBlock.shared).map((formBlock) => formBlock.key)
       : [];
   }
 
+  // Get block keys for quick info section
   extractQuickInfoControlKeys(formBlocks): string[] {
     return formBlocks && formBlocks.length
       ? formBlocks.filter((formBlock) => formBlock.quickInfo).map((formBlock) => formBlock.key)
@@ -163,12 +217,49 @@ export class QuestionsService {
       if (error.error instanceof ErrorEvent) {
         console.error('Client side error occurred:' + error.error.message);
       } else {
-        console.error('Backend side error occurred with status:' + error.status);
-        console.error('Error body:' + error.error);
+        console.error('Backend side error occurred with status: ' + error.status);
+        console.error('Error: ', error);
       }
 
       return throwError(message);
     };
+  }
+
+  prepareSubmitData(batchFormData: any[], questions: FormBlocksSet): any {
+    // generate checkgroup keys for all checkgroup blocks
+    const checkGroupsKeys: CheckGroupsKeys = this.extractCheckGroupsKeys(questions);
+    // replace boolean checkgroup values with corresponding keys
+    return this.replaceCheckGroupValuesWithKeys(batchFormData, checkGroupsKeys);
+  }
+
+  extractCheckGroupsKeys(questions: FormBlocksSet): CheckGroupsKeys {
+    // todo: handle null values
+    return questions.blocks.reduce(
+      (result, block) => ({
+        ...result,
+        ...(block instanceof FormeroQuestionCheckgroup
+          ? { [block.key]: block.options.map((option) => option.key) }
+          : {}),
+      }),
+      {}
+    );
+  }
+
+  replaceCheckGroupValuesWithKeys(batchFormData: any[], checkGroupsKeys: CheckGroupsKeys): any {
+    const replacedData = [];
+    // todo: change to map (and simplify)
+    batchFormData.forEach((formData) => {
+      for (const [key, value] of Object.entries(checkGroupsKeys)) {
+        formData[key] = formData[key].reduce((outputToken, current, index) => {
+          return current
+            ? outputToken + (outputToken.length ? '|' : '') + value[index]
+            : outputToken;
+        }, '');
+      }
+      replacedData.push({ ...formData });
+    });
+
+    return replacedData;
   }
 
   generateQR() {

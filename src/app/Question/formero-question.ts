@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
 
 export class FormeroQuestion<T> {
   key: string;
@@ -6,7 +6,7 @@ export class FormeroQuestion<T> {
   value?: T;
   label?: string;
   description?: string;
-  validators?: Validators[];
+  validators?: ValidatorFn[];
   order?: number;
   quickInfo?: boolean;
   shared?: boolean;
@@ -18,7 +18,7 @@ export class FormeroQuestion<T> {
       value?: T;
       label?: string;
       description?: string;
-      validators?: Validators[];
+      validators?: ValidatorFn[];
       order?: number;
       quickInfo?: boolean;
       shared?: boolean;

@@ -27,6 +27,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 # Project Todo
+* log all things
 * revision of form status flow (init|initialized|error...)
 * validation on submit button press
 * server field errors
@@ -37,7 +38,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * refactor
     - fields -> formBlocks
 
+## Fix
+(nothing here)
+
 ## Features
+* add block type for global validations
 * a standalone checkbox - use as agreement checkbox (option)
 * calculations
 * multipart forms
@@ -48,7 +53,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * statistics (with generated PDF for a download)
 * ...
 
-## Layout
+## UI/Layout
 * https://ng.ant.design/docs/introduce/en
 * https://material.angular.io/
 

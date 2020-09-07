@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+  <strong><span [textContent]="props.label"></span></strong><br />
+  <em><span [textContent]="props.description"></span></em><br />
+
+  <div *ngIf="displayAllChecked">
+    <label for="all-checked">
+      <input
+        type="checkbox"
+        id="all-checked"
+        [(ngModel)]="allChecked"
+        [ngModelOptions]="{ standalone: true }"
+        (change)="onChangeAll()"
+      />
+      Všetky
+    </label>
+
+    <br />
+    <br />
+  </div>
+
+  <div *ngFor="let option of props.options; index as i">
+    <label [formArrayName]="props.key" [attr.for]="props.key + '_' + i">
+      <input type="checkbox" [formControlName]="i" [id]="props.key + '_' + i" />
+      {{ option.label }}
+      <br />
+    </label>
+  </div>
+</div>
+
+<app-formero-field-messages [control]="control" [label]="props.label"></app-formero-field-messages>
