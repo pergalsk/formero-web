@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
+  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -36,6 +37,11 @@ export class ValidatorsService {
     return { atLeastOneContact: true };
   }
 
+  // https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression
+  private readonly emailPattern = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+
+  emailPatternValidator = this.patternValidatorFactory(this.emailPattern, 'emailPattern');
+
   checkedValidator = this.checkedValidatorFactory((control, requiredChecked = 1, actualChecked) =>
     actualChecked !== requiredChecked ? { checked: { requiredChecked, actualChecked } } : null
   );
@@ -47,6 +53,11 @@ export class ValidatorsService {
   maxCheckedValidator = this.checkedValidatorFactory((control, requiredChecked, actualChecked) =>
     actualChecked > requiredChecked ? { maxChecked: { requiredChecked, actualChecked } } : null
   );
+
+  patternValidatorFactory(regExpPattern: RegExp, token: string): ValidatorFn {
+    return (control: FormControl): ValidationErrors | null =>
+      regExpPattern.test(control.value) ? null : { [token]: true };
+  }
 
   checkedValidatorFactory(resolverCallbackFn: ResolverCallbackFn) {
     return (requiredChecked: number): ValidatorFn => (

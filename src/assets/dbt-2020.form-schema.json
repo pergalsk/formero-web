@@ -172,7 +172,7 @@
       "shared": true,
       "order": 8,
       "validators": [
-        { "type": "email", "params": [] },
+        { "type": "emailPattern", "params": [] },
         { "type": "maxLength", "params": [50] }
       ]
     },
@@ -192,7 +192,7 @@
       "label": "Email otca",
       "description": "Popis rodného čísla",
       "value": "",
-      "inputType": "email",
+      "inputType": "emailPattern",
       "shared": true,
       "order": 10,
       "validators": [

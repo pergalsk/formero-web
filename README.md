@@ -32,7 +32,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * validation on submit button press
 * server field errors
 * sanitize inputs
-* email validation
 * join firstName and lastName 
 * global form validation
 * refactor

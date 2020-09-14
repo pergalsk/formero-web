@@ -124,6 +124,10 @@ export class QuestionsService {
         validatorFn = Validators.email;
         break;
 
+      case 'emailPattern':
+        validatorFn = this.validatorsService.emailPatternValidator;
+        break;
+
       case 'checkedValidator':
         validatorFn = this.validatorsService.checkedValidator(rawValidator.params[0]);
         break;
