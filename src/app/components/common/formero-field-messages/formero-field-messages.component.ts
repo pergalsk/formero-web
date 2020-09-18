@@ -9,6 +9,7 @@ import { AbstractControl } from '@angular/forms';
 export class FormeroFieldMessagesComponent implements OnInit {
   @Input() control: AbstractControl;
   @Input() label: string;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

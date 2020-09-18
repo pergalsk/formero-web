@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UtilsService } from '../../../services/utils.service';
@@ -13,6 +13,7 @@ import { FormeroQuestionCheckgroup } from '../../../Question';
 export class FormeroCheckgroupComponent implements OnInit, OnDestroy {
   @Input() props: FormeroQuestionCheckgroup;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   control: FormArray;
   displayAllChecked: boolean;

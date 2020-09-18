@@ -10,6 +10,7 @@ import { FormeroQuestionTextarea } from '../../../Question';
 export class FormeroTextareaComponent implements OnInit {
   @Input() props: FormeroQuestionTextarea;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

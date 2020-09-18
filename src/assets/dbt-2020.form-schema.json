@@ -138,7 +138,7 @@
         { "key": "sob", "value": false, "label": "Sobota", "disabled": false },
         { "key": "ned", "value": false, "label": "Nedeľa", "disabled": false }
       ],
-      "validators": [{ "type": "minCheckedValidator", "params": [3] }]
+      "validators": [{ "type": "minCheckedValidator", "params": [4] }]
     },
     {
       "type": "title",
@@ -192,11 +192,11 @@
       "label": "Email otca",
       "description": "Popis rodného čísla",
       "value": "",
-      "inputType": "emailPattern",
+      "inputType": "email",
       "shared": true,
       "order": 10,
       "validators": [
-        { "type": "email", "params": [] },
+        { "type": "emailPattern", "params": [] },
         { "type": "maxLength", "params": [50] }
       ]
     },

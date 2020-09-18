@@ -10,6 +10,7 @@ import { FormeroQuestionTextbox } from '../../../Question';
 export class FormeroTextboxComponent implements OnInit {
   @Input() props: FormeroQuestionTextbox;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

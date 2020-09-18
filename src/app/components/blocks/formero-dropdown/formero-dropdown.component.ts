@@ -10,6 +10,7 @@ import { FormeroQuestionDropdown } from '../../../Question';
 export class FormeroDropdownComponent implements OnInit {
   @Input() props: FormeroQuestionDropdown;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

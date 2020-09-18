@@ -26,31 +26,37 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-# Project Todo
+# Project features / TODOs
+
+**Must have:**
+* add block type for global validations
+* calculations
+* layout
+* scroll to error field
+* posts stored as rows in database
+* QR code for payment
+* email a PDF with QR code
+* sanitize inputs FE/BE
+
+**Optional:**
 * log all things
-* revision of form status flow (init|initialized|error...)
-* validation on submit button press
 * server field errors
-* sanitize inputs
-* join firstName and lastName 
-* global form validation
+* revision of form status flow (init|initialized|error...)
+* a standalone checkbox - use as agreement checkbox (option)
+* multipart forms
+* multiple forms
+* generate PDF with filled information
+* statistics (with generated PDF for a download)
+* email with counts per day
+* join firstName and lastName to the table 
+* tests
+
+**Todo**
 * refactor
     - fields -> formBlocks
 
-## Fix
-(nothing here)
-
-## Features
-* add block type for global validations
-* a standalone checkbox - use as agreement checkbox (option)
-* calculations
-* multipart forms
-* QR code for payment
-* generate PDF with filled information
-* email with PDF with QR code
-* posts stored as rows in database
-* statistics (with generated PDF for a download)
-* ...
+**Fix**
+* find places and refactor with deep copy 
 
 ## UI/Layout
 * https://ng.ant.design/docs/introduce/en

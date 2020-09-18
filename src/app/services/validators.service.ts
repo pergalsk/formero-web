@@ -40,6 +40,9 @@ export class ValidatorsService {
   // https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression
   private readonly emailPattern = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
 
+  // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+  // private readonly emailPattern = /\S+@\S+\.\S+/;
+
   emailPatternValidator = this.patternValidatorFactory(this.emailPattern, 'emailPattern');
 
   checkedValidator = this.checkedValidatorFactory((control, requiredChecked = 1, actualChecked) =>
@@ -54,9 +57,9 @@ export class ValidatorsService {
     actualChecked > requiredChecked ? { maxChecked: { requiredChecked, actualChecked } } : null
   );
 
-  patternValidatorFactory(regExpPattern: RegExp, token: string): ValidatorFn {
+  patternValidatorFactory(regExpPattern: RegExp, patternName: string): ValidatorFn {
     return (control: FormControl): ValidationErrors | null =>
-      regExpPattern.test(control.value) ? null : { [token]: true };
+      !control.value ? null : regExpPattern.test(control.value) ? null : { [patternName]: true };
   }
 
   checkedValidatorFactory(resolverCallbackFn: ResolverCallbackFn) {

@@ -10,6 +10,7 @@ import { FormeroQuestionRadiogroup } from '../../../Question';
 export class FormeroRadiogroupComponent implements OnInit {
   @Input() props: FormeroQuestionRadiogroup;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

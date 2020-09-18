@@ -10,6 +10,7 @@ import { FormeroQuestionAgreementCheckbox } from '../../../Question';
 export class FormeroAgreementComponent implements OnInit {
   @Input() props: FormeroQuestionAgreementCheckbox;
   @Input() form: FormGroup;
+  @Input() displayMessages: boolean;
 
   constructor() {}
 

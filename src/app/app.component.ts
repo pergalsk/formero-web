@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   formData: FormGroup;
   questions: FormBlocksSet;
 
+  displayFieldMessages: boolean;
   initValue: { [key: string]: any } = {};
   batchItems: Array<any> = [];
   editedBatchItem: number | null = null;
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit {
     // todo: unsubscribe
     this.questionsService.getQuestions().subscribe(this.getQuestionSuccess, this.getQuestionError);
     this.utilsService.scrollToTop();
+    this.displayFieldMessages = false;
   }
 
   getQuestionSuccess = (data) => {
@@ -75,23 +77,33 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    let batchFormData: any[];
     const action: Action = $event.submitter.name as Action;
-
     console.log('Submit action: ', action);
 
     switch (action) {
       case Action.SubmitOne:
-        batchFormData = [{ ...this.formRawValue }];
+        this.submitOne(this.formRawValue);
         break;
       case Action.SubmitMultiple:
-        batchFormData = [...this.batchItems]; // todo: need to deep clone ?
+        this.submitMultiple(this.batchItems);
         break;
       default:
         return;
     }
+  }
 
-    this.batchSubmit(batchFormData);
+  submitOne(formRawValue: any) {
+    if (!this.formData.valid) {
+      this.displayFieldMessages = true;
+      console.log('Submit: Form is not valid!');
+      return;
+    }
+
+    this.batchSubmit([{ ...formRawValue }]);
+  }
+
+  submitMultiple(batchItems: any[]) {
+    this.batchSubmit([...batchItems]); // todo: need to deep clone ?
   }
 
   onReset($event: Event) {
@@ -100,6 +112,12 @@ export class AppComponent implements OnInit {
   }
 
   addBatchItem(): void {
+    if (!this.formData.valid) {
+      this.displayFieldMessages = true;
+      console.log('Add batch item: Form is not valid!');
+      return;
+    }
+
     this.batchItems = [...this.batchItems, { ...this.formRawValue }];
     this.resetNonSharedForm(this.formRawValue);
     this.status = Status.InitSuccess;
@@ -121,13 +139,20 @@ export class AppComponent implements OnInit {
     alert('Chcete zrušiť zmeny ?');
     this.editedBatchItem = null;
     this.formData.reset(this.initValue);
+    this.displayFieldMessages = false;
     this.status = Status.InitSuccess;
   }
 
   saveBatchItemChanges() {
+    if (!this.formData.valid) {
+      this.displayFieldMessages = true;
+      console.log('Save batch item: Form is not valid!');
+      return;
+    }
+
     this.batchItems[this.editedBatchItem] = { ...this.formRawValue };
     this.editedBatchItem = null;
-    this.formData.reset(this.initValue);
+    this.resetNonSharedForm(this.formRawValue);
     this.status = Status.InitSuccess;
   }
 
@@ -135,9 +160,10 @@ export class AppComponent implements OnInit {
     this.batchItems = [...this.batchItems.slice(0, index), ...this.batchItems.slice(index + 1)];
   }
 
-  startAgain(): void {
+  startNewForm(): void {
     this.batchItems = [];
     this.resetForm();
+    this.displayFieldMessages = false;
     this.status = Status.InitSuccess;
   }
 
@@ -168,6 +194,7 @@ export class AppComponent implements OnInit {
 
   private resetForm(): void {
     this.errors = [];
+    this.displayFieldMessages = false;
     this.formData.reset(this.initValue);
     this.utilsService.scrollToTop();
   }
@@ -175,6 +202,7 @@ export class AppComponent implements OnInit {
   private resetNonSharedForm(formDataValue): void {
     const sharedValue = this.utilsService.copyObjectByKeys(formDataValue, this.sharedFieldsKeys);
     this.formData.reset(Object.assign({}, this.initValue, sharedValue));
+    this.displayFieldMessages = false;
   }
 
   generateQR(): void {
