@@ -36,4 +36,35 @@ export class UtilsService {
 
     return destObject;
   }
+
+  isEmpty(value) {
+    // if value is not provided return undefined
+    if (arguments.length < 1) {
+      return;
+    }
+
+    if (typeof value === 'undefined' || value === null) {
+      return true;
+    }
+
+    if (value === 0) {
+      return false;
+    }
+
+    if (value === true || value === false) {
+      return !value;
+    }
+
+    if (typeof value === 'string') {
+      return value.trim() === '';
+    }
+
+    if (Array.isArray(value)) {
+      return value.every((item) => this.isEmpty(item));
+    }
+
+    // todo: handle other values ({}, new String(), new Boolean, NaN, Infinity...)
+
+    return !value;
+  }
 }

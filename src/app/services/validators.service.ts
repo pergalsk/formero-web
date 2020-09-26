@@ -19,22 +19,25 @@ export interface ResolverCallbackFn {
 export class ValidatorsService {
   constructor(private utilsService: UtilsService) {}
 
-  atLeastOneContactValidator(control: FormGroup): ValidationErrors | null {
-    const phoneNumberMother: AbstractControl = control.get('phoneNumberMother');
-    const emailMother: AbstractControl = control.get('emailMother');
-    const phoneNumberFather: AbstractControl = control.get('phoneNumberFather');
-    const emailFather: AbstractControl = control.get('emailFather');
-
-    // at least one phone number and one email has to be provided
-    if (
-      ((phoneNumberMother && phoneNumberMother.value) ||
-        (phoneNumberFather && phoneNumberFather.value)) &&
-      ((emailMother && emailMother.value) || (emailFather && emailFather.value))
-    ) {
-      return null;
-    }
-
-    return { atLeastOneContact: true };
+  groupRequiredValidator(controlNamesSet: string[] | string[][]): ValidatorFn {
+    return (control: FormGroup): ValidationErrors | null => {
+      // in every control names set has to be at least one control with non-empty string value
+      const hasValue: boolean = controlNamesSet.every((controlNames: string[] | string) => {
+        if (typeof controlNames === 'string') {
+          controlNames = [controlNames];
+        }
+        if (Array.isArray(controlNames)) {
+          return controlNames.some((controlName: string) => {
+            const ctrl: AbstractControl = control.get(controlName);
+            // this works for different types of form value
+            return ctrl && !this.utilsService.isEmpty(ctrl.value);
+          });
+        } else {
+          return true; // if something other than string or array don't mark as error
+        }
+      });
+      return hasValue ? null : { groupRequired: true };
+    };
   }
 
   // https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression

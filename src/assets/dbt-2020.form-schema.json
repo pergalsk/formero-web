@@ -2,7 +2,15 @@
   "id": 13405,
   "title": "Prihláška na DBT 2020",
   "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
-  "validators": [{ "type": "atLeastOneContactValidator", "params": [] }],
+  "validators": [
+    {
+      "type": "groupRequiredValidator",
+      "params": [
+        ["phoneNumberMother", "phoneNumberFather"],
+        ["emailMother", "emailFather"]
+      ]
+    }
+  ],
   "options": {
     "batch": true
   },

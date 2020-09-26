@@ -140,8 +140,8 @@ export class QuestionsService {
         validatorFn = this.validatorsService.maxCheckedValidator(rawValidator.params[0]);
         break;
 
-      case 'atLeastOneContactValidator':
-        validatorFn = this.validatorsService.atLeastOneContactValidator;
+      case 'groupRequiredValidator':
+        validatorFn = this.validatorsService.groupRequiredValidator(rawValidator.params);
         break;
 
       default:
