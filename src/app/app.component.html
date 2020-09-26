@@ -110,12 +110,7 @@
     </button>
 
     <!-- Save batch item changes button -->
-    <button
-      *ngIf="status === STATUS.Editing"
-      type="button"
-      [disabled]="status === STATUS.Submitting"
-      (click)="saveBatchItemChanges()"
-    >
+    <button *ngIf="status === STATUS.Editing" type="button" (click)="saveBatchItemChanges()">
       Potvrdiť zmeny
     </button>
 
