@@ -26,7 +26,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-# Project features / TODOs
+# Project features & TODOs
 
 **Must have:**
 * add block type for global validations
@@ -39,8 +39,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * sanitize inputs FE/BE
 
 **Optional:**
-* log all things
 * server field errors
+* non-linear form flows
+* log all things
 * revision of form status flow (init|initialized|error...)
 * a standalone checkbox - use as agreement checkbox (option)
 * multipart forms
@@ -59,8 +60,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * find places and refactor with deep copy 
 
 ## UI/Layout
-* https://ng.ant.design/docs/introduce/en
-* https://material.angular.io/
+* Ant design https://ng.ant.design/docs/introduce/en
+* Material design https://material.angular.io/
 
-## Tools
-* prettier https://medium.com/@victormejia/setting-up-prettier-in-an-angular-cli-project-2f50c3b9a537
+## Tools & Tech stack
+* GraphQL
+* Prettier https://medium.com/@victormejia/setting-up-prettier-in-an-angular-cli-project-2f50c3b9a537
