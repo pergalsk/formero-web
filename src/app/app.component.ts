@@ -55,12 +55,12 @@ export class AppComponent implements OnInit {
 
   getQuestionSuccess = (data) => {
     this.questions = data; // todo: clone
+    this.formData = this.questionsService.buildForm(this.questions);
     this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions.blocks);
     this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
       this.questions.blocks
     );
-    this.formData = this.questionsService.buildForm(this.questions);
     this.status = Status.InitSuccess;
     console.log(
       `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`

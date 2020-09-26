@@ -54,10 +54,6 @@ export class QuestionsService {
     private httpClient: HttpClient
   ) {}
 
-  loadFormSchema(): Observable<any> {
-    return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
-  }
-
   getQuestions() {
     return this.loadFormSchema().pipe(
       map((formSchema) => this.processFormSchema(formSchema)),
@@ -65,13 +61,19 @@ export class QuestionsService {
     );
   }
 
+  loadFormSchema(): Observable<any> {
+    return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
+  }
+
   processFormSchema(formSchema) {
+    // Process global validators
     if (formSchema && formSchema.validators && formSchema.validators.length) {
       formSchema.validators = formSchema.validators
         .map((rawValidator) => this.processRawValidators(rawValidator))
         .filter((validator) => validator); // filter falsy values
     }
 
+    // Process form blocks
     if (formSchema && formSchema.blocks && formSchema.blocks.length) {
       formSchema.blocks = formSchema.blocks
         .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
