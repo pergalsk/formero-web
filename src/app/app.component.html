@@ -82,7 +82,7 @@
     </p>
 
     <!-- Todo: create own block type for global errors -->
-    <p *ngIf="displayFieldMessages && formData.errors">
+    <p *ngIf="displayFieldMessages && formData.errors" style="color: red;">
       Error:
       <span *ngIf="formData.errors?.groupRequired"
         >At least one email and one phone number required.</span
