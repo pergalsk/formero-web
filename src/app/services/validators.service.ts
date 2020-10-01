@@ -6,8 +6,10 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { UtilsService } from './utils.service';
+import { RawValidatorInfo } from './questions.service';
 
 export interface ResolverCallbackFn {
   (control: AbstractControl, requiredChecked: number, actualChecked: number): ValidationErrors;
@@ -19,7 +21,54 @@ export interface ResolverCallbackFn {
 export class ValidatorsService {
   constructor(private utilsService: UtilsService) {}
 
-  groupRequiredValidator(controlNamesSet: string[] | string[][]): ValidatorFn {
+  processRawValidators(rawValidator: RawValidatorInfo): ValidatorFn | null {
+    let validatorFn;
+
+    switch (rawValidator.type) {
+      case 'required':
+        validatorFn = Validators.required;
+        break;
+
+      case 'maxLength':
+        validatorFn = Validators.maxLength(rawValidator.params[0]);
+        break;
+
+      case 'minLength':
+        validatorFn = Validators.minLength(rawValidator.params[0]);
+        break;
+
+      case 'email':
+        validatorFn = Validators.email;
+        break;
+
+      case 'emailPattern':
+        validatorFn = this.emailPatternValidator;
+        break;
+
+      case 'checkedValidator':
+        validatorFn = this.checkedValidator(rawValidator.params[0]);
+        break;
+
+      case 'minCheckedValidator':
+        validatorFn = this.minCheckedValidator(rawValidator.params[0]);
+        break;
+
+      case 'maxCheckedValidator':
+        validatorFn = this.maxCheckedValidator(rawValidator.params[0]);
+        break;
+
+      case 'groupRequiredValidator':
+        validatorFn = this.groupRequiredValidator(rawValidator.params[0], rawValidator.message);
+        break;
+
+      default:
+        validatorFn = null;
+    }
+
+    return validatorFn;
+  }
+
+  groupRequiredValidator(controlNamesSet: string[] | string[][], message?: string): ValidatorFn {
     return (control: FormGroup): ValidationErrors | null => {
       // in every control names set has to be at least one control with non-empty string value
       const hasValue: boolean = controlNamesSet.every((controlNames: string[] | string) => {
@@ -36,7 +85,7 @@ export class ValidatorsService {
           return true; // if something other than string or array don't mark as error
         }
       });
-      return hasValue ? null : { groupRequired: true };
+      return hasValue ? null : { groupRequired: message ? { message } : true };
     };
   }
 

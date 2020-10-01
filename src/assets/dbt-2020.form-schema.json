@@ -2,15 +2,7 @@
   "id": 13405,
   "title": "Prihláška na DBT 2020",
   "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
-  "validators": [
-    {
-      "type": "groupRequiredValidator",
-      "params": [
-        ["phoneNumberMother", "phoneNumberFather"],
-        ["emailMother", "emailFather"]
-      ]
-    }
-  ],
+  "validators": [],
   "options": {
     "batch": true
   },
@@ -157,8 +149,26 @@
     {
       "type": "blocktext",
       "key": "section-2-text",
-      "content": "<p>Dôležité! Pomocou týchto kontaktov Vás budeme informovať o prípadných zmenách, alebo pri potrebe doplniť údaje do prihlášky a pod.</p><p>Povinný je aspoň jeden email a telefón.</p>",
+      "content": "<p>Dôležité! Pomocou týchto kontaktov Vás budeme informovať o prípadných zmenách, alebo pri potrebe doplniť údaje do prihlášky a pod.</p>",
       "order": 7
+    },
+    {
+      "type": "validation",
+      "key": "require-parent-contacts",
+      "order": 7,
+      "validators": [
+        {
+          "type": "groupRequiredValidator",
+          "message": "Povinný je aspoň jeden email a telefón.",
+          "key": "require-parent-contacts-01",
+          "params": [
+            [
+              ["phoneNumberMother", "phoneNumberFather"],
+              ["emailMother", "emailFather"]
+            ]
+          ]
+        }
+      ]
     },
     {
       "type": "textbox",

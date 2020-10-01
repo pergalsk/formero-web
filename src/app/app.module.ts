@@ -18,6 +18,7 @@ import {
 import { QuickInfoComponent } from './components/common/quick-info/quick-info.component';
 import { interceptorProviders } from './interceptors';
 import { FormeroCheckgroupComponent } from './components/blocks/formero-checkgroup/formero-checkgroup.component';
+import { FormeroValidationComponent } from './components/blocks/formero-validation/formero-validation.component';
 // import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { FormeroCheckgroupComponent } from './components/blocks/formero-checkgro
     FormeroBlocktextComponent,
     QuickInfoComponent,
     FormeroCheckgroupComponent,
+    FormeroValidationComponent,
     // RestrictLengthDirective
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],

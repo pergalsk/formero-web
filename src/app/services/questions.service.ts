@@ -14,6 +14,7 @@ import { catchError, delay, map } from 'rxjs/operators';
 
 import { ValidatorsService } from './validators.service';
 import { UtilsService } from './utils.service';
+import { FormeroValidation, FormValidationBlocksSet } from '../Validations';
 import { FormeroBlockTitle, FormeroBlockText, FormTextBlocksSet } from '../Blocks';
 import {
   FormeroQuestionTextbox,
@@ -31,12 +32,13 @@ export interface FormBlocksSet {
   successInfo: string;
   validators: ValidatorFn[];
   options: { [param: string]: any };
-  blocks: (FormQuestionBlocksSet | FormTextBlocksSet)[];
+  blocks: (FormQuestionBlocksSet | FormTextBlocksSet | FormValidationBlocksSet)[];
 }
 
 export interface RawValidatorInfo {
   type: string;
   params: Array<any> | null;
+  message?: string;
 }
 
 export interface CheckGroupsKeys {
@@ -69,7 +71,7 @@ export class QuestionsService {
     // Process global validators
     if (formSchema && formSchema.validators && formSchema.validators.length) {
       formSchema.validators = formSchema.validators
-        .map((rawValidator) => this.processRawValidators(rawValidator))
+        .map((rawValidator) => this.validatorsService.processRawValidators(rawValidator))
         .filter((validator) => validator); // filter falsy values
     }
 
@@ -86,7 +88,7 @@ export class QuestionsService {
   processRawFormBlock(rawFormBlock) {
     if (rawFormBlock.validators && rawFormBlock.validators.length) {
       rawFormBlock.validators = rawFormBlock.validators
-        .map((rawValidatorInfo) => this.processRawValidators(rawValidatorInfo))
+        .map((rawValidatorInfo) => this.validatorsService.processRawValidators(rawValidatorInfo))
         .filter((validator) => validator); // filter falsy values
     }
 
@@ -100,57 +102,11 @@ export class QuestionsService {
       ['checkgroup', FormeroQuestionCheckgroup],
       ['dropdown', FormeroQuestionDropdown],
       ['agreement', FormeroQuestionAgreementCheckbox],
+      ['validation', FormeroValidation],
     ]);
 
     const constructorFnName = blockTypeMap.get(rawFormBlock.type);
     return constructorFnName ? new constructorFnName({ ...rawFormBlock }) : null;
-  }
-
-  processRawValidators(rawValidator: RawValidatorInfo): ValidatorFn | null {
-    let validatorFn;
-
-    switch (rawValidator.type) {
-      case 'required':
-        validatorFn = Validators.required;
-        break;
-
-      case 'maxLength':
-        validatorFn = Validators.maxLength(rawValidator.params[0]);
-        break;
-
-      case 'minLength':
-        validatorFn = Validators.minLength(rawValidator.params[0]);
-        break;
-
-      case 'email':
-        validatorFn = Validators.email;
-        break;
-
-      case 'emailPattern':
-        validatorFn = this.validatorsService.emailPatternValidator;
-        break;
-
-      case 'checkedValidator':
-        validatorFn = this.validatorsService.checkedValidator(rawValidator.params[0]);
-        break;
-
-      case 'minCheckedValidator':
-        validatorFn = this.validatorsService.minCheckedValidator(rawValidator.params[0]);
-        break;
-
-      case 'maxCheckedValidator':
-        validatorFn = this.validatorsService.maxCheckedValidator(rawValidator.params[0]);
-        break;
-
-      case 'groupRequiredValidator':
-        validatorFn = this.validatorsService.groupRequiredValidator(rawValidator.params);
-        break;
-
-      default:
-        validatorFn = null;
-    }
-
-    return validatorFn;
   }
 
   buildForm(questions: FormBlocksSet): FormGroup {
@@ -159,20 +115,23 @@ export class QuestionsService {
       validators: questions.validators,
     }; // form global validators
 
+    // todo: refactor to switch-case
     for (const question of questions.blocks) {
-      // todo: refactor to switch-case
-      if (!(question instanceof FormeroBlockText || question instanceof FormeroBlockTitle)) {
-        if (question instanceof FormeroQuestionCheckgroup) {
-          const { key, options, validators } = question;
-          const controls: FormControl[] = options.map(
-            (option) =>
-              new FormControl({ value: option.value || false, disabled: option.disabled || false })
-          );
-          controlsConfig[key] = new FormArray(controls, validators);
-        } else {
-          const { key, value, validators } = question;
-          controlsConfig[key] = [value, validators];
-        }
+      if (question instanceof FormeroValidation) {
+        // todo: HANDLE MULTIPLE VALIDATORS OF THE SAME KIND
+
+        options.validators = [...options.validators, ...question.validators]; // set as global form validators
+      } else if (question instanceof FormeroQuestionCheckgroup) {
+        const { key, options, validators } = question;
+        const controls: FormControl[] = options.map(
+          (option) =>
+            new FormControl({ value: option.value || false, disabled: option.disabled || false })
+        );
+        controlsConfig[key] = new FormArray(controls, validators);
+      } else if (question instanceof FormeroBlockText || question instanceof FormeroBlockTitle) {
+      } else {
+        const { key, value, validators } = question;
+        controlsConfig[key] = [value, validators];
       }
     }
 
@@ -182,8 +141,8 @@ export class QuestionsService {
   extractFormInitValue(formBlocks): { [key: string]: any } {
     const initValue: { [key: string]: any } = {};
 
+    // todo: refactor to switch-case
     for (const formBlock of formBlocks) {
-      // todo: refactor to switch-case
       if (!(formBlock instanceof FormeroBlockText || formBlock instanceof FormeroBlockTitle)) {
         if (formBlock instanceof FormeroQuestionCheckgroup) {
           const { key, options } = formBlock;

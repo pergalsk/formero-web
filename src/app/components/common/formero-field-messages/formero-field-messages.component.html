@@ -1,5 +1,7 @@
-<span *ngIf="displayMessages && control.invalid" style="color: red;">
-  {{ label }}:
+<div *ngIf="displayMessages && control.invalid" style="color: red;">
+  <span *ngIf="label"
+    ><b>{{ label }}:</b>&nbsp;</span
+  >
   <span *ngIf="control.errors?.required">Pole je povinné.</span>
   <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
   <span *ngIf="control.errors?.emailPattern">Nesprávny formát emailovej adresy.</span>
@@ -21,7 +23,10 @@
   <span *ngIf="control.errors?.maxChecked"
     >Môžu byť označené maximálne {{ control.errors?.maxChecked.requiredChecked }} položky.</span
   >
-</span>
+  <span *ngIf="control.errors?.groupRequired">{{
+    control.errors.groupRequired.message || 'Musí byť vyplnené aspoň jedno pole zo skupiny.'
+  }}</span>
+</div>
 
 <!--<pre style="color: gray;">
 displayMessages: {{ displayMessages }}

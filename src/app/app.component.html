@@ -1,4 +1,4 @@
-<pre>Form status: {{ status }}</pre>
+<pre style="color: grey;">Form status: {{ status }}</pre>
 
 <!-- Form title -->
 <h1 *ngIf="status === STATUS.Initializing">Loading...</h1>
@@ -79,14 +79,13 @@
         [form]="formData"
         [displayMessages]="displayFieldMessages"
       ></app-formero-agreement>
-    </p>
 
-    <!-- Todo: create own block type for global errors -->
-    <p *ngIf="displayFieldMessages && formData.errors" style="color: red;">
-      Error:
-      <span *ngIf="formData.errors?.groupRequired"
-        >At least one email and one phone number required.</span
-      >
+      <app-formero-validation
+        *ngIf="question.blockType === 'validation'"
+        [props]="question"
+        [form]="formData"
+        [displayMessages]="displayFieldMessages"
+      ></app-formero-validation>
     </p>
 
     <!-- Reset button -->
