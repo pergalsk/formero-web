@@ -8,9 +8,8 @@ describe('FormeroBlocktextComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormeroBlocktextComponent ]
-    })
-    .compileComponents();
+      declarations: [FormeroBlocktextComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

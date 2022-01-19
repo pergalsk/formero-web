@@ -8,9 +8,8 @@ describe('FormeroCheckgroupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormeroCheckgroupComponent ]
-    })
-    .compileComponents();
+      declarations: [FormeroCheckgroupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

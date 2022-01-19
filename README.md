@@ -29,41 +29,50 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # Project features & TODOs
 
 **Must have:**
-* add block type for global validations
-* calculations
-* layout
-* scroll to error field
-* posts stored as rows in database
-* QR code for payment
-* email a PDF with QR code
-* sanitize inputs FE/BE
+
+- add block type for global validations
+- calculations
+- layout
+- scroll to error field
+- posts stored as rows in database
+- QR code for payment
+- email a PDF with QR code
+- sanitize inputs FE/BE
 
 **Optional:**
-* server field errors
-* non-linear form flows
-* log all things
-* revision of form status flow (init|initialized|error...)
-* a standalone checkbox - use as agreement checkbox (option)
-* multipart forms
-* multiple forms
-* generate PDF with filled information
-* statistics (with generated PDF for a download)
-* email with counts per day
-* join firstName and lastName to the table 
-* tests
+
+- server field errors
+- non-linear form flows
+- log all things
+- revision of form status flow (init|initialized|error...)
+- a standalone checkbox - use as agreement checkbox (option)
+- multipart forms
+- multiple forms
+- generate PDF with filled information
+- statistics (with generated PDF for a download)
+- email with counts per day
+- join firstName and lastName to the table
+- tests
 
 **Todo**
-* refactor
-    - fields -> formBlocks
+
+- upgrade Angular version
+- refactor
+  - fields -> formBlocks
 
 **Fix**
-* multiple global validators of same kind on one form
-* find places and refactor with deep copy 
+
+- edit batch form messes up total sum
+- multiple global validators of same kind on one form
+- find places and refactor with deep copy
 
 ## UI/Layout
-* Ant design https://ng.ant.design/docs/introduce/en
-* Material design https://material.angular.io/
+
+- Ant design https://ng.ant.design/docs/introduce/en
+- Material design https://material.angular.io/
+- NGX-Bootstrap https://valor-software.com/ngx-bootstrap/#/
 
 ## Tools & Tech stack
-* GraphQL
-* Prettier https://medium.com/@victormejia/setting-up-prettier-in-an-angular-cli-project-2f50c3b9a537
+
+- GraphQL
+- Prettier https://medium.com/@victormejia/setting-up-prettier-in-an-angular-cli-project-2f50c3b9a537
