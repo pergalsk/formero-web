@@ -3,6 +3,7 @@
   "title": "Prihláška na DBT 2020",
   "successInfo": "<p><b>Odoslanie bolo úspešné!</b></p><p>Tešíme sa na všetky deti!</p>",
   "validators": [],
+  "calculationsId": 2719,
   "options": {
     "batch": true
   },
@@ -82,27 +83,12 @@
       ]
     },
     {
-      "type": "checkgroup",
-      "key": "accommodation",
-      "label": "Ubytovanie",
-      "description": "Vyberte príslušné položky",
-      "value": null,
-      "order": 3,
-      "shared": true,
-      "options": [
-        { "key": "night1", "value": false, "label": "29.9.2020", "disabled": false },
-        { "key": "night2", "value": true, "label": "30.9.2020", "disabled": true },
-        { "key": "night3", "value": false, "label": "31.9.2020", "disabled": false }
-      ],
-      "validators": [{ "type": "minCheckedValidator", "params": [2] }]
-    },
-    {
       "type": "textarea",
       "key": "info",
       "label": "Čo by sme mali o dieťati vedieť?",
       "description": "Popis dieťaťa",
       "value": "",
-      "order": 5,
+      "order": 3,
       "shared": false,
       "validators": [{ "type": "maxLength", "params": [2500] }]
     },
@@ -112,12 +98,63 @@
       "label": "Program v kostole",
       "description": "Popis programu v kostole",
       "value": null,
-      "order": 6,
+      "order": 3,
       "shared": true,
       "options": [
-        { "value": 1, "label": "Áno" },
-        { "value": 0, "label": "Nie" },
-        { "value": -1, "label": "Neviem" }
+        { "value": 0, "label": "Áno" },
+        { "value": 1, "label": "Nie" },
+        { "value": 2, "label": "Neviem" }
+      ],
+      "validators": [{ "type": "required", "params": [] }]
+    },
+    {
+      "type": "title",
+      "key": "section-acc-diet-title",
+      "content": "Ubytovanie a strava",
+      "order": 3
+    },
+    {
+      "type": "radiogroup",
+      "key": "comfort",
+      "label": "Typ ubytovania",
+      "description": "Zvoľte si typ komfortu pre ubytovanie.",
+      "value": null,
+      "order": 3,
+      "shared": true,
+      "options": [
+        { "key": "basic", "value": 0, "disabled": false, "label": "Karimatka" },
+        { "key": "standard", "value": 1, "disabled": false, "label": "Štandard" },
+        { "key": "luxury", "value": 2, "disabled": false, "label": "Apartmán" }
+      ],
+      "validators": [{ "type": "required", "params": [] }]
+    },
+    {
+      "type": "checkgroup",
+      "key": "accommodation",
+      "label": "Ubytovanie",
+      "description": "Vyberte príslušné položky",
+      "value": null,
+      "order": 3,
+      "shared": true,
+      "options": [
+        { "key": "night1", "value": false, "disabled": false, "label": "29.9.2020" },
+        { "key": "night2", "value": true, "disabled": true, "label": "30.9.2020" },
+        { "key": "night3", "value": false, "disabled": false, "label": "31.9.2020" }
+      ],
+      "validators": [{ "type": "minCheckedValidator", "params": [2] }]
+    },
+    {
+      "type": "radiogroup",
+      "key": "dietSize",
+      "label": "Veľkosť porcií",
+      "description": "Zvoľte si typ stravovavnia.",
+      "value": null,
+      "order": 3,
+      "shared": false,
+      "options": [
+        { "key": "full", "value": 0, "disabled": false, "label": "Plné porcie" },
+        { "key": "half", "value": 1, "disabled": false, "label": "Polovičné porcie" },
+        { "key": "none", "value": 2, "disabled": false, "label": "Bez stravy" }
       ],
       "validators": [{ "type": "required", "params": [] }]
     },
@@ -130,15 +167,42 @@
       "order": 6,
       "shared": true,
       "options": [
-        { "key": "pon", "value": false, "label": "Pondelok", "disabled": false },
-        { "key": "uto", "value": false, "label": "Utorok", "disabled": false },
-        { "key": "str", "value": true, "label": "Streda", "disabled": true },
-        { "key": "stv", "value": true, "label": "Štvrtok", "disabled": true },
-        { "key": "pia", "value": true, "label": "Piatok", "disabled": true },
-        { "key": "sob", "value": false, "label": "Sobota", "disabled": false },
-        { "key": "ned", "value": false, "label": "Nedeľa", "disabled": false }
+        { "key": "pon-ran", "value": false, "disabled": false, "label": "Pondelok - raňajky" },
+        { "key": "pon-obe", "value": false, "disabled": false, "label": "Pondelok - obed" },
+        { "key": "pon-vec", "value": false, "disabled": false, "label": "Pondelok - večera" },
+        { "key": "uto-ran", "value": false, "disabled": false, "label": "Utorok - raňajky" },
+        { "key": "uto-obe", "value": false, "disabled": false, "label": "Utorok - obed" },
+        { "key": "uto-vec", "value": false, "disabled": false, "label": "Utorok - večera" },
+        { "key": "str-ran", "value": true, "disabled": true, "label": "Streda - raňajky" },
+        { "key": "str-obe", "value": true, "disabled": true, "label": "Streda - obed" },
+        { "key": "str-vec", "value": true, "disabled": true, "label": "Streda - večera" },
+        { "key": "stv-ran", "value": false, "disabled": false, "label": "Štvrtok - raňajky" },
+        { "key": "stv-obe", "value": false, "disabled": false, "label": "Štvrtok - obed" },
+        { "key": "stv-vec", "value": false, "disabled": false, "label": "Štvrtok - večera" }
       ],
-      "validators": [{ "type": "minCheckedValidator", "params": [4] }]
+      "validators": [{ "type": "minCheckedValidator", "params": [6] }]
+    },
+    {
+      "type": "title",
+      "key": "section-transport-title",
+      "content": "Doprava",
+      "order": 7
+    },
+    {
+      "type": "radiogroup",
+      "key": "transport",
+      "label": "Typ dopravy",
+      "description": "Zvoľte si typ dopravy.",
+      "value": null,
+      "order": 7,
+      "shared": true,
+      "options": [
+        { "key": "bus", "value": 0, "disabled": false, "label": "Objednaným autobusom" },
+        { "key": "own", "value": 1, "disabled": false, "label": "Vlastný spôsob dopravy" },
+        { "key": "tel", "value": 2, "disabled": false, "label": "Teleportom" },
+        { "key": "tel", "value": 3, "disabled": false, "label": "Pešo" }
+      ],
+      "validators": [{ "type": "required", "params": [] }]
     },
     {
       "type": "title",
@@ -257,6 +321,48 @@
       "order": 11,
       "shared": false,
       "validators": [{ "type": "maxLength", "params": [2500] }]
+    },
+    {
+      "type": "title",
+      "key": "section-5-title",
+      "content": "Zľavy",
+      "order": 11
+    },
+    {
+      "type": "radiogroup",
+      "key": "discount",
+      "label": "Celková zľava",
+      "description": "Chcem si uplatniť zľavu",
+      "value": 0,
+      "order": 11,
+      "shared": false,
+      "options": [
+        {
+          "key": "full",
+          "value": 0,
+          "label": "Bez zľavy.",
+          "disabled": false
+        },
+        {
+          "key": "school",
+          "value": 1,
+          "label": "Študent strednej školy - zľava 20%.",
+          "disabled": false
+        },
+        {
+          "key": "college",
+          "value": 2,
+          "label": "Študent vysokej školy - zľava 12%.",
+          "disabled": false
+        },
+        {
+          "key": "retire",
+          "value": 3,
+          "label": "Dôchodca nad 75 rokov - zľava 45%.",
+          "disabled": false
+        }
+      ],
+      "validators": [{ "type": "required", "params": [] }]
     },
     {
       "type": "title",

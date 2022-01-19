@@ -23,6 +23,7 @@ export class QuickInfoComponent implements OnChanges {
   @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
   reducedItems: any[] = [];
+  total: number = 0;
 
   constructor(private utilsService: UtilsService) {}
 
@@ -35,8 +36,13 @@ export class QuickInfoComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.total = 0;
     this.reducedItems = this.items.map((item) => {
-      return this.utilsService.copyObjectByKeys(item, this.keys);
+      this.total += item.sum;
+      return {
+        val: this.utilsService.copyObjectByKeys(item.val, this.keys),
+        sum: item.sum,
+      };
     });
   }
 

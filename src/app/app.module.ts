@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeSk from '@angular/common/locales/sk';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -21,6 +23,9 @@ import { FormeroCheckgroupComponent } from './components/blocks/formero-checkgro
 import { FormeroValidationComponent } from './components/blocks/formero-validation/formero-validation.component';
 // import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
+// Register the localization
+registerLocaleData(localeSk, 'sk-SK');
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +43,17 @@ import { FormeroValidationComponent } from './components/blocks/formero-validati
     // RestrictLengthDirective
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
-  providers: [interceptorProviders],
+  providers: [
+    interceptorProviders,
+    {
+      provide: LOCALE_ID,
+      useValue: 'sk-SK',
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'EUR',
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

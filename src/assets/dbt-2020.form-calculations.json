@@ -1,0 +1,53 @@
+[
+  {
+    "type": "add",
+    "title": "Ubytovanie",
+    "description": "Kalkulácia ceny ubytovania",
+    "dimensions": ["accommodation", "comfort"],
+    "values": [
+      [2, 9.5, 25],
+      [2, 9.5, 25],
+      [2, 9.5, 25]
+    ]
+  },
+  {
+    "type": "add",
+    "title": "Strava",
+    "description": "Kalkulácia ceny stravy",
+    "dimensions": ["diet", "dietSize"],
+    "values": [
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0],
+      [3.5, 2, 0]
+    ]
+  },
+  {
+    "type": "parts",
+    "initialValue": 80,
+    "parts": [
+      {
+        "type": "add",
+        "title": "Doprava",
+        "description": "Kalkulácia ceny dopravy",
+        "dimensions": ["transport"],
+        "values": [10, 2, 30, 0]
+      },
+      {
+        "type": "mpl",
+        "title": "Zľava na transport",
+        "description": "Odmena za účinkovanie v kostole.",
+        "dimensions": ["churchEvent"],
+        "values": [0.5, 1, 1]
+      }
+    ]
+  }
+]

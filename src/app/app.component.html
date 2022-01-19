@@ -88,6 +88,9 @@
       ></app-formero-validation>
     </p>
 
+    <!-- Calculation partial result -->
+    <h2>Suma: {{ partialSum | currency }}</h2>
+
     <!-- Reset button -->
     <button type="reset" [disabled]="status === STATUS.Submitting">
       Vymazať polia

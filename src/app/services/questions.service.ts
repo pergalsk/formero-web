@@ -7,7 +7,6 @@ import {
   FormControl,
   FormGroup,
   ValidatorFn,
-  Validators,
 } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
@@ -33,6 +32,7 @@ export interface FormBlocksSet {
   validators: ValidatorFn[];
   options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet | FormValidationBlocksSet)[];
+  calculationsId: number;
 }
 
 export interface RawValidatorInfo {
@@ -180,7 +180,7 @@ export class QuestionsService {
   handleError(message: string) {
     return (error: HttpErrorResponse) => {
       if (error.error instanceof ErrorEvent) {
-        console.error('Client side error occurred:' + error.error.message);
+        console.error('Client side error occurred: ' + error.error.message);
       } else {
         console.error('Backend side error occurred with status: ' + error.status);
         console.error('Error: ', error);
@@ -193,8 +193,15 @@ export class QuestionsService {
   prepareSubmitData(batchFormData: any[], questions: FormBlocksSet): any {
     // generate checkgroup keys for all checkgroup blocks
     const checkGroupsKeys: CheckGroupsKeys = this.extractCheckGroupsKeys(questions);
-    // replace boolean checkgroup values with corresponding keys
-    return this.replaceCheckGroupValuesWithKeys(batchFormData, checkGroupsKeys);
+
+    const submitData = [];
+    batchFormData.forEach((formData) => {
+      // replace boolean checkgroup values with corresponding keys
+      const replacedData = this.replaceCheckGroupValuesWithKeys(formData.val, checkGroupsKeys);
+      submitData.push({ ...replacedData, sum: formData.sum });
+    });
+
+    return submitData;
   }
 
   extractCheckGroupsKeys(questions: FormBlocksSet): CheckGroupsKeys {
@@ -210,21 +217,14 @@ export class QuestionsService {
     );
   }
 
-  replaceCheckGroupValuesWithKeys(batchFormData: any[], checkGroupsKeys: CheckGroupsKeys): any {
-    const replacedData = [];
+  replaceCheckGroupValuesWithKeys(formData: any, checkGroupsKeys: CheckGroupsKeys): any {
     // todo: change to map (and simplify)
-    batchFormData.forEach((formData) => {
-      for (const [key, value] of Object.entries(checkGroupsKeys)) {
-        formData[key] = formData[key].reduce((outputToken, current, index) => {
-          return current
-            ? outputToken + (outputToken.length ? '|' : '') + value[index]
-            : outputToken;
-        }, '');
-      }
-      replacedData.push({ ...formData });
-    });
-
-    return replacedData;
+    for (const [key, value] of Object.entries(checkGroupsKeys)) {
+      formData[key] = formData[key].reduce((outputToken, current, index) => {
+        return current ? outputToken + (outputToken.length ? '|' : '') + value[index] : outputToken;
+      }, '');
+    }
+    return formData;
   }
 
   generateQR() {

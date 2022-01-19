@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import { QuestionsService, FormBlocksSet } from './services/questions.service';
 import { UtilsService } from './services/utils.service';
+import { CalculationsService } from './services/calculations.service';
 
 export enum Status {
   Initializing = 'INITIALIZING',
@@ -31,20 +33,25 @@ interface SubmitEvent extends Event {
 export class AppComponent implements OnInit {
   formData: FormGroup;
   questions: FormBlocksSet;
-
+  calculationSchema: any;
   displayFieldMessages: boolean;
   initValue: { [key: string]: any } = {};
   batchItems: Array<any> = [];
   editedBatchItem: number | null = null;
   sharedFieldsKeys: Array<string> = [];
   quickInfoFieldsKeys: Array<string> = [];
+  partialSum: number = null;
   errors: Array<string> = [];
   status: Status = Status.Initializing;
 
   STATUS = Status;
   ACTION = Action;
 
-  constructor(private questionsService: QuestionsService, private utilsService: UtilsService) {}
+  constructor(
+    private utilsService: UtilsService,
+    private questionsService: QuestionsService,
+    private calculationsService: CalculationsService
+  ) {}
 
   ngOnInit(): void {
     // todo: unsubscribe
@@ -53,21 +60,47 @@ export class AppComponent implements OnInit {
     this.displayFieldMessages = false;
   }
 
-  getQuestionSuccess = (data) => {
+  private getQuestionSuccess = (data) => {
     this.questions = data; // todo: clone
-    this.formData = this.questionsService.buildForm(this.questions);
-    this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
-    this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions.blocks);
-    this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
-      this.questions.blocks
-    );
-    this.status = Status.InitSuccess;
+
+    // move to service
     console.log(
       `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`
     );
+
+    if (this.questions?.calculationsId) {
+      this.calculationsService
+        .getCalculations(this.questions.calculationsId)
+        .pipe(
+          finalize(() => {
+            this.status = Status.InitSuccess;
+          })
+        )
+        .subscribe((calculationsData) => {
+          this.calculationSchema = calculationsData; // todo: clone
+          this.calculate();
+          this.formData.valueChanges.subscribe(() => {
+            this.calculate();
+          });
+          // move to service
+          console.log(
+            `Form calculations ID=${this.questions.calculationsId} successfully loaded (containing ${this.calculationSchema.length} parts).`
+          );
+        });
+    } else {
+      this.status = Status.InitSuccess;
+      console.log(`Form doesn't have calculations. Starting form without calculations feature.`);
+    }
+
+    this.formData = this.questionsService.buildForm(this.questions);
+    this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
+    this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions?.blocks);
+    this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
+      this.questions.blocks
+    );
   };
 
-  getQuestionError = (error) => {
+  private getQuestionError = (error) => {
     this.status = Status.InitError;
     this.errors = [...this.errors, error];
   };
@@ -92,7 +125,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  submitOne(formRawValue: any) {
+  private submitOne(formRawValue: any) {
     if (!this.formData.valid) {
       this.displayFieldMessages = true;
       console.log('Submit: Form is not valid!');
@@ -102,7 +135,7 @@ export class AppComponent implements OnInit {
     this.batchSubmit([{ ...formRawValue }]);
   }
 
-  submitMultiple(batchItems: any[]) {
+  private submitMultiple(batchItems: any[]) {
     this.batchSubmit([...batchItems]); // todo: need to deep clone ?
   }
 
@@ -118,7 +151,13 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.batchItems = [...this.batchItems, { ...this.formRawValue }];
+    this.batchItems = [
+      ...this.batchItems,
+      {
+        val: { ...this.formRawValue },
+        sum: this.partialSum,
+      },
+    ];
     this.resetNonSharedForm(this.formRawValue);
     this.status = Status.InitSuccess;
   }
@@ -130,7 +169,7 @@ export class AppComponent implements OnInit {
   onEditBatchItem(index: number): void {
     alert(`This will rewrite all form content - editBatchItem(${index}).`);
     this.editedBatchItem = index;
-    this.formData.setValue(this.batchItems[index]);
+    this.formData.setValue(this.batchItems[index].val);
     this.utilsService.scrollToTop();
     this.status = Status.Editing;
   }
@@ -150,7 +189,10 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.batchItems[this.editedBatchItem] = { ...this.formRawValue };
+    this.batchItems[this.editedBatchItem] = {
+      val: { ...this.formRawValue },
+      sum: this.partialSum,
+    };
     this.editedBatchItem = null;
     this.resetNonSharedForm(this.formRawValue);
     this.status = Status.InitSuccess;
@@ -163,8 +205,17 @@ export class AppComponent implements OnInit {
   startNewForm(): void {
     this.batchItems = [];
     this.resetForm();
-    this.displayFieldMessages = false;
     this.status = Status.InitSuccess;
+  }
+
+  private calculate(): void {
+    // todo: add here optional global/default value calculation
+    // todo: if calculation fails do not return 0 as value (0 can be proper calc result)
+
+    this.partialSum = this.calculationsService.calculateFormValue(
+      this.formRawValue,
+      this.calculationSchema
+    );
   }
 
   private batchSubmit(batchFormData: any[]): void {

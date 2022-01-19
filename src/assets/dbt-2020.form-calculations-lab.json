@@ -1,0 +1,31 @@
+[
+  {
+    "type": "add",
+    "title": "Doprava",
+    "description": "Popis dopravy",
+    "dimensions": ["transport"],
+    "values": [25, 7, 130, 0]
+  },
+  {
+    "type": "add",
+    "title": "Ubytovanie",
+    "description": "Popis ubytovania",
+    "dimensions": ["accommodation", "comfort"],
+    "values": [
+      [2.5, 16, 80],
+      [2.5, 16, 80],
+      [2.5, 16, 80]
+    ]
+  },
+  {
+    "type": "add",
+    "title": "Ubytovanie",
+    "description": "Popis ubytovania",
+    "dimensions": ["accommodation", "comfort"],
+    "values": [
+      [2.5, 16, 80],
+      [2.5, 16, 80],
+      [2.5, 16, 80]
+    ]
+  }
+]
