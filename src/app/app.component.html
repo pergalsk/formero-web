@@ -15,10 +15,7 @@
 <!-- Form blocks -->
 <div
   *ngIf="
-    status === STATUS.InitSuccess ||
-    status === STATUS.Submitting ||
-    status === STATUS.SubmitError ||
-    status === STATUS.Editing
+    [STATUS.InitSuccess, STATUS.Submitting, STATUS.SubmitError, STATUS.Editing].includes(status)
   "
 >
   <form
@@ -129,9 +126,7 @@
     <!-- Batch form items list -->
     <div
       *ngIf="
-        (status === STATUS.InitSuccess ||
-          status === STATUS.Submitting ||
-          status === STATUS.Editing) &&
+        [STATUS.InitSuccess, STATUS.Submitting, STATUS.Editing].includes(status) &&
         batchItems.length
       "
     >
@@ -141,7 +136,7 @@
       <app-quick-info
         [items]="batchItems"
         [keys]="quickInfoFieldsKeys"
-        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
+        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
         (edit)="onEditBatchItem($event)"
         (delete)="onDeleteBatchItem($event)"
       ></app-quick-info>
@@ -150,7 +145,7 @@
       <button
         type="button"
         (click)="deleteAllBatchItems()"
-        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
+        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
       >
         Zmazať všetky ({{ batchItems.length }})
       </button>
@@ -159,7 +154,7 @@
       <button
         type="submit"
         [name]="ACTION.SubmitMultiple"
-        [disabled]="status === STATUS.Submitting || status === STATUS.Editing"
+        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
       >
         Odoslať všetky ({{ batchItems.length }})
       </button>

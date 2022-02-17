@@ -54,8 +54,13 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const schemaId = 13405;
+
     // todo: unsubscribe
-    this.questionsService.getQuestions().subscribe(this.getQuestionSuccess, this.getQuestionError);
+    this.questionsService
+      .getQuestions(schemaId)
+      .subscribe(this.getQuestionSuccess, this.getQuestionError);
+
     this.utilsService.scrollToTop();
     this.displayFieldMessages = false;
   }
@@ -132,7 +137,12 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.batchSubmit([{ ...formRawValue }]);
+    this.batchSubmit([
+      {
+        val: { ...this.formRawValue },
+        sum: this.partialSum,
+      },
+    ]);
   }
 
   private submitMultiple(batchItems: any[]) {

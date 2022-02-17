@@ -16,7 +16,7 @@ export class CalculationsService {
   ) {}
 
   loadFormCalculations(calculationsId: number): Observable<any> {
-    return this.httpClient.get('assets/dbt-2020.form-calculations.json').pipe(delay(800));
+    return this.httpClient.get(`http://localhost:8000/api/calculation/${calculationsId}`);
   }
 
   getCalculations(calculationsId: number) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   AbstractControlOptions,
   FormArray,
@@ -56,15 +56,16 @@ export class QuestionsService {
     private httpClient: HttpClient
   ) {}
 
-  getQuestions() {
-    return this.loadFormSchema().pipe(
+  getQuestions(schemaId: number) {
+    return this.loadFormSchema(schemaId).pipe(
       map((formSchema) => this.processFormSchema(formSchema)),
       catchError(this.handleError('Formulár sa nepodarilo načítať.'))
     );
   }
 
-  loadFormSchema(): Observable<any> {
-    return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
+  loadFormSchema(schemaId: number): Observable<any> {
+    // return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
+    return this.httpClient.get(`http://localhost:8000/api/schema/${schemaId}`);
   }
 
   processFormSchema(formSchema) {
@@ -173,7 +174,7 @@ export class QuestionsService {
 
   submitAnswers(answersData): Observable<any> {
     return this.httpClient
-      .post('http://localhost:4004/formero/public/form?XDEBUG_SESSION_START=PHPSTORM', answersData)
+      .post('http://localhost:8000/api/form/13405', answersData)
       .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')));
   }
 
@@ -228,9 +229,6 @@ export class QuestionsService {
   }
 
   generateQR() {
-    // <Username>test@test.test</Username>
-    // <Password>test@test.test</Password>
-
     const data = `<BySquareXmlDocuments xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Username></Username>
   <Password></Password>
