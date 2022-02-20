@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import { QuestionsService, FormBlocksSet } from './services/questions.service';
-import { UtilsService } from './services/utils.service';
-import { CalculationsService } from './services/calculations.service';
+import { QuestionsService, FormBlocksSet } from '../../services/questions.service';
+import { UtilsService } from '../../services/utils.service';
+import { CalculationsService } from '../../services/calculations.service';
 
 export enum Status {
   Initializing = 'INITIALIZING',
@@ -26,11 +26,13 @@ interface SubmitEvent extends Event {
 }
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class FormComponent implements OnInit, OnChanges {
+  @Input('id') schemaId: number;
+
   formData: FormGroup;
   questions: FormBlocksSet;
   calculationSchema: any;
@@ -54,15 +56,18 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const schemaId = 13405;
-
     // todo: unsubscribe
     this.questionsService
-      .getQuestions(schemaId)
+      .getQuestions(this.schemaId)
       .subscribe(this.getQuestionSuccess, this.getQuestionError);
 
     this.utilsService.scrollToTop();
     this.displayFieldMessages = false;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // TODO: reload with new schemaId
+    // alert(changes.schemaId?.currentValue);
   }
 
   private getQuestionSuccess = (data) => {

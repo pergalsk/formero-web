@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import {
   FormeroTextboxComponent,
   FormeroTextareaComponent,
@@ -17,10 +16,15 @@ import {
   FormeroTitleComponent,
   FormeroBlocktextComponent,
 } from './components';
+import { FormComponent } from './components/form/form.component';
 import { QuickInfoComponent } from './components/common/quick-info/quick-info.component';
 import { interceptorProviders } from './interceptors';
 import { FormeroCheckgroupComponent } from './components/blocks/formero-checkgroup/formero-checkgroup.component';
 import { FormeroValidationComponent } from './components/blocks/formero-validation/formero-validation.component';
+import { IndexPageComponent } from './components/pages/index-page/index-page.component';
+import { HomePageComponent } from './components/pages/home-page/home-page.component';
+import { FormPageComponent } from './components/pages/form-page/form-page.component';
+import { AboutPageComponent } from './components/pages/about-page/about-page.component';
 // import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
 // Register the localization
@@ -28,7 +32,7 @@ registerLocaleData(localeSk, 'sk-SK');
 
 @NgModule({
   declarations: [
-    AppComponent,
+    FormComponent,
     FormeroTextboxComponent,
     FormeroTextareaComponent,
     FormeroFieldMessagesComponent,
@@ -40,6 +44,10 @@ registerLocaleData(localeSk, 'sk-SK');
     QuickInfoComponent,
     FormeroCheckgroupComponent,
     FormeroValidationComponent,
+    IndexPageComponent,
+    HomePageComponent,
+    FormPageComponent,
+    AboutPageComponent,
     // RestrictLengthDirective
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
@@ -54,6 +62,6 @@ registerLocaleData(localeSk, 'sk-SK');
       useValue: 'EUR',
     },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [IndexPageComponent],
 })
 export class AppModule {}
