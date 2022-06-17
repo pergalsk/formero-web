@@ -56,6 +56,15 @@ export class FormComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.initialize();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // TODO: reload with new schemaId
+    // alert(changes.schemaId?.currentValue);
+  }
+
+  initialize(): void {
     // todo: unsubscribe
     this.questionsService
       .getQuestions(this.schemaId)
@@ -63,11 +72,6 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.utilsService.scrollToTop();
     this.displayFieldMessages = false;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // TODO: reload with new schemaId
-    // alert(changes.schemaId?.currentValue);
   }
 
   private getQuestionSuccess = (data) => {
@@ -277,21 +281,5 @@ export class FormComponent implements OnInit, OnChanges {
 
   get formRawValue() {
     return this.formData.getRawValue();
-  }
-
-  get phoneNumberMother() {
-    return this.formData.get('phoneNumberMother');
-  }
-
-  get phoneNumberFather() {
-    return this.formData.get('phoneNumberFather');
-  }
-
-  get emailMother() {
-    return this.formData.get('emailMother');
-  }
-
-  get emailFather() {
-    return this.formData.get('emailFather');
   }
 }
