@@ -71,20 +71,23 @@ export class ValidatorsService {
   groupRequiredValidator(controlNamesSet: string[] | string[][], message?: string): ValidatorFn {
     return (control: FormGroup): ValidationErrors | null => {
       // in every control names set has to be at least one control with non-empty string value
-      const hasValue: boolean = controlNamesSet.every((controlNames: string[] | string) => {
-        if (typeof controlNames === 'string') {
-          controlNames = [controlNames];
+      // (fixed problem with 'every' https://github.com/microsoft/TypeScript/issues/36390)
+      const hasValue: boolean = (controlNamesSet as any).every(
+        (controlNames: string[] | string) => {
+          if (typeof controlNames === 'string') {
+            controlNames = [controlNames];
+          }
+          if (Array.isArray(controlNames)) {
+            return controlNames.some((controlName: string) => {
+              const ctrl: AbstractControl = control.get(controlName);
+              // this works for different types of form value
+              return ctrl && !this.utilsService.isEmpty(ctrl.value);
+            });
+          } else {
+            return true; // if something other than string or array don't mark as error
+          }
         }
-        if (Array.isArray(controlNames)) {
-          return controlNames.some((controlName: string) => {
-            const ctrl: AbstractControl = control.get(controlName);
-            // this works for different types of form value
-            return ctrl && !this.utilsService.isEmpty(ctrl.value);
-          });
-        } else {
-          return true; // if something other than string or array don't mark as error
-        }
-      });
+      );
       return hasValue ? null : { groupRequired: message ? { message } : true };
     };
   }
