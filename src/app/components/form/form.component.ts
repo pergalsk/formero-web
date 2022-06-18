@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { QuestionsService, FormBlocksSet } from '../../services/questions.service';
 import { UtilsService } from '../../services/utils.service';
@@ -33,7 +33,7 @@ interface SubmitEvent extends Event {
 export class FormComponent implements OnInit, OnChanges {
   @Input('id') schemaId: number;
 
-  formData: FormGroup;
+  formData: UntypedFormGroup;
   questions: FormBlocksSet;
   calculationSchema: any;
   displayFieldMessages: boolean;

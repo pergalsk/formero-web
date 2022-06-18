@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   ValidationErrors,
   ValidatorFn,
   Validators,
@@ -69,7 +69,7 @@ export class ValidatorsService {
   }
 
   groupRequiredValidator(controlNamesSet: string[] | string[][], message?: string): ValidatorFn {
-    return (control: FormGroup): ValidationErrors | null => {
+    return (control: UntypedFormGroup): ValidationErrors | null => {
       // in every control names set has to be at least one control with non-empty string value
       // (fixed problem with 'every' https://github.com/microsoft/TypeScript/issues/36390)
       const hasValue: boolean = (controlNamesSet as any).every(
@@ -113,7 +113,7 @@ export class ValidatorsService {
   );
 
   patternValidatorFactory(regExpPattern: RegExp, patternName: string): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null =>
+    return (control: UntypedFormControl): ValidationErrors | null =>
       !control.value ? null : regExpPattern.test(control.value) ? null : { [patternName]: true };
   }
 
@@ -122,7 +122,7 @@ export class ValidatorsService {
       control: AbstractControl
     ): ValidationErrors | null => {
       const values: boolean[] = this.utilsService.toArray(
-        control instanceof FormArray ? control.getRawValue() : control.value
+        control instanceof UntypedFormArray ? control.getRawValue() : control.value
       );
       const actualChecked: number = this.utilsService.onlyTruthy(values).length;
 

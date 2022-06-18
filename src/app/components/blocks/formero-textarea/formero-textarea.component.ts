@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormeroQuestionTextarea } from '../../../Question';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroQuestionTextarea } from '../../../Question';
 })
 export class FormeroTextareaComponent implements OnInit {
   @Input() props: FormeroQuestionTextarea;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}

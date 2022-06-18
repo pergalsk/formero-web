@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormeroValidation } from '../../../Validations';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroValidation } from '../../../Validations';
 })
 export class FormeroValidationComponent implements OnInit {
   @Input() props: FormeroValidation;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}

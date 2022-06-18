@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormeroQuestionRadiogroup } from '../../../Question';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroQuestionRadiogroup } from '../../../Question';
 })
 export class FormeroRadiogroupComponent implements OnInit {
   @Input() props: FormeroQuestionRadiogroup;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}
