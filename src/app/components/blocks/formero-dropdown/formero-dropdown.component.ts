@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormeroQuestionDropdown } from '../../../Question';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroQuestionDropdown } from '../../../Question';
 })
 export class FormeroDropdownComponent implements OnInit {
   @Input() props: FormeroQuestionDropdown;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}
