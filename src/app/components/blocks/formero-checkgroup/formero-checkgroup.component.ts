@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UtilsService } from '../../../services/utils.service';
@@ -12,10 +12,10 @@ import { FormeroQuestionCheckgroup } from '../../../Question';
 })
 export class FormeroCheckgroupComponent implements OnInit, OnDestroy {
   @Input() props: FormeroQuestionCheckgroup;
-  @Input() form: UntypedFormGroup;
+  @Input() form: FormGroup;
   @Input() displayMessages: boolean;
 
-  control: UntypedFormArray;
+  control: FormArray;
   displayAllChecked: boolean;
   allChecked: boolean;
   optionsNum: number;
@@ -26,7 +26,7 @@ export class FormeroCheckgroupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const { isAllTruthy } = this.utilsService;
 
-    this.control = this.form.controls[this.props.key] as UntypedFormArray;
+    this.control = this.form.controls[this.props.key] as FormArray;
     this.optionsNum =
       (this.props && Array.isArray(this.props.options) && this.props.options.length) || 0;
     this.displayAllChecked = this.optionsNum > 3;

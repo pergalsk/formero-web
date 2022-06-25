@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   AbstractControlOptions,
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   ValidatorFn,
 } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
@@ -52,7 +52,7 @@ export class QuestionsService {
   constructor(
     private validatorsService: ValidatorsService,
     private utilsService: UtilsService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private httpClient: HttpClient
   ) {}
 
@@ -110,7 +110,7 @@ export class QuestionsService {
     return constructorFnName ? new constructorFnName({ ...rawFormBlock }) : null;
   }
 
-  buildForm(questions: FormBlocksSet): UntypedFormGroup {
+  buildForm(questions: FormBlocksSet): FormGroup {
     const controlsConfig: { [key: string]: any } = {};
     const options: AbstractControlOptions | { [key: string]: any } = {
       validators: questions.validators,
@@ -124,11 +124,11 @@ export class QuestionsService {
         options.validators = [...options.validators, ...question.validators]; // set as global form validators
       } else if (question instanceof FormeroQuestionCheckgroup) {
         const { key, options, validators } = question;
-        const controls: UntypedFormControl[] = options.map(
+        const controls: FormControl[] = options.map(
           (option) =>
-            new UntypedFormControl({ value: option.value || false, disabled: option.disabled || false })
+            new FormControl({ value: option.value || false, disabled: option.disabled || false })
         );
-        controlsConfig[key] = new UntypedFormArray(controls, validators);
+        controlsConfig[key] = new FormArray(controls, validators);
       } else if (question instanceof FormeroBlockText || question instanceof FormeroBlockTitle) {
       } else {
         const { key, value, validators } = question;

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormeroQuestionTextbox } from '../../../Question';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroQuestionTextbox } from '../../../Question';
 })
 export class FormeroTextboxComponent implements OnInit {
   @Input() props: FormeroQuestionTextbox;
-  @Input() form: UntypedFormGroup;
+  @Input() form: FormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}

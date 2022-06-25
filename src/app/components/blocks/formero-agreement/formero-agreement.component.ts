@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormeroQuestionAgreementCheckbox } from '../../../Question';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormeroQuestionAgreementCheckbox } from '../../../Question';
 })
 export class FormeroAgreementComponent implements OnInit {
   @Input() props: FormeroQuestionAgreementCheckbox;
-  @Input() form: UntypedFormGroup;
+  @Input() form: FormGroup;
   @Input() displayMessages: boolean;
 
   constructor() {}
