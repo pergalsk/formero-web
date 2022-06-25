@@ -1,21 +1,17 @@
-<pre style="color: grey;">Form status: {{ status }}</pre>
+<pre style="color: grey;">Form state: {{ state }}</pre>
 
 <!-- Form title -->
-<h1 *ngIf="status === STATUS.Initializing">Loading...</h1>
-<h1
-  *ngIf="status !== STATUS.Initializing && status !== STATUS.InitError"
-  [textContent]="questions.title"
-></h1>
+<h1 [textContent]="questions.title"></h1>
 
 <!-- Errors -->
-<div *ngIf="(status === STATUS.InitError || status === STATUS.SubmitError) && errors.length">
+<div *ngIf="(state === STATE.SubmitError) && errors.length">
   <p *ngFor="let error of errors">{{ error }}</p>
 </div>
 
 <!-- Form blocks -->
 <div
   *ngIf="
-    [STATUS.InitSuccess, STATUS.Submitting, STATUS.SubmitError, STATUS.Editing].includes(status)
+    [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)
   "
 >
   <form
@@ -89,27 +85,27 @@
     <h2>Suma: {{ partialSum | currency }}</h2>
 
     <!-- Reset button -->
-    <button type="reset" [disabled]="status === STATUS.Submitting">
+    <button type="reset" [disabled]="state === STATE.Submitting">
       Vymazať polia
     </button>
 
     <!-- Add batch item button -->
     <button
-      *ngIf="questions.options?.batch && status !== STATUS.Editing"
+      *ngIf="questions.options?.batch && state !== STATE.Editing"
       type="button"
       (click)="addBatchItem()"
-      [disabled]="status === STATUS.Submitting"
+      [disabled]="state === STATE.Submitting"
     >
       {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
     </button>
 
     <!-- Cancel batch item changes button -->
-    <button *ngIf="status === STATUS.Editing" type="button" (click)="cancelBatchItemChanges()">
+    <button *ngIf="state === STATE.Editing" type="button" (click)="cancelBatchItemChanges()">
       Zrušiť zmeny
     </button>
 
     <!-- Save batch item changes button -->
-    <button *ngIf="status === STATUS.Editing" type="button" (click)="saveBatchItemChanges()">
+    <button *ngIf="state === STATE.Editing" type="button" (click)="saveBatchItemChanges()">
       Potvrdiť zmeny
     </button>
 
@@ -118,7 +114,7 @@
       *ngIf="!batchItems.length"
       type="submit"
       [name]="ACTION.SubmitOne"
-      [disabled]="status === STATUS.Submitting"
+      [disabled]="state === STATE.Submitting"
     >
       Odoslať samostatne
     </button>
@@ -126,7 +122,7 @@
     <!-- Batch form items list -->
     <div
       *ngIf="
-        [STATUS.InitSuccess, STATUS.Submitting, STATUS.Editing].includes(status) &&
+        [STATE.Init, STATE.Submitting, STATE.Editing].includes(state) &&
         batchItems.length
       "
     >
@@ -136,7 +132,7 @@
       <app-quick-info
         [items]="batchItems"
         [keys]="quickInfoFieldsKeys"
-        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
+        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
         (edit)="onEditBatchItem($event)"
         (delete)="onDeleteBatchItem($event)"
       ></app-quick-info>
@@ -145,7 +141,7 @@
       <button
         type="button"
         (click)="deleteAllBatchItems()"
-        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
+        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
       >
         Zmazať všetky ({{ batchItems.length }})
       </button>
@@ -154,7 +150,7 @@
       <button
         type="submit"
         [name]="ACTION.SubmitMultiple"
-        [disabled]="[STATUS.Submitting, STATUS.Editing].includes(status)"
+        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
       >
         Odoslať všetky ({{ batchItems.length }})
       </button>
@@ -179,7 +175,7 @@ formData.dirty:   {{ formData.dirty | json }}
 
 <!-- Todo: Move to own route -->
 <!-- Results page -->
-<div *ngIf="status === STATUS.SubmitSuccess">
+<div *ngIf="state === STATE.SubmitSuccess">
   <div [innerHTML]="questions.successInfo"></div>
   <p><a href="#" (click)="startNewForm()">Vypniť ďalšiu prihlášku</a></p>
 

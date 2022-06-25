@@ -1,1 +1,4 @@
-<app-form [id]="id"></app-form>
+<span *ngIf="state === STATE.Initializing">Loading...</span>
+<span *ngIf="state === STATE.Error">Loading ERROR.</span>
+
+<app-form *ngIf="state === STATE.Success" [blocks]="blocks" [calculations]="calculations"></app-form>
