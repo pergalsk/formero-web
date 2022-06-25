@@ -1,14 +1,11 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
-import { QuestionsService, FormBlocksSet } from '../../services/questions.service';
-import { UtilsService } from '../../services/utils.service';
-import { CalculationsService } from '../../services/calculations.service';
+import { UntypedFormGroup } from '@angular/forms';
+import { QuestionsService, FormBlocksSet } from '@services/questions.service';
+import { UtilsService } from '@services/utils.service';
+import { CalculationsService } from '@services/calculations.service';
 
-export enum Status {
-  Initializing = 'INITIALIZING',
-  InitError = 'INIT_ERROR',
-  InitSuccess = 'INIT_SUCCESS',
+export enum State {
+  Init = 'INIT',
   Submitting = 'SUBMITTING',
   SubmitError = 'SUBMIT_ERROR',
   SubmitSuccess = 'SUBMIT_SUCCESS',
@@ -31,9 +28,10 @@ interface SubmitEvent extends Event {
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit, OnChanges {
-  @Input('id') schemaId: number;
+  @Input() blocks: FormBlocksSet;
+  @Input() calculations: any;
 
-  formData: FormGroup;
+  formData: UntypedFormGroup;
   questions: FormBlocksSet;
   calculationSchema: any;
   displayFieldMessages: boolean;
@@ -44,9 +42,9 @@ export class FormComponent implements OnInit, OnChanges {
   quickInfoFieldsKeys: Array<string> = [];
   partialSum: number = null;
   errors: Array<string> = [];
-  status: Status = Status.Initializing;
+  state: State = State.Init;
 
-  STATUS = Status;
+  STATE = State;
   ACTION = Action;
 
   constructor(
@@ -56,6 +54,8 @@ export class FormComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.questions = this.blocks;
+    this.calculationSchema = this.calculations;
     this.initialize();
   }
 
@@ -65,59 +65,22 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   initialize(): void {
-    // todo: unsubscribe
-    this.questionsService
-      .getQuestions(this.schemaId)
-      .subscribe(this.getQuestionSuccess, this.getQuestionError);
-
-    this.utilsService.scrollToTop();
-    this.displayFieldMessages = false;
-  }
-
-  private getQuestionSuccess = (data) => {
-    this.questions = data; // todo: clone
-
-    // move to service
-    console.log(
-      `Form schema ID=${this.questions.id} successfully loaded (containing ${this.questions.blocks.length} form blocks).`
-    );
-
-    if (this.questions?.calculationsId) {
-      this.calculationsService
-        .getCalculations(this.questions.calculationsId)
-        .pipe(
-          finalize(() => {
-            this.status = Status.InitSuccess;
-          })
-        )
-        .subscribe((calculationsData) => {
-          this.calculationSchema = calculationsData; // todo: clone
-          this.calculate();
-          this.formData.valueChanges.subscribe(() => {
-            this.calculate();
-          });
-          // move to service
-          console.log(
-            `Form calculations ID=${this.questions.calculationsId} successfully loaded (containing ${this.calculationSchema.length} parts).`
-          );
-        });
-    } else {
-      this.status = Status.InitSuccess;
-      console.log(`Form doesn't have calculations. Starting form without calculations feature.`);
-    }
-
     this.formData = this.questionsService.buildForm(this.questions);
     this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions?.blocks);
     this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
       this.questions.blocks
     );
-  };
 
-  private getQuestionError = (error) => {
-    this.status = Status.InitError;
-    this.errors = [...this.errors, error];
-  };
+    if (this.calculationSchema) {
+      this.calculate();
+      this.formData.valueChanges.subscribe(() => {
+        this.calculate();
+      });
+    }
+
+    this.displayFieldMessages = false;
+  }
 
   onSubmit($event: SubmitEvent): void {
     if (!$event || $event.type !== 'submit') {
@@ -178,7 +141,7 @@ export class FormComponent implements OnInit, OnChanges {
       },
     ];
     this.resetNonSharedForm(this.formRawValue);
-    this.status = Status.InitSuccess;
+    this.state = State.Init;
   }
 
   deleteAllBatchItems() {
@@ -190,7 +153,11 @@ export class FormComponent implements OnInit, OnChanges {
     this.editedBatchItem = index;
     this.formData.setValue(this.batchItems[index].val);
     this.utilsService.scrollToTop();
-    this.status = Status.Editing;
+    this.state = State.Editing;
+  }
+
+  onDeleteBatchItem(index: number): void {
+    this.batchItems = [...this.batchItems.slice(0, index), ...this.batchItems.slice(index + 1)];
   }
 
   cancelBatchItemChanges() {
@@ -198,7 +165,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.editedBatchItem = null;
     this.formData.reset(this.initValue);
     this.displayFieldMessages = false;
-    this.status = Status.InitSuccess;
+    this.state = State.Init;
   }
 
   saveBatchItemChanges() {
@@ -214,17 +181,13 @@ export class FormComponent implements OnInit, OnChanges {
     };
     this.editedBatchItem = null;
     this.resetNonSharedForm(this.formRawValue);
-    this.status = Status.InitSuccess;
-  }
-
-  onDeleteBatchItem(index: number): void {
-    this.batchItems = [...this.batchItems.slice(0, index), ...this.batchItems.slice(index + 1)];
+    this.state = State.Init;
   }
 
   startNewForm(): void {
     this.batchItems = [];
     this.resetForm();
-    this.status = Status.InitSuccess;
+    this.state = State.Init;
   }
 
   private calculate(): void {
@@ -243,7 +206,7 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     this.errors = [];
-    this.status = Status.Submitting;
+    this.state = State.Submitting;
 
     const submitData = this.questionsService.prepareSubmitData(batchFormData, this.questions);
 
@@ -251,11 +214,11 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.questionsService.submitAnswers(submitData).subscribe(
       (resp) => {
-        this.status = Status.SubmitSuccess;
+        this.state = State.SubmitSuccess;
         console.log(resp);
       },
       (error) => {
-        this.status = Status.SubmitError;
+        this.state = State.SubmitError;
         this.errors = [...this.errors, error];
         this.utilsService.scrollToTop();
       }
