@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { QuestionsService, FormBlocksSet } from '@services/questions.service';
 import { UtilsService } from '@services/utils.service';
@@ -27,7 +27,7 @@ interface SubmitEvent extends Event {
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit, OnChanges {
+export class FormComponent implements OnInit {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
 
@@ -57,11 +57,6 @@ export class FormComponent implements OnInit, OnChanges {
     this.questions = this.blocks;
     this.calculationSchema = this.calculations;
     this.initialize();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // TODO: reload with new schemaId
-    // alert(changes.schemaId?.currentValue);
   }
 
   initialize(): void {
