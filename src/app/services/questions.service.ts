@@ -172,9 +172,9 @@ export class QuestionsService {
       : [];
   }
 
-  submitAnswers(answersData): Observable<any> {
+  submitAnswers(formId, answersData): Observable<any> {
     return this.httpClient
-      .post('http://localhost:8000/api/form/13405', answersData)
+      .post(`http://localhost:8000/api/form/${formId}`, answersData)
       .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')));
   }
 

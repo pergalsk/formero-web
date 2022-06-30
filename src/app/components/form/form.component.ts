@@ -212,7 +212,7 @@ export class FormComponent implements OnInit, OnChanges {
 
     console.table(submitData);
 
-    this.questionsService.submitAnswers(submitData).subscribe(
+    this.questionsService.submitAnswers(this.questions.id, submitData).subscribe(
       (resp) => {
         this.state = State.SubmitSuccess;
         console.log(resp);
