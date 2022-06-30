@@ -126,7 +126,10 @@ export class QuestionsService {
         const { key, options, validators } = question;
         const controls: UntypedFormControl[] = options.map(
           (option) =>
-            new UntypedFormControl({ value: option.value || false, disabled: option.disabled || false })
+            new UntypedFormControl({
+              value: option.value || false,
+              disabled: option.disabled || false,
+            })
         );
         controlsConfig[key] = new UntypedFormArray(controls, validators);
       } else if (question instanceof FormeroBlockText || question instanceof FormeroBlockTitle) {
