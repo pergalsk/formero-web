@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AboutPageComponent } from './components/pages/about-page/about-page.component';
-import { FormPageComponent } from './components/pages/form-page/form-page.component';
-import { HomePageComponent } from './components/pages/home-page/home-page.component';
+import { AboutPageComponent } from '@components/pages/about-page/about-page.component';
+import { FormPageComponent } from '@components/pages/form-page/form-page.component';
+import { HomePageComponent } from '@components/pages/home-page/home-page.component';
 
 const routes: Routes = [
   { path: 'about', component: AboutPageComponent },
