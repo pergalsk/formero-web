@@ -1,19 +1,15 @@
-<pre style="color: grey;">Form state: {{ state }}</pre>
+<pre style="color: grey">Form state: {{ state }}</pre>
 
 <!-- Form title -->
 <h1 [textContent]="questions.title"></h1>
 
 <!-- Errors -->
-<div *ngIf="(state === STATE.SubmitError) && errors.length">
-  <p *ngFor="let error of errors">{{ error }}</p>
+<div *ngIf="state === STATE.SubmitError && errors.length">
+  <p *ngFor="let error of errors" style="color: red">{{ error }}</p>
 </div>
 
 <!-- Form blocks -->
-<div
-  *ngIf="
-    [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)
-  "
->
+<div *ngIf="[STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)">
   <form
     [formGroup]="formData"
     (ngSubmit)="onSubmit($event)"
@@ -85,9 +81,7 @@
     <h2>Suma: {{ partialSum | currency }}</h2>
 
     <!-- Reset button -->
-    <button type="reset" [disabled]="state === STATE.Submitting">
-      Vymazať polia
-    </button>
+    <button type="reset" [disabled]="state === STATE.Submitting">Vymazať polia</button>
 
     <!-- Add batch item button -->
     <button
@@ -120,12 +114,7 @@
     </button>
 
     <!-- Batch form items list -->
-    <div
-      *ngIf="
-        [STATE.Init, STATE.Submitting, STATE.Editing].includes(state) &&
-        batchItems.length
-      "
-    >
+    <div *ngIf="[STATE.Init, STATE.Submitting, STATE.Editing].includes(state) && batchItems.length">
       <hr />
       <h2>Na odoslanie:</h2>
 
@@ -169,7 +158,7 @@ formData.dirty:   {{ formData.dirty | json }}
 </pre
     >-->
 
-    <pre style="color: grey;">{{ formRawValue | json }}</pre>
+    <pre style="color: grey">{{ formRawValue | json }}</pre>
   </form>
 </div>
 
