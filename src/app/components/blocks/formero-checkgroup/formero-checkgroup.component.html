@@ -3,7 +3,16 @@
   <em><span [textContent]="props.description"></span></em><br />
 
   <div *ngIf="displayAllChecked">
-    <label for="all-checked">
+    <mat-checkbox
+      id="all-checked"
+      [(ngModel)]="allChecked"
+      [ngModelOptions]="{ standalone: true }"
+      (change)="onChangeAll()"
+    >
+      Všetky
+    </mat-checkbox>
+
+    <!--<label for="all-checked">
       <input
         type="checkbox"
         id="all-checked"
@@ -12,18 +21,24 @@
         (change)="onChangeAll()"
       />
       Všetky
-    </label>
+    </label>-->
 
     <br />
     <br />
   </div>
 
-  <div *ngFor="let option of props.options; index as i">
-    <label [formArrayName]="props.key" [attr.for]="props.key + '_' + i">
+  <div
+    *ngFor="let option of props.options; index as i"
+    [formArrayName]="props.key"
+    [attr.for]="props.key + '_' + i"
+  >
+    <mat-checkbox [formControlName]="i" [id]="props.key + '_' + i">{{ option.label }}</mat-checkbox>
+
+    <!--<label [formArrayName]="props.key" [attr.for]="props.key + '_' + i">
       <input type="checkbox" [formControlName]="i" [id]="props.key + '_' + i" />
       {{ option.label }}
       <br />
-    </label>
+    </label>-->
   </div>
 </div>
 

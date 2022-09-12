@@ -2,11 +2,20 @@
   <strong><span [textContent]="props.label"></span></strong><br />
   <em><span [textContent]="props.description"></span></em><br />
 
-  <select [formControlName]="props.key" [id]="props.key" [name]="props.key">
+  <!--<select [formControlName]="props.key" [id]="props.key" [name]="props.key">
     <option *ngFor="let option of props.options" [value]="option.value">
       {{ option.label }}
     </option>
-  </select>
+  </select>-->
+
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>{{ props.label }}</mat-label>
+    <mat-select [formControlName]="props.key" [id]="props.key">
+      <mat-option *ngFor="let option of props.options" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </label>
 
 <app-formero-field-messages

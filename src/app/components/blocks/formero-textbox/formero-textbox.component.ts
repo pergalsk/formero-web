@@ -12,6 +12,8 @@ export class FormeroTextboxComponent implements OnInit {
   @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
 
+  value = 'Pokus';
+
   constructor() {}
 
   ngOnInit(): void {}

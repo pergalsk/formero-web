@@ -1,9 +1,21 @@
-<label [attr.for]="props.key" [formGroup]="form">
+<label [attr.for]="props.key">
   <strong><span [textContent]="props.label"></span></strong><br />
   <em><span [textContent]="props.description"></span></em><br />
-
-  <textarea [formControlName]="props.key" [id]="props.key" [name]="props.key"></textarea>
 </label>
+
+<mat-form-field appearance="fill" [formGroup]="form" style="width: 100%">
+  <mat-label>{{ props.label }}</mat-label>
+  <textarea
+    matInput
+    [formControlName]="props.key"
+    [id]="props.key"
+    [name]="props.key"
+    cdkTextareaAutosize
+    cdkAutosizeMinRows="4"
+    cdkAutosizeMaxRows="8"
+  ></textarea>
+  <!--<textarea matInput placeholder="Ex. 100 Main St">1600 Amphitheatre Pkwy</textarea>-->
+</mat-form-field>
 
 <app-formero-field-messages
   [control]="form.controls[this.props.key]"

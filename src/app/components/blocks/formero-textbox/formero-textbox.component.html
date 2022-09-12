@@ -1,9 +1,84 @@
-<label [attr.for]="props.key" [formGroup]="form">
+<!--<label [attr.for]="props.key" [formGroup]="form">
   <strong><span [textContent]="props.label"></span></strong><br />
   <em><span [textContent]="props.description"></span></em><br />
 
   <input [formControlName]="props.key" [id]="props.key" [name]="props.key" [type]="props.type" />
+</label>-->
+
+<label [attr.for]="props.key">
+  <strong><span [textContent]="props.label"></span></strong><br />
+  <em><span [textContent]="props.description"></span></em><br />
 </label>
+
+<mat-form-field [formGroup]="form" appearance="fill" style="width: 100%">
+  <mat-label [attr.for]="props.key">{{ props.label }}</mat-label>
+  <input
+    matInput
+    [formControlName]="props.key"
+    [id]="props.key"
+    [name]="props.key"
+    [type]="props.type"
+    #field
+  />
+  <button
+    *ngIf="field.value"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="field.value = ''"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-error>
+    <!--<div *ngIf="displayMessages && form.controls[this.props.key].invalid" style="color: red">-->
+    <span *ngIf="props.label"
+      ><b>{{ props.label }}:</b>&nbsp;</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.required">Pole je povinné.</span>
+    <span *ngIf="form.controls[this.props.key].errors?.email"
+      >Nesprávny formát emailovej adresy.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.emailPattern"
+      >Nesprávny formát emailovej adresy.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.maxlength"
+      >Pole môže obsahovať maximálne
+      {{ form.controls[this.props.key].errors?.maxlength.requiredLength }} znakov.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.minlength"
+      >Pole musí obsahovať minimálne
+      {{ form.controls[this.props.key].errors?.minlength.requiredLength }} znakov.</span
+    >
+    <span
+      *ngIf="
+        form.controls[this.props.key].errors?.checked &&
+        form.controls[this.props.key].errors?.checked.requiredChecked === 1
+      "
+      >Povinné pole.</span
+    >
+    <span
+      *ngIf="
+        form.controls[this.props.key].errors?.checked &&
+        form.controls[this.props.key].errors?.checked.requiredChecked !== 1
+      "
+      >Potrebné označiť
+      {{ form.controls[this.props.key].errors?.checked.requiredChecked }} položiek.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.minChecked"
+      >Potrebné označiť minimálne
+      {{ form.controls[this.props.key].errors?.minChecked.requiredChecked }} položky.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.maxChecked"
+      >Môžu byť označené maximálne
+      {{ form.controls[this.props.key].errors?.maxChecked.requiredChecked }} položky.</span
+    >
+    <span *ngIf="form.controls[this.props.key].errors?.groupRequired">{{
+      form.controls[this.props.key].errors.groupRequired.message ||
+        'Musí byť vyplnené aspoň jedno pole zo skupiny.'
+    }}</span>
+    <!--</div>-->
+  </mat-error>
+</mat-form-field>
 
 <app-formero-field-messages
   [control]="form.controls[this.props.key]"

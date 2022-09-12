@@ -1,7 +1,35 @@
 <header>
-  <h1>Formero APP</h1>
+  <button mat-icon-button [matMenuTriggerFor]="mainMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
 
-  <nav>
+  <mat-menu #mainMenu="matMenu">
+    <button
+      mat-menu-item
+      [routerLink]="['']"
+      [routerLinkActive]="['active-link']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Domov
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="forms">Fromuláre</button>
+    <button mat-menu-item [routerLink]="['about']" [routerLinkActive]="['active-link']">
+      O aplikácii
+    </button>
+  </mat-menu>
+
+  <mat-menu #forms="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let id of formIds"
+      [routerLink]="['form', id]"
+      [routerLinkActive]="['active-link']"
+    >
+      Formulár id = {{ id }}
+    </button>
+  </mat-menu>
+
+  <!--<nav>
     <ul>
       <li>
         <a
@@ -21,10 +49,10 @@
       </ul>
       <li><a [routerLink]="['about']" [routerLinkActive]="['active-link']">O aplikácii</a></li>
     </ul>
-  </nav>
+  </nav>-->
 </header>
 
-<main>
+<main class="main-content">
   <router-outlet></router-outlet>
 </main>
 

@@ -1,7 +1,7 @@
 <pre style="color: grey">Form state: {{ state }}</pre>
 
 <!-- Form title -->
-<h1 [textContent]="questions.title"></h1>
+<h1 [textContent]="questions.title" class="mat-display-3"></h1>
 
 <!-- Errors -->
 <div *ngIf="state === STATE.SubmitError && errors.length">
@@ -81,10 +81,14 @@
     <h2>Suma: {{ partialSum | currency }}</h2>
 
     <!-- Reset button -->
-    <button type="reset" [disabled]="state === STATE.Submitting">Vymazať polia</button>
+    <button mat-stroked-button color="warn" type="reset" [disabled]="state === STATE.Submitting">
+      Vymazať polia
+    </button>
 
     <!-- Add batch item button -->
     <button
+      mat-stroked-button
+      color="primary"
       *ngIf="questions.options?.batch && state !== STATE.Editing"
       type="button"
       (click)="addBatchItem()"
@@ -94,17 +98,29 @@
     </button>
 
     <!-- Cancel batch item changes button -->
-    <button *ngIf="state === STATE.Editing" type="button" (click)="cancelBatchItemChanges()">
+    <button
+      mat-flat-button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      (click)="cancelBatchItemChanges()"
+    >
       Zrušiť zmeny
     </button>
 
     <!-- Save batch item changes button -->
-    <button *ngIf="state === STATE.Editing" type="button" (click)="saveBatchItemChanges()">
+    <button
+      mat-flat-button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      (click)="saveBatchItemChanges()"
+    >
       Potvrdiť zmeny
     </button>
 
     <!-- Submit alone button -->
     <button
+      mat-flat-button
+      color="primary"
       *ngIf="!batchItems.length"
       type="submit"
       [name]="ACTION.SubmitOne"
@@ -128,6 +144,7 @@
 
       <!-- Delete all batch items button -->
       <button
+        mat-flat-button
         type="button"
         (click)="deleteAllBatchItems()"
         [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
@@ -137,6 +154,7 @@
 
       <!-- Submit all batch items button -->
       <button
+        mat-flat-button
         type="submit"
         [name]="ACTION.SubmitMultiple"
         [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"

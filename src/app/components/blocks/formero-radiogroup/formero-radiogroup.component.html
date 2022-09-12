@@ -2,7 +2,7 @@
   <strong><span [textContent]="props.label"></span></strong><br />
   <em><span [textContent]="props.description"></span></em><br />
 
-  <label *ngFor="let option of props.options; index as i" [attr.for]="props.key + '_' + i">
+  <!--  <label *ngFor="let option of props.options; index as i" [attr.for]="props.key + '_' + i">
     <input
       type="radio"
       [formControlName]="props.key"
@@ -11,7 +11,20 @@
     />
     {{ option.label }}
     <br />
-  </label>
+  </label>-->
+
+  <mat-radio-group
+    [formControlName]="props.key"
+    style="display: flex; flex-direction: column; gap: 10px"
+  >
+    <mat-radio-button
+      *ngFor="let option of props.options; index as i"
+      [value]="option.value"
+      [id]="props.key + '_' + i"
+    >
+      {{ option.label }}
+    </mat-radio-button>
+  </mat-radio-group>
 </div>
 
 <app-formero-field-messages
