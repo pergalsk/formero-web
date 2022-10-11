@@ -1,0 +1,140 @@
+@use 'variables' as var;
+@use 'typography' as typo;
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: 0.8em;
+  height: 0.8em;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  & + span {
+    padding-left: 0.5em;
+    color: var.$input-value-color;
+    opacity: 0.65;
+  }
+  &:checked + span {
+    opacity: 1;
+  }
+  &:disabled + span {
+    opacity: 0.25;
+    //color: var.$input-value-disabled-color;
+    // pointer-events: none;
+  }
+}
+
+label,
+div {
+  display: block;
+
+  .label-title {
+    @include typo.typography-level(minor);
+    margin-bottom: 0.8em;
+    color: var.$title-text-color;
+
+    &.required {
+      &::after {
+        content: '*';
+        color: var.$brand-color;
+        font-size: 2.25em;
+        margin-left: 0.15em;
+        line-height: 0;
+        position: relative;
+        top: 0.25em;
+      }
+    }
+  }
+
+  .label-description {
+    font-style: italic;
+    margin-bottom: 1em;
+    line-height: 1.25em;
+  }
+}
+
+input[type='textbox'],
+textarea,
+select,
+.input-box {
+  background-color: var.$input-bg-color;
+  border: var.decoration-border(var.$input-bg-color);
+  border-radius: var.$input-border-radius;
+  width: 100%;
+  color: var.$input-value-color;
+  padding: 0.8em 1em;
+  font-weight: 600;
+  transition: 0.3s border, 0.3s color;
+
+  &::placeholder {
+    color: var.$input-placeholder-color;
+    transition: 0.3s opacity;
+  }
+
+  &:focus {
+    outline: none;
+    border: var.decoration-border(var.$input-border-focus-color);
+
+    &::placeholder {
+      color: var.$input-placeholder-color;
+      opacity: 0.5;
+    }
+  }
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0 100px var(--autofill-bg-color) inset;
+  border-color: var(--autofill-bg-color);
+}
+
+//:-webkit-autofill,
+//:-webkit-autofill:hover,
+//:-webkit-autofill:focus {
+//  transition: background-color 600000s 0s, color 600000s 0s;
+//  background-color: red;
+//}
+
+textarea {
+  height: 1rem * 8;
+  min-height: 1rem * 8;
+  max-height: 1rem * 24;
+  resize: vertical;
+}
+
+.field-messages {
+  .input-box,
+  input[type='textbox'],
+  textarea,
+  select {
+    &.ng-invalid {
+      border: var.decoration-border(var.$input-border-error-color);
+    }
+  }
+}
+
+label {
+  &.radio-label,
+  &.checkbox-label {
+    margin-bottom: 0.75rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.all-checked {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 0.1rem solid var.$input-border-disabled-color;
+  }
+}
+
+.input-box {
+  height: auto;
+  padding: 0.8em 1em;
+  color: var.$primary-text-color;
+
+  &:focus-within {
+    border: var.decoration-border(var.$input-border-focus-color);
+  }
+}
