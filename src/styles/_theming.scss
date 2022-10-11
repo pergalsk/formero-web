@@ -1,0 +1,99 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
+@use 'functions' as fn;
+
+$colorSchemePrefix: 'color-scheme' !default;
+$colorThemePrefix: 'color-theme' !default;
+
+/// Generates full theming: color schemes (light, dark) with theme variants and utility classes.
+/// @param {Map} $colorThemesMap Theme map.
+/// @param {String | List | null} $themesList Themes list to generate.
+/// @returns {Mixin} Color schemes (light, dark) with theme variants and utility classes.
+@mixin generate-theming($colorThemesMap, $themesList: null) {
+  @include _generate-color-scheme($colorThemesMap, 'light', 'dark', $themesList);
+  @include _generate-color-scheme($colorThemesMap, 'dark', 'light', $themesList);
+}
+
+@mixin _generate-color-scheme($colorThemesMap, $schemeName1, $schemeName2, $themesList: null) {
+  @if $schemeName1 == null or $schemeName2 == null {
+    @error '@mixin _generate-color-scheme: You have to provide scheme names for both schemes.';
+  }
+
+  @media (prefers-color-scheme: #{ $schemeName2 }) {
+    :root {
+      &:not(.#{ $colorSchemePrefix }-#{ $schemeName1 }) {
+        @include _generate-color-themes($colorThemesMap, $schemeName2, $themesList);
+      }
+
+      &.#{ $colorSchemePrefix }-#{ $schemeName1 } {
+        @include _generate-color-themes($colorThemesMap, $schemeName1, $themesList);
+
+        .hide-#{ $schemeName2 } {
+          display: unset !important;
+        }
+
+        .hide-#{ $schemeName1 } {
+          display: none !important;
+        }
+      }
+
+      .hide-#{ $schemeName2 } {
+        display: none !important;
+      }
+    }
+  }
+}
+
+/// Generates theme variables.
+/// @param {Map} $colorThemesMap Theme map.
+/// @param {String | List | null} $themesList Themes list to generate.
+/// @returns {Mixin} Generated themes variables.
+@mixin _generate-color-themes($colorThemesMap, $schemeName, $themesList: null) {
+  $preparedMap: _prepare-themes-map($colorThemesMap, $themesList);
+  $themesMap: map.get($preparedMap, $schemeName);
+
+  color-scheme: #{$schemeName};
+
+  @each $themeName, $cssVariableMap in $themesMap {
+    @if $themeName == 'default' {
+      @include _output-variables($cssVariableMap);
+    } @else {
+      &.#{ $colorThemePrefix }-#{ $themeName } {
+        @include _output-variables($cssVariableMap);
+      }
+    }
+  }
+}
+
+@mixin _output-variables($cssVariableMap) {
+  @each $cssVariableName, $cssVariableValue in $cssVariableMap {
+    @if $cssVariableValue != null {
+      --#{ $cssVariableName }: #{$cssVariableValue};
+    }
+  }
+}
+
+@function _prepare-themes-map($colorThemesMap, $themesList: null) {
+  $result: ();
+
+  @if meta.type-of($colorThemesMap) != 'map' {
+    @error 'In function "prepare-themes-map" - You must provide map with themes structure.';
+  }
+
+  @each $variable, $themes in $colorThemesMap {
+    @each $themeName, $schemes in $themes {
+      @if ($themesList == null) or
+        (meta.type-of($themesList == 'string') and ($themesList == $themeName)) or
+        (meta.type-of($themesList == 'list') and list.index($themesList, $themeName))
+      {
+        @each $schemeName, $schemeValue in $schemes {
+          $result: map.set($result, $schemeName, $themeName, $variable, $schemeValue);
+        }
+      }
+    }
+  }
+
+  @return $result;
+}

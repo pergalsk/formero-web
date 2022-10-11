@@ -9,7 +9,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
-import { catchError, delay, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { ValidatorsService } from './validators.service';
 import { UtilsService } from './utils.service';
@@ -29,7 +29,7 @@ export interface FormBlocksSet {
   id: number;
   title: string;
   successInfo: string;
-  validators: ValidatorFn[];
+  validators: ValidatorFn | ValidatorFn[] | null;
   options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet | FormValidationBlocksSet)[];
   calculationsId: number;
@@ -80,7 +80,9 @@ export class QuestionsService {
     if (formSchema && formSchema.blocks && formSchema.blocks.length) {
       formSchema.blocks = formSchema.blocks
         .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
-        .filter((formBlock) => formBlock) // filter falsy values
+        .filter((formBlock) => {
+          return formBlock;
+        }) // filter falsy values
         .sort(this.utilsService.sortByOrderProp);
     }
     return formSchema;
@@ -88,6 +90,16 @@ export class QuestionsService {
 
   processRawFormBlock(rawFormBlock) {
     if (rawFormBlock.validators && rawFormBlock.validators.length) {
+      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo) => {
+        // todo: move to separate file
+        return [
+          'required',
+          'groupRequiredValidator',
+          'minCheckedValidator',
+          'checkedValidator',
+        ].includes(rawValidatorInfo.type);
+      });
+
       rawFormBlock.validators = rawFormBlock.validators
         .map((rawValidatorInfo) => this.validatorsService.processRawValidators(rawValidatorInfo))
         .filter((validator) => validator); // filter falsy values
@@ -112,8 +124,9 @@ export class QuestionsService {
 
   buildForm(questions: FormBlocksSet): UntypedFormGroup {
     const controlsConfig: { [key: string]: any } = {};
-    const options: AbstractControlOptions | { [key: string]: any } = {
+    const options: AbstractControlOptions = {
       validators: questions.validators,
+      updateOn: 'change',
     }; // form global validators
 
     // todo: refactor to switch-case
@@ -121,10 +134,10 @@ export class QuestionsService {
       if (question instanceof FormeroValidation) {
         // todo: HANDLE MULTIPLE VALIDATORS OF THE SAME KIND
 
-        options.validators = [...options.validators, ...question.validators]; // set as global form validators
+        options.validators = [...(options.validators as ValidatorFn[]), ...question.validators]; // set as global form validators
       } else if (question instanceof FormeroQuestionCheckgroup) {
-        const { key, options, validators } = question;
-        const controls: UntypedFormControl[] = options.map(
+        const { key, options: opt, validators } = question;
+        const controls: UntypedFormControl[] = opt.map(
           (option) =>
             new UntypedFormControl({
               value: option.value || false,
@@ -222,13 +235,14 @@ export class QuestionsService {
   }
 
   replaceCheckGroupValuesWithKeys(formData: any, checkGroupsKeys: CheckGroupsKeys): any {
+    const result = { ...formData };
     // todo: change to map (and simplify)
     for (const [key, value] of Object.entries(checkGroupsKeys)) {
-      formData[key] = formData[key].reduce((outputToken, current, index) => {
+      result[key] = result[key].reduce((outputToken, current, index) => {
         return current ? outputToken + (outputToken.length ? '|' : '') + value[index] : outputToken;
       }, '');
     }
-    return formData;
+    return result;
   }
 
   generateQR() {

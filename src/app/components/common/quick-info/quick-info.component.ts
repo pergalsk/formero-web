@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   EventEmitter,
 } from '@angular/core';
-import { UtilsService } from '../../../services/utils.service';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-quick-info',
@@ -18,12 +18,13 @@ import { UtilsService } from '../../../services/utils.service';
 export class QuickInfoComponent implements OnChanges {
   @Input() items: any[];
   @Input() keys: string[];
-  @Input() disabled: boolean = true;
+  @Input() disabled = true;
+  @Input() displaySum = false;
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
   @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
   reducedItems: any[] = [];
-  total: number = 0;
+  total: 0;
 
   constructor(private utilsService: UtilsService) {}
 
@@ -38,7 +39,7 @@ export class QuickInfoComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.total = 0;
     this.reducedItems = this.items.map((item) => {
-      this.total += item.sum;
+      this.total += item.sum || 0;
       return {
         val: this.utilsService.copyObjectByKeys(item.val, this.keys),
         sum: item.sum,

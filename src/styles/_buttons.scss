@@ -1,0 +1,57 @@
+@use 'variables' as var;
+@use 'typography' as typo;
+
+a,
+button {
+  &.btn {
+    @include typo.typography-level(button);
+    border-radius: var.$button-border-radius;
+    padding: 1em 0.75em 0.75em 0.75em;
+    box-shadow: none;
+    cursor: pointer;
+    user-select: none;
+
+    &.btn-primary {
+      color: var.$button-primary-text-color;
+      background-color: var.$button-primary-bg-color;
+      border: var.decoration-border(var.$button-primary-bg-color, 0.17em);
+
+      &.btn-wired {
+        color: var.$button-primary-bg-color;
+        background-color: transparent;
+      }
+    }
+
+    &.btn-secondary {
+      color: var.$button-secondary-text-color;
+      background-color: var.$button-secondary-bg-color;
+      border: var.decoration-border(var.$button-secondary-bg-color, 0.17em);
+
+      &.btn-wired {
+        color: var.$button-secondary-bg-color;
+        background-color: transparent;
+      }
+    }
+
+    &.btn-tertiary {
+      color: var.$button-tertiary-text-color;
+      background-color: var.$button-tertiary-bg-color;
+      border: var.decoration-border(var.$button-tertiary-bg-color, 0.17em);
+
+      &.btn-wired {
+        color: var.$button-tertiary-bg-color;
+        background-color: transparent;
+      }
+    }
+
+    &.btn-small {
+      font-size: 0.85em;
+    }
+
+    &.btn-tiny {
+      font-size: 0.8em;
+      border-radius: 0.45em;
+      padding: 0.4em 0.45em 0.15em 0.45em;
+    }
+  }
+}

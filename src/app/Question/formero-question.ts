@@ -7,9 +7,11 @@ export class FormeroQuestion<T> {
   label?: string;
   description?: string;
   validators?: ValidatorFn[];
+  required?: boolean;
   order?: number;
   quickInfo?: boolean;
   shared?: boolean;
+  layout?: any;
 
   constructor(
     options: {
@@ -19,9 +21,11 @@ export class FormeroQuestion<T> {
       label?: string;
       description?: string;
       validators?: ValidatorFn[];
+      required?: boolean;
       order?: number;
       quickInfo?: boolean;
       shared?: boolean;
+      layout?: any;
     } = {}
   ) {
     this.key = options.key || '';
@@ -30,8 +34,10 @@ export class FormeroQuestion<T> {
     this.label = options.label || '';
     this.description = options.description || '';
     this.validators = options.validators || [];
+    this.required = options.required || false;
     this.order = options.order || 0;
     this.quickInfo = options.quickInfo || false;
     this.shared = options.shared || false;
+    this.layout = options.layout || {};
   }
 }

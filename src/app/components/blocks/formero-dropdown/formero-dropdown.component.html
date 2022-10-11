@@ -1,16 +1,18 @@
-<label [attr.for]="props.key" [formGroup]="form">
-  <strong><span [textContent]="props.label"></span></strong><br />
-  <em><span [textContent]="props.description"></span></em><br />
+<ng-container [formGroup]="form">
+  <label [attr.for]="props.key">
+    <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
+    <div class="label-description" [textContent]="props.description"></div>
 
-  <select [formControlName]="props.key" [id]="props.key" [name]="props.key">
-    <option *ngFor="let option of props.options" [value]="option.value">
-      {{ option.label }}
-    </option>
-  </select>
-</label>
+    <select [formControlName]="props.key" [id]="props.key" [name]="props.key">
+      <option *ngFor="let option of props.options" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </label>
+</ng-container>
 
 <app-formero-field-messages
-  [control]="form.controls[this.props.key]"
+  [control]="form.controls[props.key]"
   [label]="props.label"
   [displayMessages]="displayMessages"
 ></app-formero-field-messages>

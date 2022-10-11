@@ -1,0 +1,75 @@
+@use 'sass:math';
+
+$primary-color: var(--primary-color);
+$secondary-color: var(--secondary-color);
+
+$default-font-size: clamp(1rem, /*1vw*/ 0.9375vw, 1.75rem);
+
+$content-width: 35rem;
+$content-margin: 1.7777rem;
+
+$brand-color: $primary-color;
+$page-bg-color: var(--page-bg-color);
+
+$focus-color: $secondary-color;
+$error-color: var(--error-color);
+
+$primary-text-color: var(--primary-text-color);
+$secondary-text-color: var(--secondary-text-color);
+
+$title-text-color: var(--title-text-color);
+$title-text-weight: var(--title-text-weight);
+
+$border-radius-big: 1.7777rem;
+$border-radius-small: 0.6666rem;
+
+$selection-text-color: var(--selection-text-color);
+$selection-bg-color: var(--selection-bg-color);
+
+// panel
+$panel-padding: 1.7777rem;
+$panel-padding-plain: math.div($panel-padding, 2);
+$panel-primary-bg-color: var(--panel-primary-bg-color);
+$panel-secondary-bg-color: var(--panel-secondary-bg-color);
+$panel-border-radius: $border-radius-big;
+$panel-box-shadow: var(--panel-box-shadow);
+$panel-border-type-1: 1px solid var(--panel-border-color);
+
+// inputs
+$input-bg-color: var(--input-bg-color);
+$input-placeholder-color: var(--input-placeholder-color);
+$input-border-focus-color: $focus-color;
+$input-border-error-color: $error-color;
+$input-border-radius: $border-radius-small;
+$input-border-disabled-color: var(--input-border-disabled-color);
+$input-value-color: var(--input-value-color);
+$input-value-unselected-color: var(--input-value-unselected-color);
+$input-value-disabled-color: var(--input-value-disabled-color);
+$autofill-bg-color: var(--autofill-bg-color);
+
+$decoration-border-size: 0.2rem;
+$decoration-border-type: solid;
+
+// buttons
+$button-primary-bg-color: $brand-color;
+$button-primary-text-color: var(--button-text-color);
+//$button-primary-wired-border: decoration-border($brand-color);
+
+$button-secondary-bg-color: $secondary-color;
+$button-secondary-text-color: var(--button-text-color);
+//$button-secondary-wired-border: decoration-border($secondary-color);
+
+$button-tertiary-bg-color: $secondary-text-color;
+$button-tertiary-text-color: var(--button-text-color);
+//$button-tertiary-wired-border: decoration-border($secondary-color);
+
+$button-border-radius: 0.6666em; //$border-radius-small;
+
+// misc
+@function decoration-border(
+  $color: $brand-color,
+  $size: $decoration-border-size,
+  $type: $decoration-border-type
+) {
+  @return $color $size $type;
+}

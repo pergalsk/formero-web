@@ -1,0 +1,63 @@
+@use 'sass:math';
+@use 'variables' as var;
+@use 'typography' as typo;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+  color: var.$title-text-color;
+
+  span {
+    display: inline-block;
+    padding-bottom: math.div(1rem, 6);
+    border-bottom: var.decoration-border(var.$brand-color);
+  }
+
+  &.heading-type-0 {
+    span {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+
+  &.heading-type-1 {
+    // default type
+  }
+
+  &.heading-type-2 {
+    span {
+      padding: 0.4em 0.4em 0.1em;
+      background-color: var.$brand-color;
+      border-bottom: 0;
+    }
+  }
+}
+
+h1 {
+  @include typo.typography-level(top);
+  padding: 1em;
+}
+
+h2 {
+  @include typo.typography-level(minor);
+}
+
+h3 {
+  @include typo.typography-level(minor);
+}
+
+h4 {
+  @include typo.typography-level(minor);
+}
+
+h5 {
+  @include typo.typography-level(minor);
+}
+
+h6 {
+  @include typo.typography-level(minor);
+}

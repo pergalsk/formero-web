@@ -1,6 +1,96 @@
-/* You can add global styles to this file, and also import other style files */
-.active-link {
-  &::after {
-    content: ' *';
-  }
-}
+@use 'styles/theming';
+@use 'styles/variables';
+@use 'styles/reset';
+
+@use 'styles/main';
+@use 'styles/headings';
+@use 'styles/panel';
+@use 'styles/inputs';
+@use 'styles/buttons';
+
+@use 'styles/functions' as fn;
+
+$colorThemes: (
+  page-bg-color: (
+    default: fn.v(#ffffff, #21272e),
+    modern: fn.v(#ffffff, #21272e),
+  ),
+  primary-color: (
+    default: fn.v(#28a3ca, #ff0066),
+    modern: fn.v(#28a3ca, #ff0066),
+  ),
+  secondary-color: (
+    default: fn.v(#99a1cc, #99cccc),
+    modern: fn.v(#99a1cc, #99cccc),
+  ),
+  primary-text-color: (
+    default: fn.v(#494949, #bbbfc4),
+    modern: fn.v(#494949, #bbbfc4),
+  ),
+  secondary-text-color: (
+    default: fn.v(#8d8d8d, #69737c),
+    modern: fn.v(#8d8d8d, #69737c),
+  ),
+  title-text-color: (
+    default: fn.v(#202020, #fff),
+    modern: fn.v(#202020, #fff),
+  ),
+  title-text-weight: (
+    default: fn.v(800, 600),
+    modern: fn.v(800, 600),
+  ),
+  error-color: (
+    default: fn.v(#e70069, #ff6a89),
+    modern: fn.v(#e70069, #ff6a89),
+  ),
+  panel-primary-bg-color: (
+    default: fn.v(#ffffff, #313a45),
+    modern: fn.v(#ffffff, #313a45),
+  ),
+  panel-secondary-bg-color: (
+    default: fn.v(#c9e8f2, #384552),
+    modern: fn.v(#c9e8f2, #384552),
+  ),
+  panel-border-color: (
+    default: fn.v(#88c2e0, #5d6a79),
+    modern: fn.v(#88c2e0, #5d6a79),
+  ),
+  panel-box-shadow: (
+    default: fn.v('0px 4px 20px 3px rgb(0 0 0 / 10%)', '0px 4px 30px 5px rgba(0, 0, 0, 0.15)'),
+    modern: fn.v('0px 4px 20px 3px rgb(0 0 0 / 10%)', '0px 4px 30px 5px rgba(0, 0, 0, 0.15)'),
+  ),
+  input-value-color: (
+    default: fn.v(#202020, #fff),
+    modern: fn.v(#202020, #fff),
+  ),
+  input-placeholder-color: (
+    default: fn.v(#c7c7c7, #384552),
+    modern: fn.v(#c7c7c7, #384552),
+  ),
+  input-bg-color: (
+    default: fn.v(#f4f4f4, #21272e),
+    modern: fn.v(#f4f4f4, #21272e),
+  ),
+  input-border-disabled-color: (
+    default: fn.v(#384552, #384552),
+    modern: fn.v(#384552, #384552),
+  ),
+  button-text-color: (
+    default: fn.v(#fff, #fff),
+    modern: fn.v(#fff, #fff),
+  ),
+  selection-text-color: (
+    default: fn.v(#fff, #fff),
+    modern: fn.v(#fff, #fff),
+  ),
+  selection-bg-color: (
+    default: fn.v(#415c90, #415c90),
+    modern: fn.v(#415c90, #415c90),
+  ),
+  autofill-bg-color: (
+    default: fn.v(#e5eff2, #202933),
+    modern: fn.v(#e5eff2, #202933),
+  ),
+);
+
+@include theming.generate-theming($colorThemes, [ 'default', 'modern', 'classic' ]);

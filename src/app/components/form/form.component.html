@@ -1,7 +1,9 @@
-<pre style="color: grey">Form state: {{ state }}</pre>
+<pre>Form state: {{ state }}</pre>
 
 <!-- Form title -->
-<h1 [textContent]="questions.title"></h1>
+<div class="panel title-picture">
+  <h1 class="heading-type-0" [textContent]="questions.title"></h1>
+</div>
 
 <!-- Errors -->
 <div *ngIf="state === STATE.SubmitError && errors.length">
@@ -14,9 +16,13 @@
     [formGroup]="formData"
     (ngSubmit)="onSubmit($event)"
     (reset)="onReset($event)"
+    [class.field-messages]="displayFieldMessages"
     autocomplete="off"
+    class="main-form"
   >
-    <p *ngFor="let question of questions.blocks">
+    <app-panel [type]="question?.layout?.panel" *ngFor="let question of questions.blocks">
+      <!--<pre>{{ question | json }}</pre>-->
+
       <app-formero-title
         *ngIf="question.blockType === 'title'"
         [props]="question"
@@ -75,18 +81,21 @@
         [form]="formData"
         [displayMessages]="displayFieldMessages"
       ></app-formero-validation>
-    </p>
+    </app-panel>
 
     <!-- Calculation partial result -->
-    <h2>Suma: {{ partialSum | currency }}</h2>
+    <h2 *ngIf="">Suma: {{ partialSum | currency }}</h2>
 
     <!-- Reset button -->
-    <button type="reset" [disabled]="state === STATE.Submitting">Vymazať polia</button>
+    <button type="reset" class="btn btn-tertiary btn-wired" [disabled]="state === STATE.Submitting">
+      Vymazať polia
+    </button>
 
     <!-- Add batch item button -->
     <button
       *ngIf="questions.options?.batch && state !== STATE.Editing"
       type="button"
+      class="btn btn-secondary btn-wired"
       (click)="addBatchItem()"
       [disabled]="state === STATE.Submitting"
     >
@@ -94,12 +103,22 @@
     </button>
 
     <!-- Cancel batch item changes button -->
-    <button *ngIf="state === STATE.Editing" type="button" (click)="cancelBatchItemChanges()">
+    <button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      class="btn btn-tertiary btn-wired"
+      (click)="cancelBatchItemChanges()"
+    >
       Zrušiť zmeny
     </button>
 
     <!-- Save batch item changes button -->
-    <button *ngIf="state === STATE.Editing" type="button" (click)="saveBatchItemChanges()">
+    <button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      (click)="saveBatchItemChanges()"
+      class="btn btn-tertiary"
+    >
       Potvrdiť zmeny
     </button>
 
@@ -107,47 +126,58 @@
     <button
       *ngIf="!batchItems.length"
       type="submit"
+      class="btn btn-secondary"
       [name]="ACTION.SubmitOne"
       [disabled]="state === STATE.Submitting"
     >
-      Odoslať samostatne
+      {{ questions.options?.batch ? 'Odoslať samostatne' : 'Odoslať' }}
     </button>
 
     <!-- Batch form items list -->
-    <div *ngIf="[STATE.Init, STATE.Submitting, STATE.Editing].includes(state) && batchItems.length">
-      <hr />
-      <h2>Na odoslanie:</h2>
+    <div
+      *ngIf="
+        [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state) &&
+        batchItems.length
+      "
+      class="batch-container panel panel-vivid panel-border"
+    >
+      <div class="label-title">Na odoslanie</div>
 
       <app-quick-info
         [items]="batchItems"
         [keys]="quickInfoFieldsKeys"
+        [displaySum]="true"
         [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
         (edit)="onEditBatchItem($event)"
         (delete)="onDeleteBatchItem($event)"
       ></app-quick-info>
 
-      <!-- Delete all batch items button -->
-      <button
-        type="button"
-        (click)="deleteAllBatchItems()"
-        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-      >
-        Zmazať všetky ({{ batchItems.length }})
-      </button>
+      <div class="flx-row">
+        <!-- Delete all batch items button -->
+        <button
+          type="button"
+          class="btn btn-tertiary btn-wired btn-small"
+          (click)="deleteAllBatchItems()"
+          [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+        >
+          Zmazať všetky ({{ batchItems.length }})
+        </button>
 
-      <!-- Submit all batch items button -->
-      <button
-        type="submit"
-        [name]="ACTION.SubmitMultiple"
-        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-      >
-        Odoslať všetky ({{ batchItems.length }})
-      </button>
+        <!-- Submit all batch items button -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-small flx-fill"
+          [name]="ACTION.SubmitMultiple"
+          [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+        >
+          Odoslať všetky ({{ batchItems.length }})
+        </button>
+      </div>
     </div>
 
     <!-- LOG form data-->
-    <hr />
-    <!--<pre style="color: gray;">
+
+    <!--<pre>
 displayMessages: {{ displayFieldMessages }}
 -&#45;&#45;
 formData.errors:  {{ formData.errors | json }}
@@ -155,10 +185,10 @@ formData.invalid: {{ formData.invalid | json }}
 formData.touched: {{ formData.touched | json }}
 formData.dirty:   {{ formData.dirty | json }}
 -&#45;&#45;
-</pre
-    >-->
+</pre>-->
 
-    <pre style="color: grey">{{ formRawValue | json }}</pre>
+    <pre>{{ formRawValue | json }}</pre>
+    <!--<pre>{{ formData | json }}</pre>-->
   </form>
 </div>
 

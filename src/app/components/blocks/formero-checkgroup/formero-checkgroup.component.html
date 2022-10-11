@@ -1,31 +1,29 @@
-<div [formGroup]="form">
-  <strong><span [textContent]="props.label"></span></strong><br />
-  <em><span [textContent]="props.description"></span></em><br />
+<ng-container [formGroup]="form">
+  <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
+  <div class="label-description" [textContent]="props.description"></div>
 
-  <div *ngIf="displayAllChecked">
-    <label for="all-checked">
-      <input
-        type="checkbox"
-        id="all-checked"
-        [(ngModel)]="allChecked"
-        [ngModelOptions]="{ standalone: true }"
-        (change)="onChangeAll()"
-      />
-      Všetky
-    </label>
+  <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
+    <ng-container *ngIf="displayAllChecked">
+      <label for="all-checked" class="all-checked">
+        <input
+          type="checkbox"
+          id="all-checked"
+          [(ngModel)]="allChecked"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="onChangeAll()"
+        />
+        <span>Všetky</span>
+      </label>
+    </ng-container>
 
-    <br />
-    <br />
+    <ng-container *ngFor="let option of props.options; index as i">
+      <label class="checkbox-label" [formArrayName]="props.key" [attr.for]="props.key + '_' + i">
+        <input type="checkbox" [formControlName]="i" [id]="props.key + '_' + i" />
+        <span>{{ option.label }}</span>
+      </label>
+    </ng-container>
   </div>
-
-  <div *ngFor="let option of props.options; index as i">
-    <label [formArrayName]="props.key" [attr.for]="props.key + '_' + i">
-      <input type="checkbox" [formControlName]="i" [id]="props.key + '_' + i" />
-      {{ option.label }}
-      <br />
-    </label>
-  </div>
-</div>
+</ng-container>
 
 <app-formero-field-messages
   [control]="control"

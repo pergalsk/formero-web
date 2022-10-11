@@ -1,14 +1,34 @@
-<table *ngIf="reducedItems && reducedItems.length">
-  <tr *ngFor="let reducedItem of reducedItems; let i = index">
-    <td *ngFor="let property of reducedItem.val | keyvalue: keepOriginalOrder">
-      {{ property.value }}
-    </td>
-    <td>
-      {{ reducedItem.sum }}
-    </td>
-    <td><button type="button" (click)="handleEdit(i)" [disabled]="disabled">Upraviť</button></td>
-    <td><button type="button" (click)="handleDelete(i)" [disabled]="disabled">Zmazať</button></td>
-  </tr>
-</table>
+<div *ngIf="reducedItems && reducedItems.length" class="batch-sum-container input-box">
+  <table>
+    <tr *ngFor="let reducedItem of reducedItems; let i = index">
+      <td *ngFor="let property of reducedItem.val | keyvalue: keepOriginalOrder">
+        {{ property.value }}
+      </td>
+      <td>
+        {{ reducedItem.sum | currency }}
+      </td>
+      <td>
+        <div class="flx-row flx-end">
+          <button
+            type="button"
+            class="btn btn-tertiary btn-wired btn-tiny"
+            (click)="handleDelete(i)"
+            [disabled]="disabled"
+          >
+            Zmazať
+          </button>
+          <button
+            type="button"
+            class="btn btn-tertiary btn-tiny"
+            (click)="handleEdit(i)"
+            [disabled]="disabled"
+          >
+            Upraviť
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
 
-<h2>Total: {{ total | currency }}</h2>
+  <h2 *ngIf="displaySum">Total: {{ total | currency }}</h2>
+</div>

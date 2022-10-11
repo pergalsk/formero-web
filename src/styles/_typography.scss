@@ -1,0 +1,75 @@
+@use 'sass:map';
+
+@use 'variables' as var;
+
+$levels: (
+  paragraph: (
+    family: (
+      'RobotoFlex',
+      sans-serif,
+    ),
+    size: var.$default-font-size,
+    weight: 400,
+    transform: none,
+    line: 1.25em,
+  ),
+  small: (
+    family: (
+      'RobotoFlex',
+      sans-serif,
+    ),
+    size: 0.8888rem,
+    weight: 400,
+    transform: none,
+    line: 1.5em,
+  ),
+  top: (
+    family: (
+      'Josefin Sans',
+      sans-serif,
+    ),
+    size: 2rem,
+    weight: #{var.$title-text-weight},
+    transform: uppercase,
+    line: 1.5em,
+  ),
+  minor: (
+    family: (
+      'Josefin Sans',
+      sans-serif,
+    ),
+    size: 1rem,
+    weight: #{var.$title-text-weight},
+    transform: uppercase,
+    line: 1.25em,
+  ),
+  button: (
+    family: (
+      'Josefin Sans',
+      sans-serif,
+    ),
+    size: 1rem,
+    weight: 600,
+    transform: uppercase,
+    line: 1.25em,
+  ),
+);
+
+@mixin typography-level($level) {
+  $data: map.get($levels, $level);
+
+  font-family: map.get($data, family);
+  font-size: map.get($data, size);
+  font-weight: map.get($data, weight);
+  text-transform: map.get($data, transform);
+  line-height: map.get($data, line);
+}
+
+@function get-typography-level-item($level, $item) {
+  @return map.get(map.get($levels, $level), $item);
+}
+
+@mixin text-small() {
+  @include typography-level(small);
+  font-style: italic;
+}

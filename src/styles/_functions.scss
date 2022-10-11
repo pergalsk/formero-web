@@ -1,0 +1,9 @@
+@use 'sass:map';
+
+@function theme-item($colorThemes, $itemName, $colorTheme, $colorScheme) {
+  @return map.get(map.get(map.get($colorThemes, $itemName), $colorTheme), $colorScheme);
+}
+
+@function v($light, $dark: null) {
+  @return (light: $light, dark: $dark);
+}

@@ -1,6 +1,6 @@
-<div *ngIf="displayMessages && control.invalid" style="color: red;">
+<div *ngIf="displayMessages && control.invalid" class="error-message">
   <span *ngIf="label"
-    ><b>{{ label }}:</b>&nbsp;</span
+    ><strong>{{ label }}:</strong>&nbsp;</span
   >
   <span *ngIf="control.errors?.required">Pole je povinné.</span>
   <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
@@ -15,24 +15,27 @@
     >Povinné pole.</span
   >
   <span *ngIf="control.errors?.checked && control.errors?.checked.requiredChecked !== 1"
-    >Potrebné označiť {{ control.errors?.checked.requiredChecked }} položiek.</span
+    >Potrebné označiť počet položiek {{ control.errors?.checked.requiredChecked }}.</span
   >
   <span *ngIf="control.errors?.minChecked"
-    >Potrebné označiť minimálne {{ control.errors?.minChecked.requiredChecked }} položky.</span
+    >Potrebné označiť minimálny počet položiek
+    {{ control.errors?.minChecked.requiredChecked }}.</span
   >
   <span *ngIf="control.errors?.maxChecked"
-    >Môžu byť označené maximálne {{ control.errors?.maxChecked.requiredChecked }} položky.</span
+    >Môže byť označených maximálny počet položiek
+    {{ control.errors?.maxChecked.requiredChecked }}.</span
   >
   <span *ngIf="control.errors?.groupRequired">{{
     control.errors.groupRequired.message || 'Musí byť vyplnené aspoň jedno pole zo skupiny.'
   }}</span>
 </div>
 
-<!--<pre style="color: gray;">
+<!--
+<pre>
 displayMessages: {{ displayMessages }}
 -&#45;&#45;
 control.errors:  {{ control.errors | json }}
 control.invalid: {{ control.invalid | json }}
 control.touched: {{ control.touched | json }}
-control.dirty:   {{ control.dirty | json }}</pre
->-->
+control.dirty:   {{ control.dirty | json }}</pre>
+-->

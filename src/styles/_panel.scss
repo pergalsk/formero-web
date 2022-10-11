@@ -1,0 +1,32 @@
+@use 'variables' as var;
+@use 'typography' as typo;
+
+.panel {
+  padding: var.$panel-padding;
+  background-color: var.$panel-primary-bg-color;
+  border-radius: var.$panel-border-radius;
+  box-shadow: var.$panel-box-shadow;
+
+  &.panel-vivid {
+    background-color: var.$panel-secondary-bg-color;
+  }
+
+  &.panel-border {
+    border: var.$panel-border-type-1;
+  }
+
+  &.panel-plain {
+    padding: 0 var.$panel-padding-plain;
+    background-color: transparent;
+    box-shadow: none;
+
+    &.panel-border {
+      padding: var.$panel-padding;
+    }
+  }
+
+  &.panel-text-minor {
+    @include typo.text-small();
+    color: var.$secondary-text-color;
+  }
+}

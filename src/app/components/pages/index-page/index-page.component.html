@@ -1,32 +1,36 @@
-<header>
-  <h1>Formero APP</h1>
+<div class="content">
+  <header>
+    <h1>Formero APP</h1>
 
-  <nav>
-    <ul>
-      <li>
-        <a
-          [routerLink]="['']"
-          [routerLinkActive]="['active-link']"
-          [routerLinkActiveOptions]="{ exact: true }"
-          >Domov</a
-        >
-      </li>
-      <li>Formuláre:</li>
+    <nav>
       <ul>
-        <li *ngFor="let id of formIds">
-          <a [routerLink]="['form', id]" [routerLinkActive]="['active-link']"
-            >Formulár id = {{ id }}</a
+        <li>
+          <a
+            [routerLink]="['']"
+            [routerLinkActive]="['active-link']"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Domov</a
           >
         </li>
+        <li>Formuláre:</li>
+        <ul>
+          <li *ngFor="let id of formIds">
+            <a [routerLink]="['form', id]" [routerLinkActive]="['active-link']"
+              >Formulár id = {{ id }}</a
+            >
+          </li>
+        </ul>
+        <li><a [routerLink]="['about']" [routerLinkActive]="['active-link']">O aplikácii</a></li>
       </ul>
-      <li><a [routerLink]="['about']" [routerLinkActive]="['active-link']">O aplikácii</a></li>
-    </ul>
-  </nav>
-</header>
+    </nav>
+  </header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 
-<hr />
-<footer>Copyright (c) 2022 | -pg-</footer>
+  <footer>
+    <hr />
+    <span>Copyright (c) 2022 | -pg-</span>
+  </footer>
+</div>
