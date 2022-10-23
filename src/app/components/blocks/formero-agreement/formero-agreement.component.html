@@ -1,17 +1,17 @@
 <ng-container [formGroup]="form">
-  <label [attr.for]="props.key">
-    <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
-    <div class="label-description" [textContent]="props.description"></div>
+  <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
+  <div class="label-description" [textContent]="props.description"></div>
 
-    <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
+  <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
+    <label [attr.for]="props.key">
       <input type="checkbox" [formControlName]="props.key" [value]="props.value" [id]="props.key" />
-      {{ props.options }}
-    </div>
-  </label>
+      <span>{{ props.options }}</span>
+    </label>
+  </div>
 </ng-container>
 
 <app-formero-field-messages
+  *ngIf="displayMessages"
   [control]="form.controls[props.key]"
   [label]="props.label"
-  [displayMessages]="displayMessages"
 ></app-formero-field-messages>

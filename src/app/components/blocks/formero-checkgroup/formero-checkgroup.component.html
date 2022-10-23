@@ -4,7 +4,7 @@
 
   <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
     <ng-container *ngIf="displayAllChecked">
-      <label for="all-checked" class="all-checked">
+      <label for="all-checked">
         <input
           type="checkbox"
           id="all-checked"
@@ -14,6 +14,8 @@
         />
         <span>Všetky</span>
       </label>
+
+      <hr />
     </ng-container>
 
     <ng-container *ngFor="let option of props.options; index as i">
@@ -26,7 +28,7 @@
 </ng-container>
 
 <app-formero-field-messages
+  *ngIf="displayMessages"
   [control]="control"
   [label]="props.label"
-  [displayMessages]="displayMessages"
 ></app-formero-field-messages>

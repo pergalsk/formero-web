@@ -1,19 +1,17 @@
 <ng-container [formGroup]="form">
-  <label [attr.for]="props.key">
-    <div class="label-title" [class.required]="props.required" [textContent]="props.label"></div>
-    <div class="label-description" [textContent]="props.description"></div>
+  <div class="label-title" [class.required]="props.required" [textContent]="props.label"></div>
+  <div class="label-description" [textContent]="props.description"></div>
 
-    <textarea
-      [formControlName]="props.key"
-      [id]="props.key"
-      [name]="props.key"
-      [placeholder]="props.label"
-    ></textarea>
-  </label>
+  <textarea
+    [formControlName]="props.key"
+    [id]="props.key"
+    [name]="props.key"
+    [placeholder]="props.label"
+  ></textarea>
 </ng-container>
 
 <app-formero-field-messages
+  *ngIf="displayMessages"
   [control]="form.controls[props.key]"
   [label]="props.label"
-  [displayMessages]="displayMessages"
 ></app-formero-field-messages>

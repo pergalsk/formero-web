@@ -1,13 +1,16 @@
 <div *ngIf="reducedItems && reducedItems.length" class="batch-sum-container input-box">
-  <table>
-    <tr *ngFor="let reducedItem of reducedItems; let i = index">
-      <td *ngFor="let property of reducedItem.val | keyvalue: keepOriginalOrder">
+  <div class="table">
+    <div class="table-row" *ngFor="let reducedItem of reducedItems; let i = index">
+      <div
+        class="table-cell"
+        *ngFor="let property of reducedItem.val | keyvalue: keepOriginalOrder"
+      >
         {{ property.value }}
-      </td>
-      <td>
+      </div>
+      <div class="table-cell" *ngIf="displaySum">
         {{ reducedItem.sum | currency }}
-      </td>
-      <td>
+      </div>
+      <div class="table-cell">
         <div class="flx-row flx-end">
           <button
             type="button"
@@ -26,9 +29,7 @@
             Upraviť
           </button>
         </div>
-      </td>
-    </tr>
-  </table>
-
-  <h2 *ngIf="displaySum">Total: {{ total | currency }}</h2>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,8 +1,8 @@
-<div *ngIf="displayMessages && control.invalid" class="error-message">
+<div *ngIf="control.invalid" [class.boxed]="boxed" class="error-message">
   <span *ngIf="label"
     ><strong>{{ label }}:</strong>&nbsp;</span
-  >
-  <span *ngIf="control.errors?.required">Pole je povinné.</span>
+  ><span>{{ message }}</span>
+  <!--<span *ngIf="control.errors?.required">Pole je povinné.</span>
   <span *ngIf="control.errors?.email">Nesprávny formát emailovej adresy.</span>
   <span *ngIf="control.errors?.emailPattern">Nesprávny formát emailovej adresy.</span>
   <span *ngIf="control.errors?.maxlength"
@@ -27,15 +27,11 @@
   >
   <span *ngIf="control.errors?.groupRequired">{{
     control.errors.groupRequired.message || 'Musí byť vyplnené aspoň jedno pole zo skupiny.'
-  }}</span>
+  }}</span>-->
 </div>
 
-<!--
-<pre>
-displayMessages: {{ displayMessages }}
--&#45;&#45;
+<!--<pre>
 control.errors:  {{ control.errors | json }}
 control.invalid: {{ control.invalid | json }}
 control.touched: {{ control.touched | json }}
-control.dirty:   {{ control.dirty | json }}</pre>
--->
+control.dirty:   {{ control.dirty | json }}</pre>-->

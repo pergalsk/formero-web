@@ -17,7 +17,7 @@ export enum InitState {
   styleUrls: ['./form-page.component.scss'],
 })
 export class FormPageComponent implements OnInit, OnDestroy {
-  blocks: FormBlocksSet;
+  blocks: FormBlocksSet | null;
   calculations: any;
   state: InitState = InitState.Initializing;
   STATE = InitState;
@@ -53,6 +53,9 @@ export class FormPageComponent implements OnInit, OnDestroy {
     if (schemaId == null) {
       return;
     }
+
+    this.blocks = null;
+    this.calculations = null;
 
     this.schema$?.unsubscribe();
     this.calc$?.unsubscribe();

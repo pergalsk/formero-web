@@ -84,7 +84,7 @@
     </app-panel>
 
     <!-- Calculation partial result -->
-    <h2 *ngIf="">Suma: {{ partialSum | currency }}</h2>
+    <h2 *ngIf="showSums">Suma: {{ partialSum | currency }}</h2>
 
     <!-- Reset button -->
     <button type="reset" class="btn btn-tertiary btn-wired" [disabled]="state === STATE.Submitting">
@@ -139,40 +139,45 @@
         [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state) &&
         batchItems.length
       "
-      class="batch-container panel panel-vivid panel-border"
+      class="full-width-container flx-col stick-bottom"
     >
-      <div class="label-title">Na odoslanie</div>
+      <app-panel [type]="5" class="fit" classList="flx-col">
+        <div class="flx-row">
+          <div class="flx-fill label-title">Na odoslanie</div>
+          <div *ngIf="showSums" class="label-title">Spolu: {{ totalSum | currency }}</div>
+        </div>
 
-      <app-quick-info
-        [items]="batchItems"
-        [keys]="quickInfoFieldsKeys"
-        [displaySum]="true"
-        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-        (edit)="onEditBatchItem($event)"
-        (delete)="onDeleteBatchItem($event)"
-      ></app-quick-info>
-
-      <div class="flx-row">
-        <!-- Delete all batch items button -->
-        <button
-          type="button"
-          class="btn btn-tertiary btn-wired btn-small"
-          (click)="deleteAllBatchItems()"
+        <app-quick-info
+          [items]="batchItems"
+          [keys]="quickInfoFieldsKeys"
+          [displaySum]="showSums"
           [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-        >
-          Zmazať všetky ({{ batchItems.length }})
-        </button>
+          (edit)="onEditBatchItem($event)"
+          (delete)="onDeleteBatchItem($event)"
+        ></app-quick-info>
 
-        <!-- Submit all batch items button -->
-        <button
-          type="submit"
-          class="btn btn-primary btn-small flx-fill"
-          [name]="ACTION.SubmitMultiple"
-          [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-        >
-          Odoslať všetky ({{ batchItems.length }})
-        </button>
-      </div>
+        <div class="flx-row">
+          <!-- Delete all batch items button -->
+          <button
+            type="button"
+            class="btn btn-secondary btn-wired btn-small"
+            (click)="deleteAllBatchItems()"
+            [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+          >
+            Zmazať všetky ({{ batchItems.length }})
+          </button>
+
+          <!-- Submit all batch items button -->
+          <button
+            type="submit"
+            class="btn btn-primary btn-small flx-fill"
+            [name]="ACTION.SubmitMultiple"
+            [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+          >
+            Odoslať všetky ({{ batchItems.length }})
+          </button>
+        </div>
+      </app-panel>
     </div>
 
     <!-- LOG form data-->

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { FormeroValidation } from '../../../Validations';
+import { FormeroValidation } from '@app/Validations';
 
 @Component({
   selector: 'app-formero-validation',

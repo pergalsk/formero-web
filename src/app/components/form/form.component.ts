@@ -40,7 +40,9 @@ export class FormComponent implements OnInit {
   editedBatchItem: number | null = null;
   sharedFieldsKeys: Array<string> = [];
   quickInfoFieldsKeys: Array<string> = [];
-  partialSum: number = null;
+  partialSum: number | null = null;
+  totalSum: number | null = null;
+  showSums = false;
   errors: Array<string> = [];
   state: State = State.Init;
 
@@ -56,6 +58,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     this.questions = this.blocks;
     this.calculationSchema = this.calculations;
+    this.showSums = !!this.calculations;
     this.initialize();
   }
 
@@ -87,7 +90,7 @@ export class FormComponent implements OnInit {
 
     switch (action) {
       case Action.SubmitOne:
-        this.submitOne(this.formRawValue);
+        this.submitOne();
         break;
       case Action.SubmitMultiple:
         this.submitMultiple(this.batchItems);
@@ -97,7 +100,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  private submitOne(formRawValue: any) {
+  private submitOne() {
     if (!this.formData.valid) {
       this.displayFieldMessages = true;
       console.log('Submit: Form is not valid!');
@@ -135,12 +138,14 @@ export class FormComponent implements OnInit {
         sum: this.partialSum,
       },
     ];
+    this.totalSum = this.calculateTotalSum(this.batchItems);
     this.resetNonSharedForm(this.formRawValue);
     this.state = State.Init;
   }
 
   deleteAllBatchItems() {
     this.batchItems = [];
+    this.totalSum = 0; // todo: or null when without calculations
   }
 
   onEditBatchItem(index: number): void {
@@ -153,6 +158,7 @@ export class FormComponent implements OnInit {
 
   onDeleteBatchItem(index: number): void {
     this.batchItems = [...this.batchItems.slice(0, index), ...this.batchItems.slice(index + 1)];
+    this.totalSum = this.calculateTotalSum(this.batchItems);
   }
 
   cancelBatchItemChanges() {
@@ -175,6 +181,7 @@ export class FormComponent implements OnInit {
       sum: this.partialSum,
     };
     this.editedBatchItem = null;
+    this.totalSum = this.calculateTotalSum(this.batchItems);
     this.resetNonSharedForm(this.formRawValue);
     this.state = State.Init;
   }
@@ -193,6 +200,10 @@ export class FormComponent implements OnInit {
       this.formRawValue,
       this.calculationSchema
     );
+  }
+
+  private calculateTotalSum(batchItems: any[]) {
+    return batchItems.reduce((total, item) => total + item.sum, 0);
   }
 
   private batchSubmit(batchFormData: any[]): void {

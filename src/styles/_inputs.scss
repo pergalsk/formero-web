@@ -1,18 +1,19 @@
 @use 'variables' as var;
 @use 'typography' as typo;
 
-input[type='checkbox'],
-input[type='radio'] {
-  width: 0.8em;
-  height: 0.8em;
-}
-
 input[type='radio'],
 input[type='checkbox'] {
+  cursor: pointer;
+  width: 1em;
+  height: 1em;
+
   & + span {
+    display: inline-block;
     padding-left: 0.5em;
     color: var.$input-value-color;
     opacity: 0.65;
+    user-select: none;
+    cursor: pointer;
   }
   &:checked + span {
     opacity: 1;
@@ -24,33 +25,34 @@ input[type='checkbox'] {
   }
 }
 
-label,
-div {
-  display: block;
+label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .label-title {
-    @include typo.typography-level(minor);
-    margin-bottom: 0.8em;
-    color: var.$title-text-color;
+.label-title {
+  @include typo.typography-level(minor);
+  margin-bottom: 0.8em;
+  color: var.$title-text-color;
 
-    &.required {
-      &::after {
-        content: '*';
-        color: var.$brand-color;
-        font-size: 2.25em;
-        margin-left: 0.15em;
-        line-height: 0;
-        position: relative;
-        top: 0.25em;
-      }
+  &.required {
+    &::after {
+      content: '*';
+      color: var.$brand-color;
+      font-size: 2.25em;
+      margin-left: 0.15em;
+      line-height: 0;
+      position: relative;
+      top: 0.25em;
     }
   }
+}
 
-  .label-description {
-    font-style: italic;
-    margin-bottom: 1em;
-    line-height: 1.25em;
-  }
+.label-description {
+  font-style: italic;
+  margin-bottom: 1em;
+  line-height: 1.25em;
 }
 
 input[type='textbox'],
@@ -87,13 +89,6 @@ input:-webkit-autofill {
   border-color: var(--autofill-bg-color);
 }
 
-//:-webkit-autofill,
-//:-webkit-autofill:hover,
-//:-webkit-autofill:focus {
-//  transition: background-color 600000s 0s, color 600000s 0s;
-//  background-color: red;
-//}
-
 textarea {
   height: 1rem * 8;
   min-height: 1rem * 8;
@@ -115,17 +110,9 @@ textarea {
 label {
   &.radio-label,
   &.checkbox-label {
-    margin-bottom: 0.75rem;
-
     &:last-child {
       margin-bottom: 0;
     }
-  }
-
-  &.all-checked {
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 0.1rem solid var.$input-border-disabled-color;
   }
 }
 
@@ -133,8 +120,20 @@ label {
   height: auto;
   padding: 0.8em 1em;
   color: var.$primary-text-color;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.65rem;
 
   &:focus-within {
     border: var.decoration-border(var.$input-border-focus-color);
+  }
+
+  hr {
+    margin-block: 0.15em;
+    align-self: stretch;
+    height: 0.07rem;
+    border: 0;
+    background-color: var.$input-border-disabled-color;
   }
 }
