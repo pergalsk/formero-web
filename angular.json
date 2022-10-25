@@ -4,6 +4,12 @@
   "newProjectRoot": "projects",
   "projects": {
     "formero-web": {
+      "i18n": {
+        "sourceLocale": "sk-SK",
+        "locales": {
+          "en-UK": "src/locales/messages.en.xlf"
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -25,6 +31,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
             "scripts": [],
+            "localize": ["en-UK"],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,

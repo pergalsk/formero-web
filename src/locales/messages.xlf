@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="sk-SK" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="1c8f844faea9bfa59d593d7c2a03f784fd53bbb5" datatype="html">
+        <source> Vymazať polia </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/form/form.component.html</context>
+          <context context-type="linenumber">95,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="85e0c9b64b010a47cc06f75ed4b40c142e0b3dcd" datatype="html">
+        <source> Zrušiť zmeny </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/form/form.component.html</context>
+          <context context-type="linenumber">117,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="49a45d06578de303b09016e13f80b52abd0130e2" datatype="html">
+        <source> Potvrdiť zmeny </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/form/form.component.html</context>
+          <context context-type="linenumber">128,130</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
