@@ -101,7 +101,7 @@ export class FormComponent implements OnInit {
   }
 
   private submitOne() {
-    if (!this.formData.valid) {
+    if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Submit: Form is not valid!');
       return;
@@ -115,6 +115,10 @@ export class FormComponent implements OnInit {
     ]);
   }
 
+  private isFormValid() {
+    return this.formData.valid;
+  }
+
   private submitMultiple(batchItems: any[]) {
     this.batchSubmit([...batchItems]); // todo: need to deep clone ?
   }
@@ -125,7 +129,7 @@ export class FormComponent implements OnInit {
   }
 
   addBatchItem(): void {
-    if (!this.formData.valid) {
+    if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Add batch item: Form is not valid!');
       return;
@@ -170,7 +174,7 @@ export class FormComponent implements OnInit {
   }
 
   saveBatchItemChanges() {
-    if (!this.formData.valid) {
+    if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Save batch item: Form is not valid!');
       return;
