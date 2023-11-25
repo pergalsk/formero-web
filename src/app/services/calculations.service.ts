@@ -16,7 +16,8 @@ export class CalculationsService {
   ) {}
 
   loadFormCalculations(calculationsId: number): Observable<any> {
-    return this.httpClient.get(`http://localhost:8000/api/calculation/${calculationsId}`);
+    // return this.httpClient.get(`http://localhost:8000/api/calculation/${calculationsId}`);
+    return this.httpClient.get(`http://localhost/formero/public/api/calculation/${calculationsId}`);
   }
 
   getCalculations(calculationsId: number) {

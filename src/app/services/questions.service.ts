@@ -65,7 +65,8 @@ export class QuestionsService {
 
   loadFormSchema(schemaId: number): Observable<any> {
     // return this.httpClient.get('assets/dbt-2020.form-schema.json').pipe(delay(1500));
-    return this.httpClient.get(`http://localhost:8000/api/schema/${schemaId}`);
+    // return this.httpClient.get(`http://localhost:8000/api/schema/${schemaId}`);
+    return this.httpClient.get(`http://localhost/formero/public/api/schema/${schemaId}`);
   }
 
   processFormSchema(formSchema) {
@@ -189,9 +190,12 @@ export class QuestionsService {
   }
 
   submitAnswers(formId, answersData): Observable<any> {
-    return this.httpClient
-      .post(`http://localhost:8000/api/form/${formId}`, answersData)
-      .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')));
+    return (
+      this.httpClient
+        // .post(`http://localhost:8000/api/form/${formId}`, answersData)
+        .post(`http://localhost/formero/public/api/form/${formId}`, answersData)
+        .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')))
+    );
   }
 
   handleError(message: string) {
