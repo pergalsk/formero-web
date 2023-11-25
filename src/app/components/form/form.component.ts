@@ -214,11 +214,11 @@ export class FormComponent implements OnInit {
     this.errors = [];
     this.state = State.Submitting;
 
-    const submitData = this.questionsService.prepareSubmitData(batchFormData, this.questions);
+    const entries = this.questionsService.prepareSubmitData(batchFormData, this.questions);
 
-    console.table(submitData);
+    console.table(entries);
 
-    this.questionsService.submitAnswers(this.questions.id, submitData).subscribe(
+    this.questionsService.submitAnswers(this.questions.id, { entries }).subscribe(
       (resp) => {
         this.state = State.SubmitSuccess;
         console.log(resp);
