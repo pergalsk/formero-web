@@ -1,3 +1,4 @@
+// import { NgxColorSchemesModule } from 'ngx-color-schemes';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -51,7 +52,18 @@ registerLocaleData(localeSk, 'sk-SK');
     PanelComponent,
     // RestrictLengthDirective
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    /*NgxColorSchemesModule.forRoot({
+      lightSchemeClass: 'color-scheme-light',
+      darkSchemeClass: 'color-scheme-dark',
+      storageKey: 'color-scheme-preference',
+    }),*/
+  ],
   providers: [
     interceptorProviders,
     {
