@@ -1,12 +1,18 @@
-// import { NgxColorSchemesModule } from 'ngx-color-schemes';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
+import {
+  NgModule,
+  LOCALE_ID,
+  DEFAULT_CURRENCY_CODE,
+  APP_INITIALIZER,
+  Injector,
+} from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeSk from '@angular/common/locales/sk';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { interceptorProviders } from './interceptors';
 import { AppRoutingModule } from './app-routing.module';
+import { NgxColorSchemesModule, NgxColorSchemesService } from 'ngx-color-schemes';
 import {
   FormeroTextboxComponent,
   FormeroTextareaComponent,
@@ -30,6 +36,12 @@ import { PanelComponent } from '@components/ui/panel/panel.component';
 
 // Register the localization
 registerLocaleData(localeSk, 'sk-SK');
+
+function colorSchemesInitializer(injector: Injector) {
+  return (): void => {
+    injector.get(NgxColorSchemesService).setPreferredScheme();
+  };
+}
 
 @NgModule({
   declarations: [
@@ -58,14 +70,20 @@ registerLocaleData(localeSk, 'sk-SK');
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    /*NgxColorSchemesModule.forRoot({
+    NgxColorSchemesModule.forRoot({
       lightSchemeClass: 'color-scheme-light',
       darkSchemeClass: 'color-scheme-dark',
       storageKey: 'color-scheme-preference',
-    }),*/
+    }),
   ],
   providers: [
     interceptorProviders,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: colorSchemesInitializer,
+      deps: [Injector],
+      multi: true,
+    },
     {
       provide: LOCALE_ID,
       useValue: 'sk-SK',
