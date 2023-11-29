@@ -32,7 +32,6 @@ import { HomePageComponent } from '@components/pages/home-page/home-page.compone
 import { FormPageComponent } from '@components/pages/form-page/form-page.component';
 import { AboutPageComponent } from '@components/pages/about-page/about-page.component';
 import { PanelComponent } from '@components/ui/panel/panel.component';
-// import { RestrictLengthDirective } from './directives/restrict-length.directive';
 
 // Register the localization
 registerLocaleData(localeSk, 'sk-SK');
@@ -62,7 +61,6 @@ function colorSchemesInitializer(injector: Injector) {
     FormPageComponent,
     AboutPageComponent,
     PanelComponent,
-    // RestrictLengthDirective
   ],
   imports: [
     BrowserModule,
