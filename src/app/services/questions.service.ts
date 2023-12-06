@@ -189,11 +189,15 @@ export class QuestionsService {
       : [];
   }
 
-  submitAnswers(formId, answersData): Observable<any> {
+  submitAnswers(formId, answersData: any[]): Observable<any> {
+    const data = {
+      entries: answersData,
+    };
+
     return (
       this.httpClient
         // .post(`http://localhost:8000/api/form/${formId}`, answersData)
-        .post(`http://localhost/formero/public/api/form/${formId}`, answersData)
+        .post(`http://localhost/formero/public/api/form/${formId}`, data)
         .pipe(catchError(this.handleError('Pri odosielaní nastala chyba.')))
     );
   }
