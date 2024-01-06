@@ -172,3 +172,12 @@ pre {
     content: ' *';
   }
 }
+form.auth {
+  p {
+    margin-bottom: 1rem;
+  }
+
+  input:not([type='checkbox']) {
+    width: 100%;
+  }
+}

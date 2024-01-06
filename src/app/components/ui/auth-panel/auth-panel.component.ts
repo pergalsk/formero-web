@@ -21,7 +21,7 @@ import { Router, RouterLink } from '@angular/router';
       } @else if (user.error()) {
         @if (user.error().status === 401) {
           <a [routerLink]="['/log-in']">Prihlásiť</a> |
-          <a [routerLink]="['/register']">Registrovať</a>
+          <a [routerLink]="['/register-new']">Registrovať</a>
         } @else {
           Chyba pri načítavaní používateľa.
         }
