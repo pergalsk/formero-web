@@ -89,6 +89,22 @@ export class ValidatorsService {
     return validatorFn;
   }
 
+  // Checks if given controls (by control name) has all equal values
+  // e.g. ['password', 'password_confirm']
+  groupEqualValidator(controlNamesSet: string[]): ValidatorFn {
+    if (!Array.isArray(controlNamesSet) || controlNamesSet.length < 2) {
+      return (): ValidationErrors | null => null;
+    }
+    return (control: UntypedFormGroup): ValidationErrors | null => {
+      const equal: boolean = controlNamesSet.every(
+        (val: string, index: number, arr: string[]): boolean => {
+          return control.value[arr[0]] === control.value[val];
+        },
+      );
+      return equal ? null : { groupEqual: true, controls: [...controlNamesSet] };
+    };
+  }
+
   groupRequiredValidator(controlNamesSet: string[] | string[][], message?: string): ValidatorFn {
     return (control: UntypedFormGroup): ValidationErrors | null => {
       // in every control names set has to be at least one control with non-empty string value
