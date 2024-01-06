@@ -31,15 +31,15 @@ export class ValidatorsService {
   emailPatternValidator = this.patternValidatorFactory(this.emailPattern, 'emailPattern');
 
   checkedValidator = this.checkedValidatorFactory((control, requiredChecked = 1, actualChecked) =>
-    actualChecked !== requiredChecked ? { checked: { requiredChecked, actualChecked } } : null
+    actualChecked !== requiredChecked ? { checked: { requiredChecked, actualChecked } } : null,
   );
 
   minCheckedValidator = this.checkedValidatorFactory((control, requiredChecked, actualChecked) =>
-    actualChecked < requiredChecked ? { minChecked: { requiredChecked, actualChecked } } : null
+    actualChecked < requiredChecked ? { minChecked: { requiredChecked, actualChecked } } : null,
   );
 
   maxCheckedValidator = this.checkedValidatorFactory((control, requiredChecked, actualChecked) =>
-    actualChecked > requiredChecked ? { maxChecked: { requiredChecked, actualChecked } } : null
+    actualChecked > requiredChecked ? { maxChecked: { requiredChecked, actualChecked } } : null,
   );
 
   processRawValidators(rawValidator: RawValidatorInfo): ValidatorFn | null {
@@ -123,7 +123,7 @@ export class ValidatorsService {
           } else {
             return true; // if something other than string or array don't mark as error
           }
-        }
+        },
       );
       return hasValue ? null : { groupRequired: message ? { message } : true };
     };
@@ -138,7 +138,7 @@ export class ValidatorsService {
     return (requiredChecked: number): ValidatorFn =>
       (control: AbstractControl): ValidationErrors | null => {
         const values: boolean[] = this.utilsService.toArray(
-          control instanceof UntypedFormArray ? control.getRawValue() : control.value
+          control instanceof UntypedFormArray ? control.getRawValue() : control.value,
         );
         const actualChecked: number = this.utilsService.onlyTruthy(values).length;
 
