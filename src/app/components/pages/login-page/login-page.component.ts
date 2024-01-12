@@ -1,10 +1,10 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, LoginUserRequest, User } from '@services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService, LoginUserRequest, User } from '@services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,6 +14,9 @@ import { Subscription } from 'rxjs';
     <h1>Prihlásenie</h1>
 
     <form class="auth" [formGroup]="formData" (ngSubmit)="loginSubmit()">
+      @if (message) {
+        <p>{{ message }}</p>
+      }
       <p>
         <label for="email">Email *</label>
         <input id="email" type="email" autocomplete="email" formControlName="email" />
@@ -64,13 +67,17 @@ import { Subscription } from 'rxjs';
       </p>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent implements OnDestroy {
   router: Router = inject(Router);
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
+
+  subscription$: Subscription;
+
   showValidations = false;
-  loginSubscription$: Subscription;
+  message = this.router.getCurrentNavigation()?.extras?.state?.message || '';
   serverErrors = signal<{ [key: string]: string[] }>({});
 
   formData = this.fb.group(
@@ -82,7 +89,7 @@ export class LoginPageComponent implements OnDestroy {
     { updateOn: 'change' },
   );
 
-  loginSubmit() {
+  loginSubmit(): void {
     this.showValidations = true;
     this.serverErrors.set({});
 
@@ -92,15 +99,17 @@ export class LoginPageComponent implements OnDestroy {
 
     const data: LoginUserRequest = this.formData.getRawValue();
 
-    this.loginSubscription$ = this.authService.loginUser(data).subscribe({
-      next: (value: User) => this.router.navigate(['/']),
-      error: (errData: HttpErrorResponse) => this.serverErrors.set(errData.error.errors),
+    this.subscription$ = this.authService.loginUser(data).subscribe({
+      next: (value: User) => this.navigateToHome(),
+      error: (errData: HttpErrorResponse) => this.serverErrors.set(errData?.error?.errors),
     });
   }
 
-  ngOnDestroy() {
-    if (this.loginSubscription$) {
-      this.loginSubscription$.unsubscribe();
-    }
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription$?.unsubscribe();
   }
 }

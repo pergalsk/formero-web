@@ -8,6 +8,7 @@ import { HomePageComponent } from '@components/pages/home-page/home-page.compone
 import { RegisterPageComponent } from '@components/pages/register-page/register-page.component';
 import { LoginPageComponent } from '@components/pages/login-page/login-page.component';
 import { ForgotPasswordPageComponent } from '@components/pages/forgot-password-page/forgot-password-page.component';
+import { ResetPasswordComponent } from '@components/pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
       // todo: after reload http://localhost:4200/register-new (with F5) -> 404 Not found
       { path: 'register-new', component: RegisterPageComponent },
       { path: 'forgot-pwd', component: ForgotPasswordPageComponent },
+      { path: 'password-reset/:token', component: ResetPasswordComponent },
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

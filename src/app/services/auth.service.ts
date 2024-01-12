@@ -28,6 +28,13 @@ export type ForgotPasswordRequest = {
   email: string;
 };
 
+export type ResetPasswordRequest = {
+  email: string;
+  password: string;
+  password_confirmation: string;
+  token: string;
+};
+
 export type SimpleMessageResponse = {
   message: string;
 };
@@ -75,6 +82,14 @@ export class AuthService {
     return this.getCsrfCookie().pipe(
       concatMap(() => {
         return this.httpClient.post('/forgot-password', data);
+      }),
+    );
+  }
+
+  resetPassword(data: ResetPasswordRequest): Observable<any> {
+    return this.getCsrfCookie().pipe(
+      concatMap(() => {
+        return this.httpClient.post('/reset-password', data);
       }),
     );
   }

@@ -1,20 +1,26 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
-import { JsonPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthService, ResetPasswordRequest } from '@services/auth.service';
 import { ValidatorsService } from '@services/validators.service';
-import { AuthService, RegisterUserRequest, User } from '@services/auth.service';
 
 @Component({
-  selector: 'app-register-page',
+  selector: 'app-reset-password',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, JsonPipe],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   template: `
-    <h1>Registrácia</h1>
+    <h1>Obnovenie hesla</h1>
 
-    <form class="auth" [formGroup]="formData" (ngSubmit)="registerSubmit()">
+    <form class="auth" [formGroup]="formData" (ngSubmit)="resetPasswordSubmit()">
       <p>
         <label for="email">Email *</label>
         <input id="email" type="email" autocomplete="email" formControlName="email" />
@@ -63,19 +69,7 @@ import { AuthService, RegisterUserRequest, User } from '@services/auth.service';
         }
       </p>
       <p>
-        <label for="name">Meno *</label>
-        <input id="name" type="text" autocomplete="name" formControlName="name" />
-        @if (showValidations && formData.controls.name.errors?.required) {
-          <div style="color: red">Pole je povinné</div>
-        }
-        @if (showValidations && serverErrors()?.name) {
-          @for (errorText of serverErrors().name; track $index) {
-            <div style="color: red">{{ errorText }}</div>
-          }
-        }
-      </p>
-      <p>
-        <button type="submit">Registrovať</button>
+        <button type="submit">Zmeniť heslo</button>
       </p>
       <p>
         <small>
@@ -85,8 +79,10 @@ import { AuthService, RegisterUserRequest, User } from '@services/auth.service';
       </p>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterPageComponent implements OnDestroy {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
+  route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
@@ -94,6 +90,8 @@ export class RegisterPageComponent implements OnDestroy {
 
   subscription$: Subscription;
 
+  token = '';
+  email = '';
   showValidations = false;
   serverErrors = signal<{ [key: string]: string[] }>({});
 
@@ -109,7 +107,6 @@ export class RegisterPageComponent implements OnDestroy {
       ],
       password: ['', Validators.required],
       password_confirmation: ['', Validators.required],
-      name: ['', [Validators.required, Validators.maxLength(255)]],
     },
     {
       validators: this.validatorsService.groupEqualValidator(['password', 'password_confirmation']),
@@ -117,7 +114,16 @@ export class RegisterPageComponent implements OnDestroy {
     },
   );
 
-  registerSubmit() {
+  ngOnInit(): void {
+    this.token = this.route.snapshot?.params?.token;
+    this.email = this.route.snapshot?.queryParams?.email;
+
+    if (this.email) {
+      this.formData.patchValue({ email: this.email });
+    }
+  }
+
+  resetPasswordSubmit(): void {
     this.showValidations = true;
     this.serverErrors.set({});
 
@@ -125,16 +131,19 @@ export class RegisterPageComponent implements OnDestroy {
       return;
     }
 
-    const data: RegisterUserRequest = this.formData.getRawValue();
+    const dataWithToken: ResetPasswordRequest = {
+      ...this.formData.getRawValue(),
+      token: this.token,
+    };
 
-    this.subscription$ = this.authService.registerUser(data).subscribe({
-      next: (value: User) => this.navigateToHome(),
+    this.subscription$ = this.authService.resetPassword(dataWithToken).subscribe({
+      next: (data: any) => this.navigateToLogin(data?.status || null),
       error: (errData: HttpErrorResponse) => this.serverErrors.set(errData?.error?.errors),
     });
   }
 
-  navigateToHome(): void {
-    this.router.navigate(['/']);
+  navigateToLogin(message?: string): void {
+    this.router.navigate(['/log-in'], { state: { message } });
   }
 
   ngOnDestroy(): void {
