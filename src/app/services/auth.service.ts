@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { concatMap, Observable } from 'rxjs';
+import { concatMap, Observable, of, tap } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 export type User = {
   id: number;
@@ -44,13 +45,37 @@ export type SimpleMessageResponse = {
 })
 export class AuthService {
   httpClient: HttpClient = inject(HttpClient);
+  userStorageKey = 'user';
+
+  user: User | null = null;
 
   getCsrfCookie(): Observable<void> {
     return this.httpClient.get<void>('/sanctum/csrf-cookie');
   }
 
   getUser(): Observable<User> {
-    return this.httpClient.get<User>('/api/user');
+    if (this.user) {
+      return of(this.user);
+    }
+
+    const userStr: string = sessionStorage.getItem(this.userStorageKey);
+    const user: User = JSON.parse(userStr);
+
+    if (user) {
+      this.user = user;
+      return of(user);
+    }
+
+    return this.httpClient.get<User>('/api/user').pipe(
+      tap((data: User): void => {
+        sessionStorage.setItem(this.userStorageKey, JSON.stringify(data));
+        this.user = data;
+      }),
+      // catchError((error: any) => {
+      //   debugger;
+      //   return of(null);
+      // }),
+    );
   }
 
   loginUser(data: LoginUserRequest): Observable<User> {
@@ -59,6 +84,8 @@ export class AuthService {
 
   logoutUser(): Observable<void | SimpleMessageResponse> {
     // todo: is it necessary to preload CSRF cookie here ?
+    this.user = null;
+    sessionStorage.removeItem(this.userStorageKey);
     return this.ensureCsrfCookie(this.httpClient.post<void | SimpleMessageResponse>('/logout', {}));
   }
 
