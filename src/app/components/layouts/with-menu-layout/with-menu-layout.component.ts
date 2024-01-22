@@ -32,16 +32,9 @@ import { NgxColorSchemesComponent } from 'ngx-color-schemes';
               >Domov</a
             >
           </li>
-          <li>Formuláre:</li>
-          <ul>
-            @for (id of formIds; track $index) {
-              <li>
-                <a [routerLink]="['/form', id]" [routerLinkActive]="['active-link']">
-                  Formulár id = {{ id }}
-                </a>
-              </li>
-            }
-          </ul>
+          <li>
+            <a [routerLink]="['/forms']" [routerLinkActive]="['active-link']">Formuláre</a>
+          </li>
           <li>
             <a [routerLink]="['/about']" [routerLinkActive]="['active-link']">O aplikácii</a>
           </li>
@@ -59,6 +52,4 @@ import { NgxColorSchemesComponent } from 'ngx-color-schemes';
     </footer>
   `,
 })
-export class WithMenuLayoutComponent {
-  formIds: number[] = [13405, 16498, 999];
-}
+export class WithMenuLayoutComponent {}
