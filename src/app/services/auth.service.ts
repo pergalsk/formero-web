@@ -54,44 +54,24 @@ export class AuthService {
   }
 
   loginUser(data: LoginUserRequest): Observable<User> {
-    return this.getCsrfCookie().pipe(
-      concatMap(() => {
-        return this.httpClient.post<User>('/login', data);
-      }),
-    );
+    return this.ensureCsrfCookie(this.httpClient.post<User>('/login', data));
   }
 
   logoutUser(): Observable<void | SimpleMessageResponse> {
     // todo: is it necessary to preload CSRF cookie here ?
-    return this.getCsrfCookie().pipe(
-      concatMap(() => {
-        return this.httpClient.post<void | SimpleMessageResponse>('/logout', {});
-      }),
-    );
+    return this.ensureCsrfCookie(this.httpClient.post<void | SimpleMessageResponse>('/logout', {}));
   }
 
   registerUser(data: RegisterUserRequest): Observable<User> {
-    return this.getCsrfCookie().pipe(
-      concatMap(() => {
-        return this.httpClient.post<User>('/register', data);
-      }),
-    );
+    return this.ensureCsrfCookie(this.httpClient.post<User>('/register', data));
   }
 
   forgotPassword(data: ForgotPasswordRequest): Observable<any> {
-    return this.getCsrfCookie().pipe(
-      concatMap(() => {
-        return this.httpClient.post('/forgot-password', data);
-      }),
-    );
+    return this.ensureCsrfCookie(this.httpClient.post('/forgot-password', data));
   }
 
   resetPassword(data: ResetPasswordRequest): Observable<any> {
-    return this.getCsrfCookie().pipe(
-      concatMap(() => {
-        return this.httpClient.post('/reset-password', data);
-      }),
-    );
+    return this.ensureCsrfCookie(this.httpClient.post('/reset-password', data));
   }
 
   ensureCsrfCookie<T>(observable: Observable<T>): Observable<T> {
