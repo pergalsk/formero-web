@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { concatMap, Observable, of, tap } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 export type User = {
   id: number;
@@ -49,16 +49,12 @@ export class AuthService {
 
   user: User | null = null;
 
-  getCsrfCookie(): Observable<void> {
-    return this.httpClient.get<void>('/sanctum/csrf-cookie');
-  }
-
   getUser(): Observable<User> {
     if (this.user) {
       return of(this.user);
     }
 
-    const userStr: string = sessionStorage.getItem(this.userStorageKey);
+    const userStr: string = localStorage.getItem(this.userStorageKey);
     const user: User = JSON.parse(userStr);
 
     if (user) {
@@ -66,31 +62,46 @@ export class AuthService {
       return of(user);
     }
 
-    return this.httpClient.get<User>('/api/user').pipe(
-      tap((data: User): void => {
-        sessionStorage.setItem(this.userStorageKey, JSON.stringify(data));
-        this.user = data;
-      }),
-      // catchError((error: any) => {
-      //   debugger;
-      //   return of(null);
-      // }),
+    return this.httpClient
+      .get<User>('/api/user')
+      .pipe(tap((user: User): void => this.setUserStorage(user)));
+  }
+
+  markAsUnauthenticated(): void {
+    this.clearUserStorage();
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.getUser().pipe(
+      map((user: User | null): boolean => !!user?.id),
+      catchError((): Observable<boolean> => of(false)),
     );
   }
 
+  getCsrfCookie(): Observable<void> {
+    return this.httpClient.get<void>('/sanctum/csrf-cookie');
+  }
+
   loginUser(data: LoginUserRequest): Observable<User> {
-    return this.ensureCsrfCookie(this.httpClient.post<User>('/login', data));
+    return this.ensureCsrfCookie(
+      this.httpClient
+        .post<User>('/login', data)
+        .pipe(tap((user: User) => this.setUserStorage(user))),
+    );
   }
 
   logoutUser(): Observable<void | SimpleMessageResponse> {
+    this.clearUserStorage();
     // todo: is it necessary to preload CSRF cookie here ?
-    this.user = null;
-    sessionStorage.removeItem(this.userStorageKey);
     return this.ensureCsrfCookie(this.httpClient.post<void | SimpleMessageResponse>('/logout', {}));
   }
 
   registerUser(data: RegisterUserRequest): Observable<User> {
-    return this.ensureCsrfCookie(this.httpClient.post<User>('/register', data));
+    return this.ensureCsrfCookie(
+      this.httpClient
+        .post<User>('/register', data)
+        .pipe(tap((user: User) => this.setUserStorage(user))),
+    );
   }
 
   forgotPassword(data: ForgotPasswordRequest): Observable<any> {
@@ -101,7 +112,20 @@ export class AuthService {
     return this.ensureCsrfCookie(this.httpClient.post('/reset-password', data));
   }
 
-  ensureCsrfCookie<T>(observable: Observable<T>): Observable<T> {
-    return this.getCsrfCookie().pipe(concatMap(() => observable));
+  ensureCsrfCookie<T>(observable$: Observable<T>): Observable<T> {
+    return this.getCsrfCookie().pipe(concatMap(() => observable$));
+  }
+
+  private setUserStorage(user?: User): void {
+    if (!user?.id) {
+      throw new Error('User storage: user data is missing.');
+    }
+    this.user = { ...user };
+    localStorage.setItem(this.userStorageKey, JSON.stringify(user));
+  }
+
+  private clearUserStorage(): void {
+    this.user = null;
+    localStorage.removeItem(this.userStorageKey);
   }
 }

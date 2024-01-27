@@ -14,7 +14,9 @@ import { Router, RouterLink } from '@angular/router';
         {{ user.value().name }}
         <small>
           {{ user.value().email }}
-          <span *ngIf="!user.value().email_verified_at"> (neoverené)</span>
+          @if (!user.value().email_verified_at) {
+            <span>(neoverené)</span>
+          }
         </small>
         |
         <a [routerLink]="[]" (click)="logout()">Odhlásiť</a>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { authenticatedGuard } from '@app/guards/authenticated.guard';
 import { PlainLayoutComponent } from '@components/layouts/plain-layout/plain-layout.component';
 import { WithMenuLayoutComponent } from '@components/layouts/with-menu-layout/with-menu-layout.component';
 import { AboutPageComponent } from '@components/pages/about-page/about-page.component';
@@ -17,7 +18,11 @@ const routes: Routes = [
     component: WithMenuLayoutComponent,
     children: [
       { path: 'about', component: AboutPageComponent },
-      { path: 'forms', component: FormsPageComponent },
+      {
+        path: 'forms',
+        component: FormsPageComponent,
+        canMatch: [authenticatedGuard],
+      },
       { path: 'form/:id', component: FormPageComponent },
       { path: '', component: HomePageComponent },
     ],

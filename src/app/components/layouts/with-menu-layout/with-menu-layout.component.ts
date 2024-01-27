@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthPanelComponent } from '@components/ui/auth-panel/auth-panel.component';
 import { NgxColorSchemesComponent } from 'ngx-color-schemes';
+import { AuthService } from '@services/auth.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-with-menu-layout',
@@ -12,6 +15,7 @@ import { NgxColorSchemesComponent } from 'ngx-color-schemes';
     RouterLinkActive,
     AuthPanelComponent,
     NgxColorSchemesComponent,
+    AsyncPipe,
   ],
   template: `
     <div class="flx-row flx-end">
@@ -32,12 +36,10 @@ import { NgxColorSchemesComponent } from 'ngx-color-schemes';
               >Domov</a
             >
           </li>
-          <li>
-            <a [routerLink]="['/forms']" [routerLinkActive]="['active-link']">Formuláre</a>
-          </li>
-          <li>
-            <a [routerLink]="['/about']" [routerLinkActive]="['active-link']">O aplikácii</a>
-          </li>
+          @if (isAuthenticated$ | async) {
+            <li><a [routerLink]="['/forms']" [routerLinkActive]="['active-link']">Formuláre</a></li>
+          }
+          <li><a [routerLink]="['/about']" [routerLinkActive]="['active-link']">O aplikácii</a></li>
         </ul>
       </nav>
     </header>
@@ -52,4 +54,6 @@ import { NgxColorSchemesComponent } from 'ngx-color-schemes';
     </footer>
   `,
 })
-export class WithMenuLayoutComponent {}
+export class WithMenuLayoutComponent {
+  isAuthenticated$: Observable<boolean> = inject(AuthService).isAuthenticated();
+}

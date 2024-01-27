@@ -45,6 +45,11 @@ export interface CheckGroupsKeys {
   [key: string]: string[];
 }
 
+export type SchemasListItem = {
+  id: number;
+  title: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -53,18 +58,22 @@ export class QuestionsService {
     private validatorsService: ValidatorsService,
     private utilsService: UtilsService,
     private formBuilder: UntypedFormBuilder,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
   ) {}
 
   getQuestions(schemaId: number) {
     return this.loadFormSchema(schemaId).pipe(
       map((formSchema) => this.processFormSchema(formSchema)),
-      catchError(this.handleError('Formulár sa nepodarilo načítať.'))
+      catchError(this.handleError('Formulár sa nepodarilo načítať.')),
     );
   }
 
   loadFormSchema(schemaId: number): Observable<any> {
-    return this.httpClient.get(`/api/schema/${schemaId}`);
+    return this.httpClient.get<any>(`/api/schema/${schemaId}`);
+  }
+
+  loadAllFormSchemas(): Observable<SchemasListItem[]> {
+    return this.httpClient.get<SchemasListItem[]>('/api/schema');
   }
 
   processFormSchema(formSchema) {
@@ -141,7 +150,7 @@ export class QuestionsService {
             new UntypedFormControl({
               value: option.value || false,
               disabled: option.disabled || false,
-            })
+            }),
         );
         controlsConfig[key] = new UntypedFormArray(controls, validators);
       } else if (question instanceof FormeroBlockText || question instanceof FormeroBlockTitle) {
@@ -233,7 +242,7 @@ export class QuestionsService {
           ? { [block.key]: block.options.map((option) => option.key) }
           : {}),
       }),
-      {}
+      {},
     );
   }
 
