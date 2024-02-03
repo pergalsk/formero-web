@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -85,6 +85,7 @@ import { AuthService, RegisterUserRequest, User } from '@services/auth.service';
       </p>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPageComponent implements OnDestroy {
   router: Router = inject(Router);
