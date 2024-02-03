@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { authenticatedGuard } from '@app/guards/authenticated.guard';
+import { authenticatedGuard, unauthenticatedGuard } from '@app/guards/authenticated.guard';
 import { PlainLayoutComponent } from '@components/layouts/plain-layout/plain-layout.component';
 import { WithMenuLayoutComponent } from '@components/layouts/with-menu-layout/with-menu-layout.component';
 import { AboutPageComponent } from '@components/pages/about-page/about-page.component';
@@ -31,12 +31,27 @@ const routes: Routes = [
     path: '',
     component: PlainLayoutComponent,
     children: [
-      { path: 'log-in', component: LoginPageComponent },
-
+      {
+        path: 'log-in',
+        component: LoginPageComponent,
+        canMatch: [unauthenticatedGuard],
+      },
+      {
+        path: 'forgot-pwd',
+        component: ForgotPasswordPageComponent,
+        canMatch: [unauthenticatedGuard],
+      },
       // todo: after reload http://localhost:4200/register-new (with F5) -> 404 Not found
-      { path: 'register-new', component: RegisterPageComponent },
-      { path: 'forgot-pwd', component: ForgotPasswordPageComponent },
-      { path: 'password-reset/:token', component: ResetPasswordComponent },
+      {
+        path: 'register-new',
+        component: RegisterPageComponent,
+        canMatch: [unauthenticatedGuard],
+      },
+      {
+        path: 'password-reset/:token',
+        component: ResetPasswordComponent,
+        canMatch: [unauthenticatedGuard],
+      },
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

@@ -45,26 +45,22 @@ export type SimpleMessageResponse = {
 })
 export class AuthService {
   httpClient: HttpClient = inject(HttpClient);
-  userStorageKey = 'user';
 
-  user: User | null = null;
+  userLoaded = false;
+  user: User | null;
 
   getUser(): Observable<User> {
-    if (this.user) {
+    if (this.userLoaded) {
       return of(this.user);
     }
 
-    const userStr: string = localStorage.getItem(this.userStorageKey);
-    const user: User = JSON.parse(userStr);
-
-    if (user) {
-      this.user = user;
-      return of(user);
-    }
-
-    return this.httpClient
-      .get<User>('/api/user')
-      .pipe(tap((user: User): void => this.setUserStorage(user)));
+    // todo: handle multiple calls in short time
+    return this.httpClient.get<User>('/api/user').pipe(
+      tap({
+        next: (user: User) => this.setUserStorage(user),
+        error: () => this.setUserStorage(null),
+      }),
+    );
   }
 
   markAsUnauthenticated(): void {
@@ -76,6 +72,10 @@ export class AuthService {
       map((user: User | null): boolean => !!user?.id),
       catchError((): Observable<boolean> => of(false)),
     );
+  }
+
+  isUnauthenticated(): Observable<boolean> {
+    return this.isAuthenticated().pipe(map((status: boolean) => !status));
   }
 
   getCsrfCookie(): Observable<void> {
@@ -117,15 +117,11 @@ export class AuthService {
   }
 
   private setUserStorage(user?: User): void {
-    if (!user?.id) {
-      throw new Error('User storage: user data is missing.');
-    }
-    this.user = { ...user };
-    localStorage.setItem(this.userStorageKey, JSON.stringify(user));
+    this.user = user;
+    this.userLoaded = true;
   }
 
   private clearUserStorage(): void {
     this.user = null;
-    localStorage.removeItem(this.userStorageKey);
   }
 }

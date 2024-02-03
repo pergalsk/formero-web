@@ -5,3 +5,7 @@ import { inject } from '@angular/core';
 export const authenticatedGuard: CanMatchFn = () => {
   return inject(AuthService).isAuthenticated();
 };
+
+export const unauthenticatedGuard: CanMatchFn = () => {
+  return inject(AuthService).isUnauthenticated();
+};
