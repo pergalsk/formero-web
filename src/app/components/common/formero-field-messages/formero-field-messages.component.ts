@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControlStatus } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { NgIf } from '@angular/common';
 
 const messages = {
   required: 'Pole je povinné.',
@@ -17,9 +18,11 @@ const messages = {
 };
 
 @Component({
-  selector: 'app-formero-field-messages',
-  templateUrl: './formero-field-messages.component.html',
-  styleUrls: ['./formero-field-messages.component.scss'],
+    selector: 'app-formero-field-messages',
+    templateUrl: './formero-field-messages.component.html',
+    styleUrls: ['./formero-field-messages.component.scss'],
+    standalone: true,
+    imports: [NgIf],
 })
 export class FormeroFieldMessagesComponent implements OnInit, OnDestroy {
   @Input() control: AbstractControl;

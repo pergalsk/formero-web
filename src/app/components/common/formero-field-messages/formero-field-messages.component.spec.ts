@@ -8,8 +8,8 @@ describe('FormeroFieldMessagesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FormeroFieldMessagesComponent],
-    }).compileComponents();
+    imports: [FormeroFieldMessagesComponent],
+}).compileComponents();
   }));
 
   beforeEach(() => {

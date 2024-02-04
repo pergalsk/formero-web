@@ -8,8 +8,8 @@ describe('FormeroTextboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FormeroTextboxComponent],
-    }).compileComponents();
+    imports: [FormeroTextboxComponent],
+}).compileComponents();
   }));
 
   beforeEach(() => {

@@ -44,56 +44,54 @@ function colorSchemesInitializer(injector: Injector) {
 }
 
 @NgModule({
-  declarations: [
-    FormComponent,
-    FormeroTextboxComponent,
-    FormeroTextareaComponent,
-    FormeroFieldMessagesComponent,
-    FormeroDropdownComponent,
-    FormeroRadiogroupComponent,
-    FormeroAgreementComponent,
-    FormeroTitleComponent,
-    FormeroBlocktextComponent,
-    QuickInfoComponent,
-    FormeroCheckgroupComponent,
-    FormeroValidationComponent,
-    IndexPageComponent,
-    HomePageComponent,
-    FormPageComponent,
-    AboutPageComponent,
-    PanelComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxColorSchemesModule.forRoot({
-      lightSchemeClass: 'color-scheme-light',
-      darkSchemeClass: 'color-scheme-dark',
-      storageKey: 'color-scheme-preference',
-    }),
-    // standalone components:
-    AuthPanelComponent,
-  ],
-  providers: [
-    interceptorProviders,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: colorSchemesInitializer,
-      deps: [Injector],
-      multi: true,
-    },
-    {
-      provide: LOCALE_ID,
-      useValue: 'sk-SK',
-    },
-    {
-      provide: DEFAULT_CURRENCY_CODE,
-      useValue: 'EUR',
-    },
-  ],
-  bootstrap: [IndexPageComponent],
+    declarations: [IndexPageComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxColorSchemesModule.forRoot({
+            lightSchemeClass: 'color-scheme-light',
+            darkSchemeClass: 'color-scheme-dark',
+            storageKey: 'color-scheme-preference',
+        }),
+        // standalone components:
+        AuthPanelComponent,
+        FormComponent,
+        FormeroTextboxComponent,
+        FormeroTextareaComponent,
+        FormeroFieldMessagesComponent,
+        FormeroDropdownComponent,
+        FormeroRadiogroupComponent,
+        FormeroAgreementComponent,
+        FormeroTitleComponent,
+        FormeroBlocktextComponent,
+        QuickInfoComponent,
+        FormeroCheckgroupComponent,
+        FormeroValidationComponent,
+        HomePageComponent,
+        FormPageComponent,
+        AboutPageComponent,
+        PanelComponent,
+    ],
+    providers: [
+        interceptorProviders,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: colorSchemesInitializer,
+            deps: [Injector],
+            multi: true,
+        },
+        {
+            provide: LOCALE_ID,
+            useValue: 'sk-SK',
+        },
+        {
+            provide: DEFAULT_CURRENCY_CODE,
+            useValue: 'EUR',
+        },
+    ],
+    bootstrap: [IndexPageComponent],
 })
 export class AppModule {}

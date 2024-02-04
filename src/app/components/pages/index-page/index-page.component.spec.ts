@@ -8,8 +8,8 @@ describe('IndexPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [IndexPageComponent],
-    }).compileComponents();
+    declarations: [IndexPageComponent],
+}).compileComponents();
   }));
 
   beforeEach(() => {

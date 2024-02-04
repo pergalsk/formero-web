@@ -8,8 +8,8 @@ describe('FormPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FormPageComponent],
-    }).compileComponents();
+    imports: [FormPageComponent],
+}).compileComponents();
   }));
 
   beforeEach(() => {

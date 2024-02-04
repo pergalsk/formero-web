@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { QuestionsService, FormBlocksSet } from '@services/questions.service';
 import { UtilsService } from '@services/utils.service';
 import { CalculationsService } from '@services/calculations.service';
+import { FormComponent } from '../../form/form.component';
+import { NgIf } from '@angular/common';
 
 export enum InitState {
   Initializing = 'INITIALIZING',
@@ -12,9 +14,11 @@ export enum InitState {
 }
 
 @Component({
-  selector: 'app-form-page',
-  templateUrl: './form-page.component.html',
-  styleUrls: ['./form-page.component.scss'],
+    selector: 'app-form-page',
+    templateUrl: './form-page.component.html',
+    styleUrls: ['./form-page.component.scss'],
+    standalone: true,
+    imports: [NgIf, FormComponent],
 })
 export class FormPageComponent implements OnInit, OnDestroy {
   blocks: FormBlocksSet | null;

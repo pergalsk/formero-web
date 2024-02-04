@@ -1,14 +1,24 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UtilsService } from '../../../services/utils.service';
 import { FormeroQuestionCheckgroup } from '../../../Question';
+import { FormeroFieldMessagesComponent } from '../../common/formero-field-messages/formero-field-messages.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-formero-checkgroup',
-  templateUrl: './formero-checkgroup.component.html',
-  styleUrls: ['./formero-checkgroup.component.scss'],
+    selector: 'app-formero-checkgroup',
+    templateUrl: './formero-checkgroup.component.html',
+    styleUrls: ['./formero-checkgroup.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        NgFor,
+        FormeroFieldMessagesComponent,
+    ],
 })
 export class FormeroCheckgroupComponent implements OnInit, OnDestroy {
   @Input() props: FormeroQuestionCheckgroup;
