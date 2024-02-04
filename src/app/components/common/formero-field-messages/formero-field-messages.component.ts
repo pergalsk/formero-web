@@ -18,11 +18,11 @@ const messages = {
 };
 
 @Component({
-    selector: 'app-formero-field-messages',
-    templateUrl: './formero-field-messages.component.html',
-    styleUrls: ['./formero-field-messages.component.scss'],
-    standalone: true,
-    imports: [NgIf],
+  selector: 'app-formero-field-messages',
+  templateUrl: './formero-field-messages.component.html',
+  styleUrls: ['./formero-field-messages.component.scss'],
+  standalone: true,
+  imports: [NgIf],
 })
 export class FormeroFieldMessagesComponent implements OnInit, OnDestroy {
   @Input() control: AbstractControl;

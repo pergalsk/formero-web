@@ -5,17 +5,11 @@ import { FormeroFieldMessagesComponent } from '../../common/formero-field-messag
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-formero-radiogroup',
-    templateUrl: './formero-radiogroup.component.html',
-    styleUrls: ['./formero-radiogroup.component.scss'],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        NgIf,
-        FormeroFieldMessagesComponent,
-    ],
+  selector: 'app-formero-radiogroup',
+  templateUrl: './formero-radiogroup.component.html',
+  styleUrls: ['./formero-radiogroup.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, FormeroFieldMessagesComponent],
 })
 export class FormeroRadiogroupComponent implements OnInit {
   @Input() props: FormeroQuestionRadiogroup;

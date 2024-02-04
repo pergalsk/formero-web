@@ -8,8 +8,8 @@ describe('FormeroRadiogroupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [FormeroRadiogroupComponent],
-}).compileComponents();
+      imports: [FormeroRadiogroupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,8 +8,8 @@ describe('FormeroTitleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [FormeroTitleComponent],
-}).compileComponents();
+      imports: [FormeroTitleComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

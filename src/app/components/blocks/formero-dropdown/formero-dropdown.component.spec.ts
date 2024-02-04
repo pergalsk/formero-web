@@ -8,8 +8,8 @@ describe('FormeroDropdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [FormeroDropdownComponent],
-}).compileComponents();
+      imports: [FormeroDropdownComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

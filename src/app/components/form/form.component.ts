@@ -35,29 +35,29 @@ interface SubmitEvent extends Event {
 }
 
 @Component({
-    selector: 'app-form',
-    templateUrl: './form.component.html',
-    styleUrls: ['./form.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        NgFor,
-        FormsModule,
-        ReactiveFormsModule,
-        PanelComponent,
-        FormeroTitleComponent,
-        FormeroBlocktextComponent,
-        FormeroTextboxComponent,
-        FormeroTextareaComponent,
-        FormeroDropdownComponent,
-        FormeroRadiogroupComponent,
-        FormeroCheckgroupComponent,
-        FormeroAgreementComponent,
-        FormeroValidationComponent,
-        QuickInfoComponent,
-        JsonPipe,
-        CurrencyPipe,
-    ],
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    FormsModule,
+    ReactiveFormsModule,
+    PanelComponent,
+    FormeroTitleComponent,
+    FormeroBlocktextComponent,
+    FormeroTextboxComponent,
+    FormeroTextareaComponent,
+    FormeroDropdownComponent,
+    FormeroRadiogroupComponent,
+    FormeroCheckgroupComponent,
+    FormeroAgreementComponent,
+    FormeroValidationComponent,
+    QuickInfoComponent,
+    JsonPipe,
+    CurrencyPipe,
+  ],
 })
 export class FormComponent implements OnInit {
   @Input() blocks: FormBlocksSet;
@@ -84,7 +84,7 @@ export class FormComponent implements OnInit {
   constructor(
     private utilsService: UtilsService,
     private questionsService: QuestionsService,
-    private calculationsService: CalculationsService
+    private calculationsService: CalculationsService,
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class FormComponent implements OnInit {
     this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions?.blocks);
     this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
-      this.questions.blocks
+      this.questions.blocks,
     );
 
     if (this.calculationSchema) {
@@ -234,7 +234,7 @@ export class FormComponent implements OnInit {
 
     this.partialSum = this.calculationsService.calculateFormValue(
       this.formRawValue,
-      this.calculationSchema
+      this.calculationSchema,
     );
   }
 
@@ -263,7 +263,7 @@ export class FormComponent implements OnInit {
         this.state = State.SubmitError;
         this.errors = [...this.errors, error];
         this.utilsService.scrollToTop();
-      }
+      },
     );
   }
 

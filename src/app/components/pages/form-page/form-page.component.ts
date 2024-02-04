@@ -14,11 +14,11 @@ export enum InitState {
 }
 
 @Component({
-    selector: 'app-form-page',
-    templateUrl: './form-page.component.html',
-    styleUrls: ['./form-page.component.scss'],
-    standalone: true,
-    imports: [NgIf, FormComponent],
+  selector: 'app-form-page',
+  templateUrl: './form-page.component.html',
+  styleUrls: ['./form-page.component.scss'],
+  standalone: true,
+  imports: [NgIf, FormComponent],
 })
 export class FormPageComponent implements OnInit, OnDestroy {
   blocks: FormBlocksSet | null;
@@ -33,7 +33,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private questionsService: QuestionsService,
     private calculationsService: CalculationsService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
   ) {}
 
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
    */
   private getQuestionSuccess(questionsData) {
     console.log(
-      `Form schema ID=${questionsData.id} successfully loaded (containing ${questionsData.blocks.length} form blocks).`
+      `Form schema ID=${questionsData.id} successfully loaded (containing ${questionsData.blocks.length} form blocks).`,
     );
 
     this.blocks = questionsData; // todo: clone
@@ -113,7 +113,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.state = InitState.Success;
     this.calculations = calculationsData;
     console.log(
-      `Form calculations ID=${this.blocks.calculationsId} successfully loaded (containing ${this.calculations.length} parts).`
+      `Form calculations ID=${this.blocks.calculationsId} successfully loaded (containing ${this.calculations.length} parts).`,
     );
   }
 }

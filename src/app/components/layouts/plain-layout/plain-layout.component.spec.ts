@@ -8,10 +8,9 @@ describe('PlainLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlainLayoutComponent]
-    })
-    .compileComponents();
-    
+      imports: [PlainLayoutComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(PlainLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

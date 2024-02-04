@@ -22,11 +22,11 @@ const panelTypes = {
 };
 
 @Component({
-    selector: 'app-panel',
-    templateUrl: './panel.component.html',
-    styleUrls: ['./panel.component.scss'],
-    standalone: true,
-    imports: [NgClass],
+  selector: 'app-panel',
+  templateUrl: './panel.component.html',
+  styleUrls: ['./panel.component.scss'],
+  standalone: true,
+  imports: [NgClass],
 })
 export class PanelComponent implements OnInit {
   @Input() type = 0;

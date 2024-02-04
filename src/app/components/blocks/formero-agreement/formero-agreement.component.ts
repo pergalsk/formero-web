@@ -5,16 +5,11 @@ import { FormeroFieldMessagesComponent } from '../../common/formero-field-messag
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-formero-agreement',
-    templateUrl: './formero-agreement.component.html',
-    styleUrls: ['./formero-agreement.component.scss'],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgIf,
-        FormeroFieldMessagesComponent,
-    ],
+  selector: 'app-formero-agreement',
+  templateUrl: './formero-agreement.component.html',
+  styleUrls: ['./formero-agreement.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgIf, FormeroFieldMessagesComponent],
 })
 export class FormeroAgreementComponent implements OnInit {
   @Input() props: FormeroQuestionAgreementCheckbox;

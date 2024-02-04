@@ -5,8 +5,8 @@ import { FormComponent } from './form.component';
 describe('FormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [RouterTestingModule, FormComponent],
-}).compileComponents();
+      imports: [RouterTestingModule, FormComponent],
+    }).compileComponents();
   }));
 
   it('should create the app', () => {

@@ -8,8 +8,8 @@ describe('FormeroValidationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [FormeroValidationComponent],
-}).compileComponents();
+      imports: [FormeroValidationComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,10 +8,9 @@ describe('WithMenuLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WithMenuLayoutComponent]
-    })
-    .compileComponents();
-    
+      imports: [WithMenuLayoutComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(WithMenuLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

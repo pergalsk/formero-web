@@ -8,8 +8,8 @@ describe('QuickInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [QuickInfoComponent],
-}).compileComponents();
+      imports: [QuickInfoComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

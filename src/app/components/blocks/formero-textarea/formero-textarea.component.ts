@@ -5,16 +5,11 @@ import { FormeroFieldMessagesComponent } from '../../common/formero-field-messag
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-formero-textarea',
-    templateUrl: './formero-textarea.component.html',
-    styleUrls: ['./formero-textarea.component.scss'],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgIf,
-        FormeroFieldMessagesComponent,
-    ],
+  selector: 'app-formero-textarea',
+  templateUrl: './formero-textarea.component.html',
+  styleUrls: ['./formero-textarea.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgIf, FormeroFieldMessagesComponent],
 })
 export class FormeroTextareaComponent implements OnInit {
   @Input() props: FormeroQuestionTextarea;

@@ -5,17 +5,11 @@ import { FormeroFieldMessagesComponent } from '../../common/formero-field-messag
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-formero-dropdown',
-    templateUrl: './formero-dropdown.component.html',
-    styleUrls: ['./formero-dropdown.component.scss'],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        NgIf,
-        FormeroFieldMessagesComponent,
-    ],
+  selector: 'app-formero-dropdown',
+  templateUrl: './formero-dropdown.component.html',
+  styleUrls: ['./formero-dropdown.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, FormeroFieldMessagesComponent],
 })
 export class FormeroDropdownComponent implements OnInit {
   @Input() props: FormeroQuestionDropdown;

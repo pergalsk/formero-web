@@ -11,17 +11,12 @@ import { UtilsService } from '@services/utils.service';
 import { NgIf, NgFor, CurrencyPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-quick-info',
-    templateUrl: './quick-info.component.html',
-    styleUrls: ['./quick-info.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        NgIf,
-        NgFor,
-        CurrencyPipe,
-        KeyValuePipe,
-    ],
+  selector: 'app-quick-info',
+  templateUrl: './quick-info.component.html',
+  styleUrls: ['./quick-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgFor, CurrencyPipe, KeyValuePipe],
 })
 export class QuickInfoComponent implements OnChanges {
   @Input() items: any[];
