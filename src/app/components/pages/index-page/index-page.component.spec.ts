@@ -8,7 +8,7 @@ describe('IndexPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [IndexPageComponent],
+      imports: [IndexPageComponent],
     }).compileComponents();
   }));
 
