@@ -4,19 +4,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService, LoginUserRequest, User } from '@services/auth.service';
+import { ValidatorsService } from '@services/validators.service';
+import { AuthService, RegisterUserRequest, User } from '@auth/services/auth.service';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-register-page',
   standalone: true,
   imports: [RouterLink, ReactiveFormsModule, JsonPipe],
   template: `
-    <h1>Prihlásenie</h1>
+    <h1>Registrácia</h1>
 
-    <form class="auth" [formGroup]="formData" (ngSubmit)="loginSubmit()">
-      @if (message) {
-        <p>{{ message }}</p>
-      }
+    <form class="auth" [formGroup]="formData" (ngSubmit)="registerSubmit()">
       <p>
         <label for="email">Email *</label>
         <input id="email" type="email" autocomplete="email" formControlName="email" />
@@ -34,7 +32,12 @@ import { AuthService, LoginUserRequest, User } from '@services/auth.service';
       </p>
       <p>
         <label for="password">Heslo *</label>
-        <input id="password" type="password" autocomplete="password" formControlName="password" />
+        <input
+          id="password"
+          type="password"
+          autocomplete="new-password"
+          formControlName="password"
+        />
         @if (showValidations && formData.controls.password.errors?.required) {
           <div style="color: red">Pole je povinné</div>
         }
@@ -45,51 +48,77 @@ import { AuthService, LoginUserRequest, User } from '@services/auth.service';
         }
       </p>
       <p>
-        <label for="remember">
-          <input id="remember" type="checkbox" formControlName="remember" />
-          <span>Trvalé prihlásenie</span>
-        </label>
-        @if (showValidations && serverErrors()?.remember) {
-          @for (errorText of serverErrors().remember; track $index) {
+        <label for="password_confirm">Potvrdenie hesla *</label>
+        <input
+          id="password_confirm"
+          type="password"
+          autocomplete="new-password"
+          formControlName="password_confirmation"
+        />
+        @if (showValidations && formData.controls.password_confirmation.errors?.required) {
+          <div style="color: red">Pole je povinné</div>
+        }
+        @if (showValidations && formData.errors?.groupEqual) {
+          <div style="color: red">Heslo musí byť rovnaké</div>
+        }
+      </p>
+      <p>
+        <label for="name">Meno *</label>
+        <input id="name" type="text" autocomplete="name" formControlName="name" />
+        @if (showValidations && formData.controls.name.errors?.required) {
+          <div style="color: red">Pole je povinné</div>
+        }
+        @if (showValidations && serverErrors()?.name) {
+          @for (errorText of serverErrors().name; track $index) {
             <div style="color: red">{{ errorText }}</div>
           }
         }
       </p>
       <p>
-        <button type="submit">Prihlásiť</button>
+        <button type="submit">Registrovať</button>
       </p>
       <p>
         <small>
           <a [routerLink]="['/']">Domov</a> |
-          <a [routerLink]="['/forgot-pwd']">Zabudnuté heslo?</a>
-          | <a [routerLink]="['/register-new']">Registrovať</a>
+          <a [routerLink]="['/log-in']">Prihlásiť</a>
         </small>
       </p>
     </form>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent implements OnDestroy {
+export class RegisterPageComponent implements OnDestroy {
   router: Router = inject(Router);
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
+  validatorsService: ValidatorsService = inject(ValidatorsService);
 
   subscription$: Subscription;
 
   showValidations = false;
-  message = this.router.getCurrentNavigation()?.extras?.state?.message || '';
   serverErrors = signal<{ [key: string]: string[] }>({});
 
   formData = this.fb.group(
     {
-      email: ['', [Validators.required]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          this.validatorsService.emailPatternValidator,
+        ],
+      ],
       password: ['', Validators.required],
-      remember: [false],
+      password_confirmation: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(255)]],
     },
-    { updateOn: 'change' },
+    {
+      validators: this.validatorsService.groupEqualValidator(['password', 'password_confirmation']),
+      updateOn: 'change',
+    },
   );
 
-  loginSubmit(): void {
+  registerSubmit() {
     this.showValidations = true;
     this.serverErrors.set({});
 
@@ -97,9 +126,9 @@ export class LoginPageComponent implements OnDestroy {
       return;
     }
 
-    const data: LoginUserRequest = this.formData.getRawValue();
+    const data: RegisterUserRequest = this.formData.getRawValue();
 
-    this.subscription$ = this.authService.loginUser(data).subscribe({
+    this.subscription$ = this.authService.registerUser(data).subscribe({
       next: (value: User) => this.navigateToHome(),
       error: (errData: HttpErrorResponse) => this.serverErrors.set(errData?.error?.errors),
     });

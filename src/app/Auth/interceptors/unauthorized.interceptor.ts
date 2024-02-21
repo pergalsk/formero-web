@@ -8,7 +8,7 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@auth/services/auth.service';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {

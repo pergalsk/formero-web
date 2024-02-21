@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthPanelComponent } from '@components/ui/auth-panel/auth-panel.component';
 import { NgxColorSchemesComponent } from 'ngx-color-schemes';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@auth/services/auth.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 

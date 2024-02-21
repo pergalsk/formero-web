@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService, User } from '@services/auth.service';
+import { AuthService, User } from '@auth/services/auth.service';
 import { toSignalWithError } from '@app/utils/toSignalWithError';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';

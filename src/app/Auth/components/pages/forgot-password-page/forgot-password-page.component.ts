@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AuthService, ForgotPasswordRequest } from '@services/auth.service';
+import { AuthService, ForgotPasswordRequest } from '@auth/services/auth.service';
 import { ValidatorsService } from '@services/validators.service';
 
 @Component({

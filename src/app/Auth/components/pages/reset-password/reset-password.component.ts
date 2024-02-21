@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AuthService, ResetPasswordRequest } from '@services/auth.service';
+import { AuthService, ResetPasswordRequest } from '@auth/services/auth.service';
 import { ValidatorsService } from '@services/validators.service';
 
 @Component({

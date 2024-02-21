@@ -6,6 +6,9 @@
       "@app/*": [
         "src/app/*"
       ],
+      "@auth/*": [
+        "src/app/Auth/*"
+      ],
       "@assets/*": [
         "src/assets/*"
       ],
