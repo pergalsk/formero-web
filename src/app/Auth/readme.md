@@ -4,7 +4,9 @@ How to integrate toolkit into existing application.
 
 ## Integration into existing app
 
-### Routes
+Just copy folder into your project and do these steps
+
+### 1. Routes
 
 Use AUTH_ROUTES and guards in application routes file:
 
@@ -27,7 +29,7 @@ export const routes: Routes = [
 ];
 ```
 
-### Interceptors
+### 2. Interceptors
 
 Import interceptors into main.ts file:
 
