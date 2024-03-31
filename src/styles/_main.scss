@@ -18,22 +18,45 @@ html {
 }
 
 body {
-  display: flex;
-
-  &.center-h {
-    justify-content: center;
-  }
-
-  &.center-v {
-    align-items: center;
-  }
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  max-width: var.$content-width;
-  margin: var.$content-margin;
+  max-width: var.$content-max-width;
+  padding: var.$content-margin;
+
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: var.$content-margin;
+  }
+
+  &.dashboard-layout {
+    display: grid;
+    grid-gap: var.$content-margin;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+
+    header {
+      grid-area: header;
+    }
+
+    main {
+      grid-area: main;
+    }
+
+    footer {
+      grid-area: footer;
+    }
+  }
+}
+
+.app-title {
+  margin-inline-end: 50px;
 }
 
 .main-form {
@@ -66,7 +89,7 @@ body {
 
   .fit {
     align-self: center;
-    min-width: var.$content-width;
+    min-width: var.$content-max-width;
   }
 
   .label-title {
@@ -85,6 +108,15 @@ body {
   bottom: 1rem;
 }
 
+// utilities
+
+.bold {
+  font-weight: bold;
+}
+.text-right {
+  text-align: right;
+}
+
 .flx-col,
 .flx-row {
   display: flex;
@@ -98,6 +130,16 @@ body {
   }
   &.flx-end {
     justify-content: end;
+  }
+
+  &.flx-ai-start {
+    align-items: start;
+  }
+  &.flx-ai-center {
+    align-items: center;
+  }
+  &.flx-ai-end {
+    align-items: end;
   }
 
   .flx-inline {

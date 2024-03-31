@@ -6,15 +6,18 @@ import {
   DEFAULT_CURRENCY_CODE,
   importProvidersFrom,
 } from '@angular/core';
-import { environment } from './environments/environment';
-import { IndexPageComponent } from '@components/pages/index-page/index-page.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxColorSchemesService, NgxColorSchemesModule } from 'ngx-color-schemes';
+
+import { environment } from './environments/environment';
+
+import { IndexPageComponent } from '@components/pages/index-page/index-page.component';
 import { interceptorProviders } from '@app/interceptors';
 import { authInterceptorProviders } from '@auth/interceptors';
-import { provideRouter } from '@angular/router';
 import { routes } from '@app/routes';
 
 function colorSchemesInitializer(injector: Injector) {
@@ -31,6 +34,7 @@ bootstrapApplication(IndexPageComponent, {
   providers: [
     importProvidersFrom(
       BrowserModule,
+      BrowserAnimationsModule,
       FormsModule,
       ReactiveFormsModule,
       NgxColorSchemesModule.forRoot({

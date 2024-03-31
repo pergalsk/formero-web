@@ -1,0 +1,10 @@
+@use 'variables' as var;
+
+.screen-title {
+  display: inline-block;
+  width: fit-content;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-block-end: 0.2rem solid var.$dashboard-accent-color;
+  padding-block-end: 0.2rem;
+}

@@ -6,7 +6,7 @@ import { AboutPageComponent } from '@components/pages/about-page/about-page.comp
 import { FormPageComponent } from '@components/pages/form-page/form-page.component';
 import { FormsPageComponent } from '@components/pages/forms-page/forms-page.component';
 import { HomePageComponent } from '@components/pages/home-page/home-page.component';
-
+import { FormCreatePageComponent } from '@components/pages/form-create-page/form-create-page.component';
 import { AUTH_ROUTES } from '@auth/routes';
 import { authenticatedGuard } from '@auth/guards/authenticated.guard';
 
@@ -22,11 +22,16 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DashboardLayoutComponent,
+    component: WithMenuLayoutComponent,
     children: [
       {
         path: 'forms',
         component: FormsPageComponent,
+        canMatch: [authenticatedGuard],
+      },
+      {
+        path: 'forms/create',
+        component: FormCreatePageComponent,
         canMatch: [authenticatedGuard],
       },
     ],

@@ -5,10 +5,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-dashboard-layout',
   standalone: true,
   imports: [RouterOutlet],
-  template: `
-    <h1>Dashboard</h1>
-    <router-outlet></router-outlet>
-  `,
+  template: `<router-outlet></router-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardLayoutComponent {}

@@ -48,6 +48,14 @@ export interface CheckGroupsKeys {
 export type SchemasListItem = {
   id: number;
   title: string;
+  calculation_id: number;
+  user_id: number;
+  batch: boolean;
+  status: number;
+  options: any;
+  comment: string;
+  hash: string;
+  created_at: string;
 };
 
 @Injectable({
