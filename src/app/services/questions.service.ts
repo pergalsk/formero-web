@@ -86,27 +86,26 @@ export class QuestionsService {
 
   processFormSchema(formSchema) {
     // Process global validators
-    if (formSchema && formSchema.validators && formSchema.validators.length) {
+    if (Array.isArray(formSchema.validators) && formSchema.validators.length) {
       formSchema.validators = formSchema.validators
         .map((rawValidator) => this.validatorsService.processRawValidators(rawValidator))
-        .filter((validator) => validator); // filter falsy values
+        .filter((validator: ValidatorFn | null) => validator); // filter falsy values
     }
 
     // Process form blocks
-    if (formSchema && formSchema.blocks && formSchema.blocks.length) {
+    if (Array.isArray(formSchema.blocks) && formSchema.blocks.length) {
       formSchema.blocks = formSchema.blocks
         .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
-        .filter((formBlock) => {
-          return formBlock;
-        }) // filter falsy values
+        .filter((formBlock) => formBlock) // filter falsy values
         .sort(this.utilsService.sortByOrderProp);
     }
+
     return formSchema;
   }
 
   processRawFormBlock(rawFormBlock) {
-    if (rawFormBlock.validators && rawFormBlock.validators.length) {
-      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo) => {
+    if (Array.isArray(rawFormBlock.validators) && rawFormBlock.validators.length) {
+      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo: RawValidatorInfo) => {
         // todo: move to separate file
         return [
           'required',
@@ -117,8 +116,10 @@ export class QuestionsService {
       });
 
       rawFormBlock.validators = rawFormBlock.validators
-        .map((rawValidatorInfo) => this.validatorsService.processRawValidators(rawValidatorInfo))
-        .filter((validator) => validator); // filter falsy values
+        .map((rawValidatorInfo: RawValidatorInfo) =>
+          this.validatorsService.processRawValidators(rawValidatorInfo),
+        )
+        .filter((validator: ValidatorFn | null) => validator); // filter falsy values
     }
 
     // todo: move to separate directory as exported constant
@@ -204,6 +205,30 @@ export class QuestionsService {
       : [];
   }
 
+  extractCheckGroupsKeys(questions: FormBlocksSet): CheckGroupsKeys {
+    // todo: handle null values
+    return questions.blocks.reduce(
+      (result, block) => ({
+        ...result,
+        ...(block instanceof FormeroQuestionCheckgroup
+          ? { [block.key]: block.options.map((option) => option.key) }
+          : {}),
+      }),
+      {},
+    );
+  }
+
+  replaceCheckGroupValuesWithKeys(formData: any, checkGroupsKeys: CheckGroupsKeys): any {
+    const result = { ...formData };
+    // todo: change to map (and simplify)
+    for (const [key, value] of Object.entries(checkGroupsKeys)) {
+      result[key] = result[key].reduce((outputToken, current, index) => {
+        return current ? outputToken + (outputToken.length ? '|' : '') + value[index] : outputToken;
+      }, '');
+    }
+    return result;
+  }
+
   submitAnswers(formId, answersData: any[]): Observable<any> {
     const data = {
       entries: answersData,
@@ -239,30 +264,6 @@ export class QuestionsService {
     });
 
     return submitData;
-  }
-
-  extractCheckGroupsKeys(questions: FormBlocksSet): CheckGroupsKeys {
-    // todo: handle null values
-    return questions.blocks.reduce(
-      (result, block) => ({
-        ...result,
-        ...(block instanceof FormeroQuestionCheckgroup
-          ? { [block.key]: block.options.map((option) => option.key) }
-          : {}),
-      }),
-      {},
-    );
-  }
-
-  replaceCheckGroupValuesWithKeys(formData: any, checkGroupsKeys: CheckGroupsKeys): any {
-    const result = { ...formData };
-    // todo: change to map (and simplify)
-    for (const [key, value] of Object.entries(checkGroupsKeys)) {
-      result[key] = result[key].reduce((outputToken, current, index) => {
-        return current ? outputToken + (outputToken.length ? '|' : '') + value[index] : outputToken;
-      }, '');
-    }
-    return result;
   }
 
   generateQR() {

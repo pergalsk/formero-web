@@ -43,7 +43,7 @@ export class ValidatorsService {
   );
 
   processRawValidators(rawValidator: RawValidatorInfo): ValidatorFn | null {
-    let validatorFn;
+    let validatorFn: ValidatorFn | null;
 
     switch (rawValidator.type) {
       case 'required':
