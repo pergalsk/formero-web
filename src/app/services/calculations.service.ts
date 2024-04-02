@@ -1,19 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, delay, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { UtilsService } from './utils.service';
-import { QuestionsService } from './questions.service';
+import { SchemaService } from './schema.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalculationsService {
-  constructor(
-    private httpClient: HttpClient,
-    private questionsService: QuestionsService,
-    private utilsService: UtilsService
-  ) {}
+  httpClient: HttpClient = inject(HttpClient);
+  schemaService: SchemaService = inject(SchemaService);
+  utilsService: UtilsService = inject(UtilsService);
 
   loadFormCalculations(calculationsId: number): Observable<any> {
     return this.httpClient.get(`/api/calculation/${calculationsId}`);
@@ -23,10 +21,10 @@ export class CalculationsService {
     return this.loadFormCalculations(calculationsId).pipe(
       map((calculations) => this.processFormCalculations(calculations)),
       catchError(
-        this.questionsService.handleError(
-          `Failed loading calculations ID=${calculationsId}. Starting form without calculations feature.`
-        )
-      )
+        this.schemaService.handleError(
+          `Failed loading calculations ID=${calculationsId}. Starting form without calculations feature.`,
+        ),
+      ),
     );
   }
 
@@ -79,7 +77,7 @@ export class CalculationsService {
 
     const dimIndexes: (number | number[])[] = this.getIndexesFromDimensions(
       formValueRAW,
-      dimensions
+      dimensions,
     );
     const cherryPickedValues: any = this.utilsService.cherryPickFromArray(values, dimIndexes);
     const flattenedValues: number[] = cherryPickedValues.flat(Infinity);
@@ -88,7 +86,7 @@ export class CalculationsService {
   }
 
   getIndexesFromDimensions(formValueRAW: any, dimensions: string[]): number[] {
-    let dimIndexes = [];
+    const dimIndexes = [];
 
     // todo: elaborate this function properly for different type form values
 

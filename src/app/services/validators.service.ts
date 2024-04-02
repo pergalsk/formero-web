@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { UtilsService } from './utils.service';
-import { RawValidatorInfo } from './questions.service';
+import { RawValidatorInfo } from './schema.service';
 
 export interface ResolverCallbackFn {
   (control: AbstractControl, requiredChecked: number, actualChecked: number): ValidationErrors;

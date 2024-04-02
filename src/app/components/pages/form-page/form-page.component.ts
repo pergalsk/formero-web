@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { QuestionsService, FormBlocksSet } from '@services/questions.service';
+import { SchemaService, FormBlocksSet } from '@services/schema.service';
 import { UtilsService } from '@services/utils.service';
 import { CalculationsService } from '@services/calculations.service';
 import { FormComponent } from '../../form/form.component';
@@ -29,12 +29,10 @@ export class FormPageComponent implements OnInit, OnDestroy {
   schema$: Subscription = null;
   calc$: Subscription = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private questionsService: QuestionsService,
-    private calculationsService: CalculationsService,
-    private utilsService: UtilsService,
-  ) {}
+  route: ActivatedRoute = inject(ActivatedRoute);
+  schemaService: SchemaService = inject(SchemaService);
+  calculationsService: CalculationsService = inject(CalculationsService);
+  utilsService: UtilsService = inject(UtilsService);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -64,7 +62,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.schema$?.unsubscribe();
     this.calc$?.unsubscribe();
 
-    this.schema$ = this.questionsService.getQuestions(schemaId).subscribe({
+    this.schema$ = this.schemaService.getQuestions(schemaId).subscribe({
       next: this.getQuestionSuccess.bind(this),
       error: this.getQuestionError.bind(this),
     });

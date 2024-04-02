@@ -10,7 +10,7 @@ import { JsonPipe, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
-import { QuestionsService, SchemasListItem } from '@services/questions.service';
+import { SchemaService, SchemasListItem } from '@services/schema.service';
 
 interface Column {
   field: string;
@@ -53,7 +53,7 @@ interface Column {
 export class FormsPageComponent implements OnInit, OnDestroy {
   router: Router = inject(Router);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  questionsService: QuestionsService = inject(QuestionsService);
+  schemaService: SchemaService = inject(SchemaService);
 
   formsList: SchemasListItem[] = [];
   subscription: Subscription;
@@ -69,7 +69,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    this.subscription = this.questionsService
+    this.subscription = this.schemaService
       .loadAllFormSchemas()
       .subscribe((list: SchemasListItem[]) => {
         this.formsList = [...list];

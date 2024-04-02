@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   AbstractControlOptions,
@@ -61,13 +61,11 @@ export type SchemasListItem = {
 @Injectable({
   providedIn: 'root',
 })
-export class QuestionsService {
-  constructor(
-    private validatorsService: ValidatorsService,
-    private utilsService: UtilsService,
-    private formBuilder: UntypedFormBuilder,
-    private httpClient: HttpClient,
-  ) {}
+export class SchemaService {
+  validatorsService: ValidatorsService = inject(ValidatorsService);
+  utilsService: UtilsService = inject(UtilsService);
+  formBuilder: UntypedFormBuilder = inject(UntypedFormBuilder);
+  httpClient: HttpClient = inject(HttpClient);
 
   getQuestions(schemaId: number) {
     return this.loadFormSchema(schemaId).pipe(

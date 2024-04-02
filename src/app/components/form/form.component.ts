@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { QuestionsService, FormBlocksSet } from '@services/questions.service';
+import { SchemaService, FormBlocksSet } from '@services/schema.service';
 import { UtilsService } from '@services/utils.service';
 import { CalculationsService } from '@services/calculations.service';
 import { QuickInfoComponent } from '../common/quick-info/quick-info.component';
@@ -81,11 +81,9 @@ export class FormComponent implements OnInit {
   STATE = State;
   ACTION = Action;
 
-  constructor(
-    private utilsService: UtilsService,
-    private questionsService: QuestionsService,
-    private calculationsService: CalculationsService,
-  ) {}
+  utilsService: UtilsService = inject(UtilsService);
+  schemaService: SchemaService = inject(SchemaService);
+  calculationsService: CalculationsService = inject(CalculationsService);
 
   ngOnInit(): void {
     this.questions = this.blocks;
@@ -95,10 +93,10 @@ export class FormComponent implements OnInit {
   }
 
   initialize(): void {
-    this.formData = this.questionsService.buildForm(this.questions);
-    this.initValue = this.questionsService.extractFormInitValue(this.questions.blocks);
-    this.sharedFieldsKeys = this.questionsService.extractSharedControlKeys(this.questions?.blocks);
-    this.quickInfoFieldsKeys = this.questionsService.extractQuickInfoControlKeys(
+    this.formData = this.schemaService.buildForm(this.questions);
+    this.initValue = this.schemaService.extractFormInitValue(this.questions.blocks);
+    this.sharedFieldsKeys = this.schemaService.extractSharedControlKeys(this.questions?.blocks);
+    this.quickInfoFieldsKeys = this.schemaService.extractQuickInfoControlKeys(
       this.questions.blocks,
     );
 
@@ -250,11 +248,11 @@ export class FormComponent implements OnInit {
     this.errors = [];
     this.state = State.Submitting;
 
-    const data = this.questionsService.prepareSubmitData(batchFormData, this.questions);
+    const data = this.schemaService.prepareSubmitData(batchFormData, this.questions);
 
     console.table(data);
 
-    this.questionsService.submitAnswers(this.questions.id, data).subscribe(
+    this.schemaService.submitAnswers(this.questions.id, data).subscribe(
       (resp) => {
         this.state = State.SubmitSuccess;
         console.log(resp);
@@ -281,7 +279,7 @@ export class FormComponent implements OnInit {
   }
 
   generateQR(): void {
-    this.questionsService.generateQR().subscribe();
+    this.schemaService.generateQR().subscribe();
   }
 
   get formRawValue() {
