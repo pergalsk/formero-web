@@ -14,15 +14,6 @@ export const routes: Routes = [
     path: '',
     component: WithMenuLayoutComponent,
     children: [
-      { path: 'about', component: AboutPageComponent },
-      { path: 'form/:id', component: FormPageComponent },
-      { path: '', component: HomePageComponent },
-    ],
-  },
-  {
-    path: '',
-    component: WithMenuLayoutComponent,
-    children: [
       {
         path: 'forms',
         component: FormsPageComponent,
@@ -33,6 +24,9 @@ export const routes: Routes = [
         component: FormCreatePageComponent,
         canMatch: [authenticatedGuard],
       },
+      { path: 'form/:id', component: FormPageComponent },
+      { path: 'about', component: AboutPageComponent },
+      { path: '', component: HomePageComponent },
     ],
   },
   {
