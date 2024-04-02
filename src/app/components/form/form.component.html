@@ -84,7 +84,10 @@
     </app-panel>
 
     <!-- Calculation partial result -->
-    <h2 *ngIf="showSums">Suma: {{ partialSum | currency }}</h2>
+    <h2 *ngIf="showSums">
+      Suma: XY
+      <!--{{ partialSum | currency }}-->
+    </h2>
 
     <!-- Reset button -->
     <button type="reset" class="btn btn-tertiary btn-wired" [disabled]="state === STATE.Submitting">
@@ -144,7 +147,10 @@
       <app-panel [type]="5" class="fit" classList="flx-col">
         <div class="flx-row">
           <div class="flx-fill label-title">Na odoslanie</div>
-          <div *ngIf="showSums" class="label-title">Spolu: {{ totalSum | currency }}</div>
+          <div *ngIf="showSums" class="label-title">
+            Spolu: XY
+            <!--{{ totalSum | currency }}-->
+          </div>
         </div>
 
         <app-quick-info
