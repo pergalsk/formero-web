@@ -1,7 +1,8 @@
-import { FormeroQuestion } from './formero-question';
+import { QuestionSchemaBlock } from './formero-question';
 
-export class FormeroQuestionAgreementCheckbox extends FormeroQuestion<string> {
-  blockType = 'agreement';
+export class FormeroQuestionAgreementCheckbox extends QuestionSchemaBlock<string> {
+  static blockType = 'agreement';
+  static uiTitle = 'Konfirmácia';
   options: string;
 
   constructor(params) {

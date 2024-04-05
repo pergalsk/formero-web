@@ -1,7 +1,8 @@
-import { FormeroQuestion } from './formero-question';
+import { QuestionSchemaBlock } from './formero-question';
 
-export class FormeroQuestionRadiogroup extends FormeroQuestion<string> {
+export class FormeroQuestionRadiogroup extends QuestionSchemaBlock<string> {
   blockType = 'radiogroup';
+  uiTitle: 'Jedna voľba z viacerých';
   options: { value: string; label: string }[];
 
   constructor(params) {

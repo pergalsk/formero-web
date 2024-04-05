@@ -1,20 +1,22 @@
-export class FormeroBlock {
-  key: string;
-  content: string;
-  order: number;
-  layout: any;
+import { SchemaBlock, SchemaBlockLayout } from '@app/schema/schema';
 
-  constructor(
-    options: {
-      key?: string;
-      content?: string;
-      order?: number;
-      layout?: any;
-    } = {}
-  ) {
-    this.key = options.key || '';
-    this.content = options.content || '';
-    this.order = options.order || 0;
-    this.layout = options.layout || {};
+export class TextSchemaBlock extends SchemaBlock implements SchemaBlockLayout {
+  static blockType = 'generictextblock';
+  static uiTitle = 'Generic Text Block';
+  content: string;
+  layout?: any;
+
+  protected constructor(params: {
+    blockType: string;
+    uiTitle: string;
+    key: string;
+    order?: number;
+    content: string;
+    layout?: any;
+  }) {
+    super(params);
+
+    this.content = params.content || '';
+    this.layout = params.layout || {};
   }
 }

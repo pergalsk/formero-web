@@ -1,9 +1,9 @@
-import { FormeroBlock } from './formero-block';
+import { TextSchemaBlock } from './formero-block';
 
-export class FormeroBlockText extends FormeroBlock {
+export class FormeroBlockText extends TextSchemaBlock {
   blockType = 'blocktext';
 
-  constructor(options) {
-    super(options);
+  constructor(params) {
+    super(params);
   }
 }

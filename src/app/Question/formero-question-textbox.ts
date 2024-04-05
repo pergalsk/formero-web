@@ -1,7 +1,8 @@
-import { FormeroQuestion } from './formero-question';
+import { QuestionSchemaBlock } from './formero-question';
 
-export class FormeroQuestionTextbox extends FormeroQuestion<string> {
+export class FormeroQuestionTextbox extends QuestionSchemaBlock<string> {
   blockType = 'textbox';
+  uiTitle: 'Krátka textová odpoveď';
   type: string;
 
   constructor(params) {

@@ -1,7 +1,8 @@
-import { FormeroQuestion } from './formero-question';
+import { QuestionSchemaBlock } from './formero-question';
 
-export class FormeroQuestionCheckgroup extends FormeroQuestion<string> {
+export class FormeroQuestionCheckgroup extends QuestionSchemaBlock<string> {
   blockType = 'checkgroup';
+  uiTitle: 'Check group';
   options: {
     key: string;
     value: boolean;

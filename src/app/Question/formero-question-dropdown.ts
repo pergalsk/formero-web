@@ -1,7 +1,8 @@
-import { FormeroQuestion } from './formero-question';
+import { QuestionSchemaBlock } from './formero-question';
 
-export class FormeroQuestionDropdown extends FormeroQuestion<string> {
+export class FormeroQuestionDropdown extends QuestionSchemaBlock<string> {
   blockType = 'dropdown';
+  uiTitle = 'Zoznam možností';
   options: { value: string; label: string }[] = [];
 
   constructor(params) {
