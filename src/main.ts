@@ -18,6 +18,7 @@ import { environment } from './environments/environment';
 import { IndexPageComponent } from '@components/pages/index-page/index-page.component';
 import { interceptorProviders } from '@app/interceptors';
 import { authInterceptorProviders } from '@auth/interceptors';
+import { schemaBlocksProviders } from '@app/schema/schema-blocks-injection-token';
 import { routes } from '@app/routes';
 
 function colorSchemesInitializer(injector: Injector) {
@@ -45,6 +46,7 @@ bootstrapApplication(IndexPageComponent, {
     ),
     interceptorProviders,
     authInterceptorProviders,
+    schemaBlocksProviders,
     {
       provide: APP_INITIALIZER,
       useFactory: colorSchemesInitializer,
