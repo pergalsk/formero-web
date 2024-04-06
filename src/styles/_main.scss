@@ -55,6 +55,11 @@ body {
   }
 }
 
+.form-wrapper {
+  max-width: var.$form-max-width;
+  margin-inline: auto;
+}
+
 .app-title {
   margin-inline-end: 50px;
 }
