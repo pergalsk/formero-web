@@ -14,8 +14,6 @@ export class QuestionSchemaBlock<T> extends SchemaBlock implements SchemaBlockLa
   layout?: any;
 
   protected constructor(params: {
-    blockType: string;
-    uiTitle: string;
     key: string;
     order?: number;
     value?: T;
