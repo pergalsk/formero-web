@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
 import { FormeroValidation } from '@app/Validations';
 import { FormeroBlockText, FormeroBlockTitle } from '@app/Blocks';
 import {
@@ -10,7 +10,7 @@ import {
   FormeroQuestionTextbox,
 } from '@app/Question';
 
-export const SCHEMA_BLOCKS = new InjectionToken<
+type SchemaBlocks =
   | FormeroQuestionAgreementCheckbox
   | FormeroQuestionCheckgroup
   | FormeroQuestionDropdown
@@ -19,10 +19,13 @@ export const SCHEMA_BLOCKS = new InjectionToken<
   | FormeroQuestionTextbox
   | FormeroBlockText
   | FormeroBlockTitle
-  | FormeroValidation
->('SchemaBlocks');
+  | FormeroValidation;
 
-export const schemaBlocksProviders = [
+export const SCHEMA_BLOCKS: InjectionToken<SchemaBlocks> = new InjectionToken<SchemaBlocks>(
+  'SchemaBlocks',
+);
+
+export const schemaBlocksProviders: Provider[] = [
   { provide: SCHEMA_BLOCKS, useValue: FormeroQuestionAgreementCheckbox, multi: true },
   { provide: SCHEMA_BLOCKS, useValue: FormeroQuestionCheckgroup, multi: true },
   { provide: SCHEMA_BLOCKS, useValue: FormeroQuestionDropdown, multi: true },
