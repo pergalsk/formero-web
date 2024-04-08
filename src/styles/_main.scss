@@ -67,7 +67,7 @@ body {
 .main-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var.$content-margin;
 }
 
 .error-message {
@@ -125,7 +125,7 @@ body {
 .flx-col,
 .flx-row {
   display: flex;
-  gap: 1rem;
+  gap: var.$content-margin;
 
   &.flx-start {
     justify-content: start;
@@ -211,7 +211,7 @@ pre {
   padding-top: 6rem;
   padding-bottom: 6rem;
   margin-top: var.$content-margin;
-  margin-bottom: var.$content-margin * 2;
+  margin-bottom: var.$content-margin;
 }
 
 .active-link {
