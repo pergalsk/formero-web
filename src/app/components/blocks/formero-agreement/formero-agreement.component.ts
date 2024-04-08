@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormeroQuestionAgreementCheckbox } from '../../../Question';
-import { FormeroFieldMessagesComponent } from '../../common/formero-field-messages/formero-field-messages.component';
+import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
+import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormeroQuestionAgreementCheckbox } from '@app/Question';
+import { FormeroFieldMessagesComponent } from '@app/components';
 
 @Component({
   selector: 'app-formero-agreement',
@@ -11,12 +11,8 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, NgIf, FormeroFieldMessagesComponent],
 })
-export class FormeroAgreementComponent implements OnInit {
+export class FormeroAgreementComponent {
   @Input() props: FormeroQuestionAgreementCheckbox;
   @Input() form: UntypedFormGroup;
   @Input() displayMessages: boolean;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }
