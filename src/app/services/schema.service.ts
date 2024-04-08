@@ -122,9 +122,6 @@ export class SchemaService {
         .filter((validator: ValidatorFn | null) => validator); // filter falsy values
     }
 
-    const oo = this.schemaBlocks;
-    debugger;
-
     // todo: move to separate directory as exported constant
     const blockTypeMap = new Map<string, any>([
       ['title', FormeroBlockTitle],
