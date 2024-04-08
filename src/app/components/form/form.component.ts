@@ -4,17 +4,9 @@ import { SchemaService, FormBlocksSet } from '@services/schema.service';
 import { UtilsService } from '@services/utils.service';
 import { CalculationsService } from '@services/calculations.service';
 import { QuickInfoComponent } from '../common/quick-info/quick-info.component';
-import { FormeroValidationComponent } from '../blocks/formero-validation/formero-validation.component';
-import { FormeroAgreementComponent } from '../blocks/formero-agreement/formero-agreement.component';
-import { FormeroCheckgroupComponent } from '../blocks/formero-checkgroup/formero-checkgroup.component';
-import { FormeroRadiogroupComponent } from '../blocks/formero-radiogroup/formero-radiogroup.component';
-import { FormeroDropdownComponent } from '../blocks/formero-dropdown/formero-dropdown.component';
-import { FormeroTextareaComponent } from '../blocks/formero-textarea/formero-textarea.component';
-import { FormeroTextboxComponent } from '../blocks/formero-textbox/formero-textbox.component';
-import { FormeroBlocktextComponent } from '../blocks/formero-blocktext/formero-blocktext.component';
-import { FormeroTitleComponent } from '../blocks/formero-title/formero-title.component';
 import { PanelComponent } from '../ui/panel/panel.component';
 import { NgIf, NgFor, JsonPipe, CurrencyPipe } from '@angular/common';
+import { FormBlocksComponent } from '@components/form/form-blocks.component';
 
 export enum State {
   Init = 'INIT',
@@ -37,7 +29,6 @@ interface SubmitEvent extends Event {
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
   standalone: true,
   imports: [
     NgIf,
@@ -45,18 +36,10 @@ interface SubmitEvent extends Event {
     FormsModule,
     ReactiveFormsModule,
     PanelComponent,
-    FormeroTitleComponent,
-    FormeroBlocktextComponent,
-    FormeroTextboxComponent,
-    FormeroTextareaComponent,
-    FormeroDropdownComponent,
-    FormeroRadiogroupComponent,
-    FormeroCheckgroupComponent,
-    FormeroAgreementComponent,
-    FormeroValidationComponent,
     QuickInfoComponent,
     JsonPipe,
     CurrencyPipe,
+    FormBlocksComponent,
   ],
 })
 export class FormComponent implements OnInit {

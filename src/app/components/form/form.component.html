@@ -18,70 +18,13 @@
     (reset)="onReset($event)"
     [class.field-messages]="displayFieldMessages"
     autocomplete="off"
-    class="main-form"
+    class="flx-col"
   >
-    <app-panel [type]="question?.layout?.panel" *ngFor="let question of questions.blocks">
-      <!--<pre>{{ question | json }}</pre>-->
-
-      <app-formero-title
-        *ngIf="question.blockType === 'title'"
-        [props]="question"
-      ></app-formero-title>
-
-      <app-formero-blocktext
-        *ngIf="question.blockType === 'blocktext'"
-        [props]="question"
-      ></app-formero-blocktext>
-
-      <app-formero-textbox
-        *ngIf="question.blockType === 'textbox'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-textbox>
-
-      <app-formero-textarea
-        *ngIf="question.blockType === 'textarea'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-textarea>
-
-      <app-formero-dropdown
-        *ngIf="question.blockType === 'dropdown'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-dropdown>
-
-      <app-formero-radiogroup
-        *ngIf="question.blockType === 'radiogroup'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-radiogroup>
-
-      <app-formero-checkgroup
-        *ngIf="question.blockType === 'checkgroup'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-checkgroup>
-
-      <app-formero-agreement
-        *ngIf="question.blockType === 'agreement'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-agreement>
-
-      <app-formero-validation
-        *ngIf="question.blockType === 'validation'"
-        [props]="question"
-        [form]="formData"
-        [displayMessages]="displayFieldMessages"
-      ></app-formero-validation>
-    </app-panel>
+    <app-form-blocks
+      [form]="formData"
+      [questions]="questions"
+      [displayMessages]="displayFieldMessages"
+    />
 
     <!-- Calculation partial result -->
     <h2 *ngIf="showSums">
