@@ -4,6 +4,7 @@ import { SchemaBlock, SchemaBlockLayout } from '@app/schema/schema';
 export class QuestionSchemaBlock<T> extends SchemaBlock implements SchemaBlockLayout {
   static blockType = 'genericquestionblock';
   static uiTitle = 'Generic Question Block';
+
   value?: T;
   label?: string;
   description?: string;

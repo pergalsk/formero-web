@@ -10,7 +10,7 @@ import {
   FormeroQuestionTextbox,
 } from '@app/Question';
 
-type SchemaBlocks =
+export type SchemaBlocks =
   | FormeroQuestionAgreementCheckbox
   | FormeroQuestionCheckgroup
   | FormeroQuestionDropdown
