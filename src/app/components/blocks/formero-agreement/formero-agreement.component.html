@@ -2,7 +2,7 @@
   <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
   <div class="label-description" [textContent]="props.description"></div>
 
-  <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
+  <div class="input-box" [class.ng-invalid]="form.controls[props.key]?.invalid">
     <label [attr.for]="props.key">
       <input type="checkbox" [formControlName]="props.key" [value]="props.value" [id]="props.key" />
       <span>{{ props.options }}</span>

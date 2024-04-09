@@ -2,7 +2,7 @@
   <div class="label-title" [textContent]="props.label" [class.required]="props.required"></div>
   <div class="label-description" [textContent]="props.description"></div>
 
-  <div class="input-box" [class.ng-invalid]="form.controls[props.key].invalid">
+  <div class="input-box" [class.ng-invalid]="form.controls[props.key]?.invalid">
     <label
       class="radio-label"
       *ngFor="let option of props.options; index as i"
