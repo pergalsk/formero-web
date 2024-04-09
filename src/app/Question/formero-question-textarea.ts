@@ -1,26 +1,41 @@
-import { QuestionSchemaBlock } from './formero-question';
 import { ValidatorFn } from '@angular/forms';
+import { SchemaControl } from '@app/schema/schema';
 
-export class FormeroQuestionTextarea extends QuestionSchemaBlock<string> {
+export type FormeroQuestionTextareaParams = SchemaControl<string>;
+
+export class FormeroQuestionTextarea implements SchemaControl<string> {
   static blockType = 'textarea';
   static uiTitle = 'Dlhšia textová odpoveď';
 
-  constructor(params: {
-    key: string;
-    order?: number;
-    value?: string;
-    label?: string;
-    description?: string;
-    validators?: ValidatorFn[];
-    required?: boolean;
-    quickInfo?: boolean;
-    shared?: boolean;
-    layout?: any;
-  }) {
-    super(params);
+  key: string;
+  order: number;
+  layout?: any;
+  value: string;
+  quickInfo: boolean;
+  shared: boolean;
+  label?: string;
+  description?: string;
+  validators?: ValidatorFn[];
+  required?: boolean;
+
+  constructor(params?: FormeroQuestionTextareaParams) {
+    this.fillWithInitData(params);
   }
 
-  getBlockType() {
+  getBlockType(): string {
     return FormeroQuestionTextarea.blockType;
+  }
+
+  fillWithInitData(params?: FormeroQuestionTextareaParams): void {
+    this.key = params?.key || '';
+    this.order = params?.order || 0;
+    this.value = params?.value || '';
+    this.label = params?.label || 'Nadpis otázky';
+    this.description = params?.description || 'Popis otázky';
+    this.validators = params?.validators || [];
+    this.required = params?.required || false;
+    this.quickInfo = params?.quickInfo || false;
+    this.shared = params?.shared || false;
+    this.layout = params?.layout || {};
   }
 }

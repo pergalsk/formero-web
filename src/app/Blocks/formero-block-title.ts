@@ -1,20 +1,26 @@
-import { TextSchemaBlock } from './formero-block';
+import { SchemaText } from '@app/schema/schema';
 
-export class FormeroBlockTitle extends TextSchemaBlock {
+export class FormeroBlockTitle implements SchemaText {
   static blockType = 'title';
-  static uiTitle = 'Titulok';
+  static uiTitle = 'Nadpis';
 
-  constructor(params) {
-    super(params);
+  key: string;
+  order: number;
+  content: string;
+  layout?: any;
+
+  constructor(params?: SchemaText) {
+    this.fillWithInitData(params);
   }
 
-  getBlockType() {
+  getBlockType(): string {
     return FormeroBlockTitle.blockType;
   }
 
-  fillWIthInitData() {
-    this.key = '';
-    this.order = 0;
-    this.content = 'Titulok';
+  fillWithInitData(params?: SchemaText): void {
+    this.key = params?.key || '';
+    this.order = params?.order || 0;
+    this.content = params?.content || 'Text nadpisu';
+    this.layout = params?.layout || { panel: 1 };
   }
 }

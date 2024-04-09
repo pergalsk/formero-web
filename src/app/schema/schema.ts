@@ -1,20 +1,29 @@
-export class SchemaBlock {
-  static blockType = 'genericblock';
-  static uiTitle = 'Generic Block';
+import { ValidatorFn } from '@angular/forms';
 
+export type SchemaBlockBase = {
   key: string;
-  order?: number;
-
-  protected constructor(params: { key: string; order?: number }) {
-    this.key = params.key || '';
-    this.order = params.order || 0;
-  }
-
-  getBlockType() {
-    return SchemaBlock.blockType;
-  }
-}
-
-export interface SchemaBlockLayout {
+  order: number;
+  getBlockType: () => string;
   layout?: any;
-}
+};
+
+export type SchemaControl<T> = SchemaBlockBase & {
+  value: T;
+  quickInfo: boolean;
+  shared: boolean;
+  label?: string;
+  description?: string;
+  validators?: ValidatorFn[];
+  required?: boolean;
+  fillWithInitData: (params: SchemaControl<T>) => void;
+};
+
+export type SchemaText = SchemaBlockBase & {
+  content: string;
+  fillWithInitData: (params: SchemaText) => void;
+};
+
+export type SchemaValidator = SchemaBlockBase & {
+  validators: ValidatorFn[];
+  fillWithInitData: (params: SchemaValidator) => void;
+};

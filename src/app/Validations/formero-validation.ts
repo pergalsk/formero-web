@@ -1,22 +1,29 @@
 import { ValidatorFn } from '@angular/forms';
+import { SchemaValidator } from '@app/schema/schema';
 
-export class FormeroValidation {
+export type FormeroValidationParams = SchemaValidator;
+
+export class FormeroValidation implements SchemaValidator {
   static blockType = 'validation';
   static uiTitle = 'Validácia';
 
   key: string;
+  order: number;
+  layout?: any;
   validators: ValidatorFn[];
-  order?: number;
-  layout: any;
 
-  constructor(options: { key?: string; validators?: ValidatorFn[]; order?: number; layout?: any }) {
-    this.key = options.key || '';
-    this.validators = options.validators || [];
-    this.order = options.order || 0;
-    this.layout = options.layout || {};
+  constructor(params?: FormeroValidationParams) {
+    this.fillWithInitData(params);
   }
 
-  getBlockType() {
+  getBlockType(): string {
     return FormeroValidation.blockType;
+  }
+
+  fillWithInitData(params?: FormeroValidationParams): void {
+    this.key = params?.key || '';
+    this.order = params?.order || 0;
+    this.validators = params?.validators || [];
+    this.layout = params?.layout || {};
   }
 }
