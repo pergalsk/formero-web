@@ -91,7 +91,7 @@ import {
       />
     </app-panel>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormBlocksComponent {
   @Input() form: UntypedFormGroup;
