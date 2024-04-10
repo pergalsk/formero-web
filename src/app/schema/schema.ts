@@ -1,6 +1,11 @@
 import { ValidatorFn } from '@angular/forms';
 
 export type SchemaBlockBase = {
+  // blockType?: string; // as static
+  // uiTitle?: string; // as static
+  // uiType?: number; // as static
+  // uiOrder?: number; // as static
+
   key: string;
   order: number;
   getBlockType: () => BlockGroupType;
