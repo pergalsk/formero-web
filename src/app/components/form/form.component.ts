@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaService, FormBlocksSet } from '@services/schema.service';
 import { UtilsService } from '@services/utils.service';
@@ -42,7 +42,7 @@ interface SubmitEvent extends Event {
     FormBlocksComponent,
   ],
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnChanges {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
 
@@ -69,13 +69,18 @@ export class FormComponent implements OnInit {
   calculationsService: CalculationsService = inject(CalculationsService);
 
   ngOnInit(): void {
-    this.questions = this.blocks;
-    this.calculationSchema = this.calculations;
-    this.showSums = !!this.calculations;
+    this.initialize();
+  }
+
+  ngOnChanges() {
     this.initialize();
   }
 
   initialize(): void {
+    this.questions = this.blocks;
+    this.calculationSchema = this.calculations;
+    this.showSums = !!this.calculations;
+
     this.formData = this.schemaService.buildForm(this.questions);
     this.initValue = this.schemaService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.schemaService.extractSharedControlKeys(this.questions?.blocks);
