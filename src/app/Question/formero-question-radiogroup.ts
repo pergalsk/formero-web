@@ -50,11 +50,11 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
     this.layout = params?.layout || {};
     this.options = params?.options || [
       {
-        value: '',
+        value: 'val1',
         label: 'Odpoveď 1',
       },
       {
-        value: '',
+        value: 'val2',
         label: 'Odpoveď 2',
       },
     ];
