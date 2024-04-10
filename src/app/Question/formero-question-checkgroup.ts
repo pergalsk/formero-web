@@ -1,4 +1,4 @@
-import { SchemaControl } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
 export type FormeroQuestionCheckgroupParams = SchemaControl<string> & {
@@ -12,7 +12,9 @@ export type FormeroQuestionCheckgroupParams = SchemaControl<string> & {
 
 export class FormeroQuestionCheckgroup implements SchemaControl<string> {
   static blockType = 'checkgroup';
-  static uiTitle = 'Check group';
+  static uiTitle = 'Viacero možností';
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 50;
 
   key: string;
   order: number;
@@ -36,8 +38,8 @@ export class FormeroQuestionCheckgroup implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionCheckgroup.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionCheckgroup.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionCheckgroupParams): void {

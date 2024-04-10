@@ -1,4 +1,4 @@
-import { SchemaControl } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
 export type FormeroQuestionRadiogroupParams = SchemaControl<string> & {
@@ -11,7 +11,8 @@ export type FormeroQuestionRadiogroupParams = SchemaControl<string> & {
 export class FormeroQuestionRadiogroup implements SchemaControl<string> {
   static blockType = 'radiogroup';
   static uiTitle = 'Jedna voľba z viacerých';
-
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 70;
   key: string;
   order: number;
   layout?: any;
@@ -32,8 +33,8 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionRadiogroup.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionRadiogroup.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionRadiogroupParams): void {

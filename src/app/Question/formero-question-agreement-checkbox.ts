@@ -1,11 +1,13 @@
-import { SchemaControl, SchemaText } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
 export type FormeroQuestionAgreementCheckboxParams = SchemaControl<boolean> & { options: string };
 
 export class FormeroQuestionAgreementCheckbox implements SchemaControl<boolean> {
   static blockType = 'agreement';
-  static uiTitle = 'Konfirmácia';
+  static uiTitle = 'Odsúhlasenie';
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 80;
 
   key: string;
   order: number;
@@ -24,8 +26,8 @@ export class FormeroQuestionAgreementCheckbox implements SchemaControl<boolean> 
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionAgreementCheckbox.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionAgreementCheckbox.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionAgreementCheckboxParams): void {

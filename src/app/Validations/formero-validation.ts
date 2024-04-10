@@ -1,12 +1,13 @@
 import { ValidatorFn } from '@angular/forms';
-import { SchemaValidator } from '@app/schema/schema';
+import { BlockGroupType, SchemaValidator } from '@app/schema/schema';
 
 export type FormeroValidationParams = SchemaValidator;
 
 export class FormeroValidation implements SchemaValidator {
   static blockType = 'validation';
   static uiTitle = 'Validácia';
-
+  static uiType = BlockGroupType.MISC;
+  static uiOrder = 90;
   key: string;
   order: number;
   layout?: any;
@@ -16,8 +17,8 @@ export class FormeroValidation implements SchemaValidator {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroValidation.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroValidation.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroValidationParams): void {

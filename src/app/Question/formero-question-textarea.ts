@@ -1,11 +1,13 @@
 import { ValidatorFn } from '@angular/forms';
-import { SchemaControl } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 
 export type FormeroQuestionTextareaParams = SchemaControl<string>;
 
 export class FormeroQuestionTextarea implements SchemaControl<string> {
   static blockType = 'textarea';
   static uiTitle = 'Dlhšia textová odpoveď';
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 40;
 
   key: string;
   order: number;
@@ -22,8 +24,8 @@ export class FormeroQuestionTextarea implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionTextarea.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionTextarea.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionTextareaParams): void {

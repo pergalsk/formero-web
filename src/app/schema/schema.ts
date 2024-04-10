@@ -3,7 +3,7 @@ import { ValidatorFn } from '@angular/forms';
 export type SchemaBlockBase = {
   key: string;
   order: number;
-  getBlockType: () => string;
+  getBlockType: () => BlockGroupType;
   layout?: any;
 };
 
@@ -27,3 +27,9 @@ export type SchemaValidator = SchemaBlockBase & {
   validators: ValidatorFn[];
   fillWithInitData: (params: SchemaValidator) => void;
 };
+
+export enum BlockGroupType {
+  TEXT = 'text',
+  CONTROL = 'control',
+  MISC = 'misc',
+}

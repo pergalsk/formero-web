@@ -1,4 +1,4 @@
-import { SchemaControl } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
 export type FormeroQuestionDropdownParams = SchemaControl<string> & {
@@ -11,6 +11,8 @@ export type FormeroQuestionDropdownParams = SchemaControl<string> & {
 export class FormeroQuestionDropdown implements SchemaControl<string> {
   static blockType = 'dropdown';
   static uiTitle = 'Zoznam možností';
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 60;
 
   key: string;
   order: number;
@@ -32,8 +34,8 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionDropdown.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionDropdown.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionDropdownParams): void {

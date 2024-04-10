@@ -1,8 +1,10 @@
-import { SchemaText } from '@app/schema/schema';
+import { BlockGroupType, SchemaText } from '@app/schema/schema';
 
 export class FormeroBlockTitle implements SchemaText {
   static blockType = 'title';
-  static uiTitle = 'Nadpis';
+  static uiTitle = 'Nadpis sekcie';
+  static uiType = BlockGroupType.TEXT;
+  static uiOrder = 10;
 
   key: string;
   order: number;
@@ -13,8 +15,8 @@ export class FormeroBlockTitle implements SchemaText {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroBlockTitle.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroBlockTitle.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: SchemaText): void {

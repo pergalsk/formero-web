@@ -1,4 +1,4 @@
-import { SchemaControl } from '@app/schema/schema';
+import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
 export type FormeroQuestionTextboxParams = SchemaControl<string> & { type: string };
@@ -6,6 +6,8 @@ export type FormeroQuestionTextboxParams = SchemaControl<string> & { type: strin
 export class FormeroQuestionTextbox implements SchemaControl<string> {
   static blockType = 'textbox';
   static uiTitle = 'Krátka textová odpoveď';
+  static uiType = BlockGroupType.CONTROL;
+  static uiOrder = 30;
 
   key: string;
   order: number;
@@ -24,8 +26,8 @@ export class FormeroQuestionTextbox implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getBlockType(): string {
-    return FormeroQuestionTextbox.blockType;
+  getBlockType(): BlockGroupType {
+    return FormeroQuestionTextbox.blockType as BlockGroupType;
   }
 
   fillWithInitData(params?: FormeroQuestionTextboxParams): void {
