@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { v4 as uuid_v4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -124,5 +125,9 @@ export class UtilsService {
 
   scrollToTop(): void {
     window.scrollTo(0, 0); // todo: not direct DOM call
+  }
+
+  uuid() {
+    return uuid_v4();
   }
 }
