@@ -32,7 +32,7 @@ export interface FormBlocksSet {
   validators: ValidatorFn | ValidatorFn[] | null;
   options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet | FormValidationBlocksSet)[];
-  calculationsId: number;
+  calculationsId: number | null;
 }
 
 export interface RawValidatorInfo {
