@@ -28,7 +28,8 @@ export class BlockPaletteComponent {
 
   prepareMenu(schemaBlocks): MenuItem[] {
     const groups = schemaBlocks.sort(this.sortBy_uiOrder).reduce(this.collectBy_UiType, {});
-    return Object.keys(groups).map(this.mapMenuSections(groups));
+    const arr: MenuItem = Object.keys(groups).map(this.mapMenuSections(groups));
+    return arr.flat();
   }
 
   itemAction(classNameFn) {
@@ -49,18 +50,21 @@ export class BlockPaletteComponent {
   }
 
   mapMenuSections(groups) {
-    return (uiType: BlockGroupType) => {
-      return {
-        label: blockTypeNamesMap[uiType],
-        items: groups[uiType].map(this.mapMenuSectionItems.bind(this)),
-      };
+    return (uiType: BlockGroupType, index: number) => {
+      const result = [
+        {
+          label: blockTypeNamesMap[uiType],
+          items: groups[uiType].map(this.mapMenuSectionItems.bind(this)),
+        },
+      ];
+      return index ? [{ separator: true }, ...result] : result;
     };
   }
 
   mapMenuSectionItems(classNameFn) {
     return {
       label: classNameFn.uiTitle,
-      icon: 'pi pi-plus',
+      icon: 'pi pi-box',
       command: () => this.itemAction(classNameFn),
     };
   }
