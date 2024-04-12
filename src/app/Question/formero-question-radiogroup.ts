@@ -13,6 +13,7 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
   static uiTitle = 'Jedna voľba z viacerých';
   static uiType = BlockGroupType.CONTROL;
   static uiOrder = 70;
+
   key: string;
   order: number;
   layout?: any;

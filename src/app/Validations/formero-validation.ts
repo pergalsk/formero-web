@@ -8,6 +8,7 @@ export class FormeroValidation implements SchemaValidator {
   static uiTitle = 'Validácia';
   static uiType = BlockGroupType.MISC;
   static uiOrder = 90;
+
   key: string;
   order: number;
   layout?: any;
