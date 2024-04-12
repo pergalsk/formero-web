@@ -24,7 +24,6 @@ import {
   FormeroQuestionAgreementCheckbox,
   FormQuestionBlocksSet,
 } from '../Question';
-import { SCHEMA_BLOCKS } from '@app/schema/schema-blocks-injection-token';
 
 export interface FormBlocksSet {
   id: number;
@@ -67,7 +66,6 @@ export class SchemaService {
   utilsService: UtilsService = inject(UtilsService);
   formBuilder: UntypedFormBuilder = inject(UntypedFormBuilder);
   httpClient: HttpClient = inject(HttpClient);
-  schemaBlocks = inject(SCHEMA_BLOCKS);
 
   getQuestions(schemaId: number) {
     return this.loadFormSchema(schemaId).pipe(
