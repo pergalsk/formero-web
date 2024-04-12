@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:math';
 
 @use 'variables' as var;
 @use 'typography' as typo;
@@ -122,10 +123,23 @@ body {
   text-align: right;
 }
 
+.sticky {
+  position: sticky;
+  top: var.$content-margin;
+}
+
 .flx-col,
 .flx-row {
   display: flex;
   gap: var.$content-margin;
+
+  &.gap-small {
+    gap: math.div(var.$content-margin, 4);
+  }
+
+  &.gap-0 {
+    gap: math.div(var.$content-margin, 4);
+  }
 
   &.flx-start {
     justify-content: start;
