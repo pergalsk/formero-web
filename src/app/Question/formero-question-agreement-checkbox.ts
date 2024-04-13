@@ -22,7 +22,7 @@ export class FormeroQuestionAgreementCheckbox implements SchemaControl<boolean> 
 
   options: string;
 
-  constructor(params?: FormeroQuestionAgreementCheckboxParams) {
+  constructor(params?: Partial<FormeroQuestionAgreementCheckboxParams>) {
     this.fillWithInitData(params);
   }
 
@@ -34,7 +34,7 @@ export class FormeroQuestionAgreementCheckbox implements SchemaControl<boolean> 
     return FormeroQuestionAgreementCheckbox.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionAgreementCheckboxParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionAgreementCheckboxParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || false;

@@ -34,7 +34,7 @@ export class FormeroQuestionCheckgroup implements SchemaControl<boolean[]> {
     disabled: boolean;
   }[];
 
-  constructor(params?: FormeroQuestionCheckgroupParams) {
+  constructor(params?: Partial<FormeroQuestionCheckgroupParams>) {
     this.fillWithInitData(params);
   }
 
@@ -46,7 +46,7 @@ export class FormeroQuestionCheckgroup implements SchemaControl<boolean[]> {
     return FormeroQuestionCheckgroup.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionCheckgroupParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionCheckgroupParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || [];

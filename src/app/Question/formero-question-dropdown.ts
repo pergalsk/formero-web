@@ -30,7 +30,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     label: string;
   }[] = [];
 
-  constructor(params?: FormeroQuestionDropdownParams) {
+  constructor(params?: Partial<FormeroQuestionDropdownParams>) {
     this.fillWithInitData(params);
   }
 
@@ -42,7 +42,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     return FormeroQuestionDropdown.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionDropdownParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionDropdownParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || '';

@@ -20,7 +20,7 @@ export class FormeroQuestionTextarea implements SchemaControl<string> {
   validators?: ValidatorFn[];
   required?: boolean;
 
-  constructor(params?: FormeroQuestionTextareaParams) {
+  constructor(params?: Partial<FormeroQuestionTextareaParams>) {
     this.fillWithInitData(params);
   }
 
@@ -32,7 +32,7 @@ export class FormeroQuestionTextarea implements SchemaControl<string> {
     return FormeroQuestionTextarea.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionTextareaParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionTextareaParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || '';

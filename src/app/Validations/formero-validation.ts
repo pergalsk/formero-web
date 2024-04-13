@@ -14,7 +14,7 @@ export class FormeroValidation implements SchemaValidator {
   layout?: any;
   validators: ValidatorFn[];
 
-  constructor(params?: FormeroValidationParams) {
+  constructor(params?: Partial<FormeroValidationParams>) {
     this.fillWithInitData(params);
   }
 
@@ -22,7 +22,7 @@ export class FormeroValidation implements SchemaValidator {
     return FormeroValidation.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroValidationParams): void {
+  fillWithInitData(params?: Partial<FormeroValidationParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.validators = params?.validators || [];

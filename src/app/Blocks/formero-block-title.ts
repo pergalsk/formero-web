@@ -11,7 +11,7 @@ export class FormeroBlockTitle implements SchemaText {
   content: string;
   layout?: any;
 
-  constructor(params?: SchemaText) {
+  constructor(params?: Partial<SchemaText>) {
     this.fillWithInitData(params);
   }
 
@@ -19,7 +19,7 @@ export class FormeroBlockTitle implements SchemaText {
     return FormeroBlockTitle.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: SchemaText): void {
+  fillWithInitData(params?: Partial<SchemaText>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.content = params?.content || 'Text nadpisu';

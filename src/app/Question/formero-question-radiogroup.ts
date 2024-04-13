@@ -34,7 +34,7 @@ export class FormeroQuestionRadiogroup implements SchemaControl<number> {
     label: string;
   }[] = [];
 
-  constructor(params?: FormeroQuestionRadiogroupParams) {
+  constructor(params?: Partial<FormeroQuestionRadiogroupParams>) {
     this.fillWithInitData(params);
   }
 
@@ -46,7 +46,7 @@ export class FormeroQuestionRadiogroup implements SchemaControl<number> {
     return FormeroQuestionRadiogroup.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionRadiogroupParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionRadiogroupParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || 0;
