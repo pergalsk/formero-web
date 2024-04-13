@@ -1,14 +1,14 @@
 import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
-export type FormeroQuestionDropdownParams = SchemaControl<string> & {
+export type FormeroQuestionDropdownParams = SchemaControl<number> & {
   options: {
-    value: string;
+    value: number;
     label: string;
   }[];
 };
 
-export class FormeroQuestionDropdown implements SchemaControl<string> {
+export class FormeroQuestionDropdown implements SchemaControl<number> {
   static blockType = 'dropdown';
   static uiTitle = 'Zoznam možností';
   static uiType = BlockGroupType.CONTROL;
@@ -17,7 +17,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
   key: string;
   order: number;
   layout?: any;
-  value: string;
+  value: number;
   quickInfo: boolean;
   shared: boolean;
   label?: string;
@@ -26,7 +26,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
   required?: boolean;
 
   options: {
-    value: string;
+    value: number;
     label: string;
   }[] = [];
 
@@ -34,7 +34,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
-  getValue(): string {
+  getValue(): number {
     return this.value;
   }
 
@@ -45,7 +45,7 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
   fillWithInitData(params?: Partial<FormeroQuestionDropdownParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
-    this.value = params?.value || '';
+    this.value = params?.value || -1;
     this.label = params?.label || 'Nadpis otázky';
     this.description = params?.description || 'Popis otázky';
     this.validators = params?.validators || [];
@@ -55,11 +55,11 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     this.layout = params?.layout || {};
     this.options = params?.options || [
       {
-        value: '',
+        value: 0,
         label: 'Odpoveď 1',
       },
       {
-        value: '',
+        value: 1,
         label: 'Odpoveď 2',
       },
     ];
