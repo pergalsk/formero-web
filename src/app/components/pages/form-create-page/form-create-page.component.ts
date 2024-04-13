@@ -154,7 +154,6 @@ export class FormCreatePageComponent {
     id: 0,
     title: 'Nový formulár_2024-04-13',
     successInfo: 'Formulár úspešne odoslaný!',
-    validators: null,
     calculationsId: null,
     options: {
       batch: true,

@@ -29,7 +29,6 @@ export interface FormBlocksSet {
   id: number;
   title: string;
   successInfo: string;
-  validators: ValidatorFn | ValidatorFn[] | null;
   options: { [param: string]: any };
   blocks: (FormQuestionBlocksSet | FormTextBlocksSet | FormValidationBlocksSet)[];
   calculationsId: number | null;
@@ -84,11 +83,11 @@ export class SchemaService {
 
   processFormSchema(formSchema) {
     // Process global validators
-    if (Array.isArray(formSchema.validators) && formSchema.validators.length) {
-      formSchema.validators = formSchema.validators
-        .map((rawValidator) => this.validatorsService.processRawValidators(rawValidator))
-        .filter((validator: ValidatorFn | null) => validator); // filter falsy values
-    }
+    // if (Array.isArray(formSchema.validators) && formSchema.validators.length) {
+    //   formSchema.validators = formSchema.validators
+    //     .map((rawValidator) => this.validatorsService.processRawValidators(rawValidator))
+    //     .filter((validator: ValidatorFn | null) => validator); // filter falsy values
+    // }
 
     // Process form blocks
     if (Array.isArray(formSchema.blocks) && formSchema.blocks.length) {
@@ -140,9 +139,9 @@ export class SchemaService {
   buildForm(questions: FormBlocksSet): UntypedFormGroup {
     const controlsConfig: { [key: string]: any } = {};
     const options: AbstractControlOptions = {
-      validators: questions.validators,
+      validators: [],
       updateOn: 'change',
-    }; // form global validators
+    };
 
     // todo: refactor to switch-case
     for (const question of questions.blocks) {
