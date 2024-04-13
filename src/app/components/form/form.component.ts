@@ -70,10 +70,12 @@ export class FormComponent implements OnInit, OnChanges {
   calculationsService: CalculationsService = inject(CalculationsService);
 
   ngOnInit(): void {
+    // todo: this is called 2x
     this.initialize();
   }
 
   ngOnChanges() {
+    // todo: this is called 2x
     this.initialize();
   }
 
