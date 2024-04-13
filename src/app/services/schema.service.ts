@@ -136,21 +136,22 @@ export class SchemaService {
     return constructorFnName ? new constructorFnName({ ...rawFormBlock }) : null;
   }
 
-  buildForm(questions: FormBlocksSet): UntypedFormGroup {
+  buildForm(formBlockSet: FormBlocksSet): UntypedFormGroup {
     const controlsConfig: { [key: string]: any } = {};
+
     const options: AbstractControlOptions = {
       validators: [],
       updateOn: 'change',
     };
 
     // todo: refactor to switch-case
-    for (const question of questions.blocks) {
-      if (question instanceof FormeroValidation) {
+    for (const block of formBlockSet.blocks) {
+      if (block instanceof FormeroValidation) {
         // todo: HANDLE MULTIPLE VALIDATORS OF THE SAME KIND
 
-        options.validators = [...(options.validators as ValidatorFn[]), ...question.validators]; // set as global form validators
-      } else if (question instanceof FormeroQuestionCheckgroup) {
-        const { key, options: opt, validators } = question;
+        options.validators = [...block.validators]; // set as global form validators
+      } else if (block instanceof FormeroQuestionCheckgroup) {
+        const { key, options: opt, validators } = block;
         const controls: UntypedFormControl[] = opt.map(
           (option) =>
             new UntypedFormControl({
@@ -159,9 +160,9 @@ export class SchemaService {
             }),
         );
         controlsConfig[key] = new UntypedFormArray(controls, validators);
-      } else if (question instanceof FormeroBlockText || question instanceof FormeroBlockTitle) {
+      } else if (block instanceof FormeroBlockText || block instanceof FormeroBlockTitle) {
       } else {
-        const { key, value, validators } = question;
+        const { key, value, validators } = block;
         controlsConfig[key] = [value, validators];
       }
     }
@@ -188,9 +189,9 @@ export class SchemaService {
       : [];
   }
 
-  extractCheckGroupsKeys(questions: FormBlocksSet): CheckGroupsKeys {
+  extractCheckGroupsKeys(formBlockSet: FormBlocksSet): CheckGroupsKeys {
     // todo: handle null values
-    return questions.blocks.reduce(
+    return formBlockSet.blocks.reduce(
       (result, block) => ({
         ...result,
         ...(block instanceof FormeroQuestionCheckgroup
@@ -235,9 +236,9 @@ export class SchemaService {
     };
   }
 
-  prepareSubmitData(batchFormData: any[], questions: FormBlocksSet): any {
+  prepareSubmitData(batchFormData: any[], fromBlockSet: FormBlocksSet): any {
     // generate checkgroup keys for all checkgroup blocks
-    const checkGroupsKeys: CheckGroupsKeys = this.extractCheckGroupsKeys(questions);
+    const checkGroupsKeys: CheckGroupsKeys = this.extractCheckGroupsKeys(fromBlockSet);
 
     const submitData = [];
     batchFormData.forEach((formData) => {
