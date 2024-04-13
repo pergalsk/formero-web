@@ -59,13 +59,13 @@ export class FormeroQuestionCheckgroup implements SchemaControl<boolean[]> {
     this.layout = params?.layout || {};
     this.options = params?.options || [
       {
-        key: '',
+        key: 'key1',
         value: false,
         label: 'Odpoveď 1',
         disabled: false,
       },
       {
-        key: '',
+        key: 'key2',
         value: false,
         label: 'Odpoveď 2',
         disabled: false,
