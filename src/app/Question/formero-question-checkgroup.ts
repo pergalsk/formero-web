@@ -1,7 +1,7 @@
 import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
-export type FormeroQuestionCheckgroupParams = SchemaControl<string> & {
+export type FormeroQuestionCheckgroupParams = SchemaControl<boolean[]> & {
   options: {
     key: string;
     value: boolean;
@@ -10,7 +10,7 @@ export type FormeroQuestionCheckgroupParams = SchemaControl<string> & {
   }[];
 };
 
-export class FormeroQuestionCheckgroup implements SchemaControl<string> {
+export class FormeroQuestionCheckgroup implements SchemaControl<boolean[]> {
   static blockType = 'checkgroup';
   static uiTitle = 'Viacero možností';
   static uiType = BlockGroupType.CONTROL;
@@ -19,7 +19,7 @@ export class FormeroQuestionCheckgroup implements SchemaControl<string> {
   key: string;
   order: number;
   layout?: any;
-  value: string;
+  value: boolean[];
   quickInfo: boolean;
   shared: boolean;
   label?: string;
@@ -38,6 +38,10 @@ export class FormeroQuestionCheckgroup implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
+  getValue(): boolean[] {
+    return this.options.map((option) => option.value);
+  }
+
   getBlockType(): BlockGroupType {
     return FormeroQuestionCheckgroup.blockType as BlockGroupType;
   }
@@ -45,7 +49,7 @@ export class FormeroQuestionCheckgroup implements SchemaControl<string> {
   fillWithInitData(params?: FormeroQuestionCheckgroupParams): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
-    this.value = params?.value || '';
+    this.value = params?.value || [];
     this.label = params?.label || 'Nadpis otázky';
     this.description = params?.description || 'Popis otázky';
     this.validators = params?.validators || [];

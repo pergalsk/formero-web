@@ -24,6 +24,10 @@ export class FormeroQuestionTextarea implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
+  getValue(): string {
+    return this.value;
+  }
+
   getBlockType(): BlockGroupType {
     return FormeroQuestionTextarea.blockType as BlockGroupType;
   }

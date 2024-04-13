@@ -84,10 +84,8 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.formData = this.schemaService.buildForm(this.questions);
     this.initValue = this.schemaService.extractFormInitValue(this.questions.blocks);
-    this.sharedFieldsKeys = this.schemaService.extractSharedControlKeys(this.questions?.blocks);
-    this.quickInfoFieldsKeys = this.schemaService.extractQuickInfoControlKeys(
-      this.questions.blocks,
-    );
+    this.sharedFieldsKeys = this.schemaService.keysByProp('shared', this.questions?.blocks);
+    this.quickInfoFieldsKeys = this.schemaService.keysByProp('quickInfo', this.questions.blocks);
 
     if (this.calculationSchema) {
       this.calculate();

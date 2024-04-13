@@ -1,14 +1,16 @@
 import { BlockGroupType, SchemaControl } from '@app/schema/schema';
 import { ValidatorFn } from '@angular/forms';
 
-export type FormeroQuestionRadiogroupParams = SchemaControl<string> & {
+export type FormeroQuestionRadiogroupParams = SchemaControl<number> & {
   options: {
+    key: string;
+    disabled: boolean;
     value: string;
     label: string;
   }[];
 };
 
-export class FormeroQuestionRadiogroup implements SchemaControl<string> {
+export class FormeroQuestionRadiogroup implements SchemaControl<number> {
   static blockType = 'radiogroup';
   static uiTitle = 'Jedna voľba z viacerých';
   static uiType = BlockGroupType.CONTROL;
@@ -17,7 +19,7 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
   key: string;
   order: number;
   layout?: any;
-  value: string;
+  value: number;
   quickInfo: boolean;
   shared: boolean;
   label?: string;
@@ -26,12 +28,18 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
   required?: boolean;
 
   options: {
+    key: string;
+    disabled: boolean;
     value: string;
     label: string;
   }[] = [];
 
   constructor(params?: FormeroQuestionRadiogroupParams) {
     this.fillWithInitData(params);
+  }
+
+  getValue(): number {
+    return this.value;
   }
 
   getBlockType(): BlockGroupType {
@@ -41,7 +49,7 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
   fillWithInitData(params?: FormeroQuestionRadiogroupParams): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
-    this.value = params?.value || '';
+    this.value = params?.value || 0;
     this.label = params?.label || 'Nadpis otázky';
     this.description = params?.description || 'Popis otázky';
     this.validators = params?.validators || [];
@@ -51,10 +59,14 @@ export class FormeroQuestionRadiogroup implements SchemaControl<string> {
     this.layout = params?.layout || {};
     this.options = params?.options || [
       {
+        key: 'key1',
+        disabled: false,
         value: 'val1',
         label: 'Odpoveď 1',
       },
       {
+        key: 'key2',
+        disabled: false,
         value: 'val2',
         label: 'Odpoveď 2',
       },

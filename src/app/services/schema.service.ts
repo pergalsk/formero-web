@@ -173,16 +173,9 @@ export class SchemaService {
   extractFormInitValue(formBlocks): { [key: string]: any } {
     const initValue: { [key: string]: any } = {};
 
-    // todo: refactor to switch-case
     for (const formBlock of formBlocks) {
-      if (!(formBlock instanceof FormeroBlockText || formBlock instanceof FormeroBlockTitle)) {
-        if (formBlock instanceof FormeroQuestionCheckgroup) {
-          const { key, options } = formBlock;
-          initValue[key] = options.map((option) => option.value);
-        } else {
-          const { key, value } = formBlock;
-          initValue[key] = value;
-        }
+      if (typeof formBlock.getValue === 'function') {
+        initValue[formBlock.key] = formBlock.getValue();
       }
     }
 
@@ -190,16 +183,9 @@ export class SchemaService {
   }
 
   // Get keys of shared form fields.
-  extractSharedControlKeys(formBlocks): string[] {
-    return formBlocks && formBlocks.length
-      ? formBlocks.filter((formBlock) => formBlock.shared).map((formBlock) => formBlock.key)
-      : [];
-  }
-
-  // Get block keys for quick info section
-  extractQuickInfoControlKeys(formBlocks): string[] {
-    return formBlocks && formBlocks.length
-      ? formBlocks.filter((formBlock) => formBlock.quickInfo).map((formBlock) => formBlock.key)
+  keysByProp(propName: string = '', formBlocks): string[] {
+    return formBlocks?.length
+      ? formBlocks.filter((formBlock) => formBlock.shared).map((formBlock) => formBlock[propName])
       : [];
   }
 

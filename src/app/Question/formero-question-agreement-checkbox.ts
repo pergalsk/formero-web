@@ -26,6 +26,10 @@ export class FormeroQuestionAgreementCheckbox implements SchemaControl<boolean> 
     this.fillWithInitData(params);
   }
 
+  getValue(): boolean {
+    return this.value;
+  }
+
   getBlockType(): BlockGroupType {
     return FormeroQuestionAgreementCheckbox.blockType as BlockGroupType;
   }

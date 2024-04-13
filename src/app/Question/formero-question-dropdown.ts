@@ -34,6 +34,10 @@ export class FormeroQuestionDropdown implements SchemaControl<string> {
     this.fillWithInitData(params);
   }
 
+  getValue(): string {
+    return this.value;
+  }
+
   getBlockType(): BlockGroupType {
     return FormeroQuestionDropdown.blockType as BlockGroupType;
   }

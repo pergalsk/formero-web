@@ -20,6 +20,7 @@ export type SchemaControl<T> = SchemaBlockBase & {
   description?: string;
   validators?: ValidatorFn[];
   required?: boolean;
+  getValue: () => T;
   fillWithInitData: (params: SchemaControl<T>) => void;
 };
 
