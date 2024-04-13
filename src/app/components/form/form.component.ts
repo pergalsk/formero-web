@@ -1,11 +1,11 @@
 import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { NgIf, NgFor, JsonPipe, CurrencyPipe } from '@angular/common';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaService, FormBlocksSet } from '@services/schema.service';
 import { UtilsService } from '@services/utils.service';
 import { CalculationsService } from '@services/calculations.service';
 import { QuickInfoComponent } from '../common/quick-info/quick-info.component';
 import { PanelComponent } from '../ui/panel/panel.component';
-import { NgIf, NgFor, JsonPipe, CurrencyPipe } from '@angular/common';
 import { FormBlocksComponent } from '@components/form/form-blocks.component';
 
 export enum State {
@@ -45,6 +45,7 @@ interface SubmitEvent extends Event {
 export class FormComponent implements OnInit, OnChanges {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
+  @Input() draggable = false;
 
   formData: UntypedFormGroup;
   questions: FormBlocksSet;

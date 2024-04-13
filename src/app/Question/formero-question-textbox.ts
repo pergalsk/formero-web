@@ -22,7 +22,7 @@ export class FormeroQuestionTextbox implements SchemaControl<string> {
 
   type: string;
 
-  constructor(params?: FormeroQuestionTextboxParams) {
+  constructor(params?: Partial<FormeroQuestionTextboxParams>) {
     this.fillWithInitData(params);
   }
 
@@ -30,7 +30,7 @@ export class FormeroQuestionTextbox implements SchemaControl<string> {
     return FormeroQuestionTextbox.blockType as BlockGroupType;
   }
 
-  fillWithInitData(params?: FormeroQuestionTextboxParams): void {
+  fillWithInitData(params?: Partial<FormeroQuestionTextboxParams>): void {
     this.key = params?.key || '';
     this.order = params?.order || 0;
     this.value = params?.value || '';

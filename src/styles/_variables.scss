@@ -3,33 +3,34 @@
 // DASHBOARD
 $dashboard-accent-color: #fdcb00; //var(--dashboard-accent-color);
 
-// FORMS
+// COLORS
 $primary-color: var(--primary-color);
-$secondary-color: var(--secondary-color);
-
-$default-font-size: clamp(1rem, /*1vw*/ /*0.9375vw*/ 0.8vw, 1.75rem);
-
-$content-max-width: none; //35rem;
-$content-margin: 2rem; //1.7777rem;
-$form-max-width: 45rem;
-
 $brand-color: $primary-color;
+$secondary-color: var(--secondary-color);
 $page-bg-color: var(--page-bg-color);
-
-$focus-color: $secondary-color;
-$error-color: var(--error-color);
-
 $primary-text-color: var(--primary-text-color);
 $secondary-text-color: var(--secondary-text-color);
-
 $title-text-color: var(--title-text-color);
 $title-text-weight: var(--title-text-weight);
+$focus-color: $secondary-color;
+$error-color: var(--error-color);
+$selection-text-color: var(--selection-text-color);
+$selection-bg-color: var(--selection-bg-color);
+
+// TYPOGRAPHY
+$default-font-size: clamp(1rem, /*1vw*/ /*0.9375vw*/ 0.8vw, 1.75rem);
+
+// global UI
+$content-max-width: none; //35rem;
+$content-margin: 1.7777rem;
+$form-max-width: 45rem;
+$sidebar-left-min-width: 12rem;
+$sidebar-left-max-width: 20rem;
+$sidebar-right-min-width: 20rem;
+$sidebar-right-max-width: 30rem;
 
 $border-radius-big: 1.7777rem;
 $border-radius-small: 0.6666rem;
-
-$selection-text-color: var(--selection-text-color);
-$selection-bg-color: var(--selection-bg-color);
 
 // panel
 $panel-padding: 1.7777rem;

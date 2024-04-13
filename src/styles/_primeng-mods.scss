@@ -1,19 +1,99 @@
+@use 'variables' as var;
+
 .rounded-table {
   border-radius: 8px;
   overflow: hidden;
 }
 
-aside {
-  .p-menu {
-    width: 17rem;
+.p-menu {
+  width: 100%;
+  min-width: var.$sidebar-left-min-width;
+  max-width: var.$sidebar-left-max-width;
+}
+
+.p-card {
+  aside & {
+    .p-card-body {
+      padding: 0;
+      width: 100%;
+      min-width: var.$sidebar-right-min-width;
+      max-width: var.$sidebar-right-max-width;
+
+      .p-card-content {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.p-button,
+.p-dropdown {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.p-panel {
+  .p-panel-header {
+    border: 0;
+    border-bottom: 2px solid #424b57;
   }
 
-  .p-card-body {
-    padding: 0;
-    width: 25rem;
+  .p-panel-content {
+    border: 0;
+  }
+}
 
-    .p-card-content {
-      padding: 0;
+.p-orderlist {
+  .form-wrapper & {
+    .p-orderlist-controls {
+      display: none;
     }
+
+    .p-orderlist-list-container {
+      background: none;
+      border: none;
+    }
+
+    .p-orderlist-list {
+      min-height: auto;
+      padding: 0;
+      overflow: visible;
+
+      .p-orderlist-item:not(.p-highlight):hover {
+        background: none;
+      }
+
+      .p-orderlist-item {
+        padding: 0;
+        margin-bottom: var.$content-margin;
+        overflow: visible;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        &.p-highlight {
+          background: none;
+        }
+
+        &.p-focus {
+          background: none;
+        }
+      }
+    }
+  }
+}
+
+// when dragging this is rendered at top level BODY element
+.p-orderlist-item {
+  &.cdk-drag-preview,
+  &.cdk-drag-dragging {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    background: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
   }
 }
