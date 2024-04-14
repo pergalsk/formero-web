@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
   AbstractControlOptions,
   UntypedFormArray,
@@ -15,15 +15,8 @@ import { ValidatorsService } from './validators.service';
 import { UtilsService } from './utils.service';
 import { FormeroValidation, FormValidationBlocksSet } from '../Validations';
 import { FormeroBlockTitle, FormeroBlockText, FormTextBlocksSet } from '../Blocks';
-import {
-  FormeroQuestionTextbox,
-  FormeroQuestionTextarea,
-  FormeroQuestionDropdown,
-  FormeroQuestionRadiogroup,
-  FormeroQuestionCheckgroup,
-  FormeroQuestionAgreementCheckbox,
-  FormQuestionBlocksSet,
-} from '../Question';
+import { FormeroQuestionCheckgroup, FormQuestionBlocksSet } from '../Question';
+import { SCHEMA_BLOCKS } from '@app/schema/schema-blocks-injection-token';
 
 export interface FormBlocksSet {
   id: number;
@@ -61,10 +54,11 @@ export type SchemasListItem = {
   providedIn: 'root',
 })
 export class SchemaService {
-  validatorsService: ValidatorsService = inject(ValidatorsService);
-  utilsService: UtilsService = inject(UtilsService);
-  formBuilder: UntypedFormBuilder = inject(UntypedFormBuilder);
   httpClient: HttpClient = inject(HttpClient);
+  formBuilder: UntypedFormBuilder = inject(UntypedFormBuilder);
+  utilsService: UtilsService = inject(UtilsService);
+  validatorsService: ValidatorsService = inject(ValidatorsService);
+  schemaBlocks: any = inject(SCHEMA_BLOCKS);
 
   getQuestions(schemaId: number) {
     return this.loadFormSchema(schemaId).pipe(
@@ -82,20 +76,15 @@ export class SchemaService {
   }
 
   processFormSchema(formSchema) {
-    // Process global validators
-    // if (Array.isArray(formSchema.validators) && formSchema.validators.length) {
-    //   formSchema.validators = formSchema.validators
-    //     .map((rawValidator) => this.validatorsService.processRawValidators(rawValidator))
-    //     .filter((validator: ValidatorFn | null) => validator); // filter falsy values
-    // }
+    if (!Array.isArray(formSchema.blocks) || !formSchema.blocks.length) {
+      return formSchema;
+    }
 
     // Process form blocks
-    if (Array.isArray(formSchema.blocks) && formSchema.blocks.length) {
-      formSchema.blocks = formSchema.blocks
-        .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
-        .filter((formBlock) => formBlock) // filter falsy values
-        .sort(this.utilsService.sortByOrderProp);
-    }
+    formSchema.blocks = formSchema.blocks
+      .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
+      .filter((formBlock) => formBlock) // filter falsy values
+      .sort(this.utilsService.sortByOrderProp);
 
     return formSchema;
   }
@@ -119,20 +108,9 @@ export class SchemaService {
         .filter((validator: ValidatorFn | null) => validator); // filter falsy values
     }
 
-    // todo: move to separate directory as exported constant
-    const blockTypeMap = new Map<string, any>([
-      ['title', FormeroBlockTitle],
-      ['blocktext', FormeroBlockText],
-      ['textbox', FormeroQuestionTextbox],
-      ['textarea', FormeroQuestionTextarea],
-      ['radiogroup', FormeroQuestionRadiogroup],
-      ['checkgroup', FormeroQuestionCheckgroup],
-      ['dropdown', FormeroQuestionDropdown],
-      ['agreement', FormeroQuestionAgreementCheckbox],
-      ['validation', FormeroValidation],
-    ]);
-
-    const constructorFnName = blockTypeMap.get(rawFormBlock.type);
+    const constructorFnName = this.schemaBlocks.find((item): boolean => {
+      return rawFormBlock.type === item.blockType;
+    });
     return constructorFnName ? new constructorFnName({ ...rawFormBlock }) : null;
   }
 
