@@ -25,7 +25,7 @@ export class UtilsService {
     }, []);
 
   createIndexesArray = (length: number): number[] => {
-    let actualIndexes: number[] = [];
+    const actualIndexes: number[] = [];
     for (let i: number = 0; i < length; i++) {
       actualIndexes.push(i);
     }
@@ -55,7 +55,7 @@ export class UtilsService {
       actualIndexes = this.createIndexesArray(valuesArray.length);
     }
 
-    let cherryPickedValues: any = [];
+    const cherryPickedValues: any = [];
 
     actualIndexes.forEach((val) => {
       const actualValue = valuesArray[val];
