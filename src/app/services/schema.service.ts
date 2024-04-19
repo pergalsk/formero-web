@@ -91,15 +91,9 @@ export class SchemaService {
 
   processRawFormBlock(rawFormBlock) {
     if (Array.isArray(rawFormBlock.validators) && rawFormBlock.validators.length) {
-      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo: RawValidatorInfo) => {
-        // todo: move to separate file
-        return [
-          'required',
-          'groupRequiredValidator',
-          'minCheckedValidator',
-          'checkedValidator',
-        ].includes(rawValidatorInfo.type);
-      });
+      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo: RawValidatorInfo) =>
+        this.validatorsService.isRequiredType(rawValidatorInfo.type),
+      );
 
       rawFormBlock.validators = rawFormBlock.validators
         .map((rawValidatorInfo: RawValidatorInfo) =>

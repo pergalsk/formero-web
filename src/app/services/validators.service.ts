@@ -148,4 +148,13 @@ export class ValidatorsService {
         return null;
       };
   }
+
+  isRequiredType(type: string): boolean {
+    return [
+      'required',
+      'groupRequiredValidator',
+      'minCheckedValidator',
+      'checkedValidator',
+    ].includes(type);
+  }
 }
