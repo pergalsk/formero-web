@@ -6,9 +6,9 @@
 </div>
 
 <!-- Errors -->
-<div *ngIf="state === STATE.SubmitError && errors.length">
+@if (state === STATE.SubmitError && errors.length) {
   <p *ngFor="let error of errors" style="color: red">{{ error }}</p>
-</div>
+}
 
 <!-- Form blocks -->
 <div *ngIf="[STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)">
@@ -19,11 +19,13 @@
     [draggable]="false"
   />
 
-    <!-- Calculation partial result -->
-    <h2 *ngIf="showSums">
+  <!-- Calculation partial result -->
+  @if (showSums) {
+    <h2>
       Suma: XY
       <!--{{ partialSum | currency }}-->
     </h2>
+  }
 
   <!-- Reset button -->
   <button
