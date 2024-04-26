@@ -64,7 +64,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.initialize();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     // todo: this is called 2x
     this.initialize();
   }
@@ -78,37 +78,25 @@ export class FormComponent implements OnInit, OnChanges {
     this.initValue = this.schemaService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.schemaService.keysByProp('shared', this.questions?.blocks);
     this.quickInfoFieldsKeys = this.schemaService.keysByProp('quickInfo', this.questions.blocks);
+    this.displayFieldMessages = false;
 
     if (this.calculationSchema) {
       this.calculate();
-      this.formData.valueChanges.subscribe(() => {
-        this.calculate();
-      });
+      this.formData.valueChanges.subscribe(() => this.calculate());
     }
-
-    this.displayFieldMessages = false;
   }
 
-  submitOne() {
+  submitOne(): void {
     if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Submit: Form is not valid!');
       return;
     }
 
-    this.batchSubmit([
-      {
-        val: { ...this.formRawValue },
-        sum: this.partialSum,
-      },
-    ]);
+    this.batchSubmit([{ val: { ...this.formRawValue }, sum: this.partialSum }]);
   }
 
-  private isFormValid() {
-    return this.formData.valid;
-  }
-
-  submitMultiple() {
+  submitMultiple(): void {
     this.batchSubmit([...this.batchItems]); // todo: need to deep clone ?
   }
 
@@ -119,19 +107,13 @@ export class FormComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.batchItems = [
-      ...this.batchItems,
-      {
-        val: { ...this.formRawValue },
-        sum: this.partialSum,
-      },
-    ];
+    this.batchItems = [...this.batchItems, { val: { ...this.formRawValue }, sum: this.partialSum }];
     this.totalSum = this.calculateTotalSum(this.batchItems);
     this.resetNonSharedForm(this.formRawValue);
     this.state = State.Init;
   }
 
-  deleteAllBatchItems() {
+  deleteAllBatchItems(): void {
     this.batchItems = [];
     this.totalSum = 0; // todo: or null when without calculations
   }
@@ -149,7 +131,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.totalSum = this.calculateTotalSum(this.batchItems);
   }
 
-  cancelBatchItemChanges() {
+  cancelBatchItemChanges(): void {
     alert('Chcete zrušiť zmeny ?');
     this.editedBatchItem = null;
     this.formData.reset(this.initValue);
@@ -157,17 +139,14 @@ export class FormComponent implements OnInit, OnChanges {
     this.state = State.Init;
   }
 
-  saveBatchItemChanges() {
+  saveBatchItemChanges(): void {
     if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Save batch item: Form is not valid!');
       return;
     }
 
-    this.batchItems[this.editedBatchItem] = {
-      val: { ...this.formRawValue },
-      sum: this.partialSum,
-    };
+    this.batchItems[this.editedBatchItem] = { val: { ...this.formRawValue }, sum: this.partialSum };
     this.editedBatchItem = null;
     this.totalSum = this.calculateTotalSum(this.batchItems);
     this.resetNonSharedForm(this.formRawValue);
@@ -178,6 +157,17 @@ export class FormComponent implements OnInit, OnChanges {
     this.batchItems = [];
     this.resetForm();
     this.state = State.Init;
+  }
+
+  resetForm(): void {
+    this.errors = [];
+    this.displayFieldMessages = false;
+    this.formData.reset(this.initValue);
+    this.utilsService.scrollToTop();
+  }
+
+  private isFormValid(): boolean {
+    return this.formData.valid;
   }
 
   private calculate(): void {
@@ -206,24 +196,17 @@ export class FormComponent implements OnInit, OnChanges {
 
     console.table(data);
 
-    this.schemaService.submitAnswers(this.questions.id, data).subscribe(
-      (resp) => {
+    this.schemaService.submitAnswers(this.questions.id, data).subscribe({
+      next: (resp) => {
         this.state = State.SubmitSuccess;
         console.log(resp);
       },
-      (error) => {
+      error: (error) => {
         this.state = State.SubmitError;
         this.errors = [...this.errors, error];
         this.utilsService.scrollToTop();
       },
-    );
-  }
-
-  resetForm(): void {
-    this.errors = [];
-    this.displayFieldMessages = false;
-    this.formData.reset(this.initValue);
-    this.utilsService.scrollToTop();
+    });
   }
 
   private resetNonSharedForm(formDataValue): void {
