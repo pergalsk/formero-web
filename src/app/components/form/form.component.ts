@@ -7,6 +7,7 @@ import { CalculationsService } from '@services/calculations.service';
 import { QuickInfoComponent } from '../common/quick-info/quick-info.component';
 import { PanelComponent } from '../ui/panel/panel.component';
 import { FormBlocksComponent } from '@components/form/form-blocks.component';
+import { FromCoreComponent } from '@components/form/from-core.component';
 
 export enum State {
   Init = 'INIT',
@@ -14,16 +15,6 @@ export enum State {
   SubmitError = 'SUBMIT_ERROR',
   SubmitSuccess = 'SUBMIT_SUCCESS',
   Editing = 'EDITING',
-}
-
-export enum Action {
-  SubmitOne = 'SUBMIT_ONE',
-  SubmitMultiple = 'SUBMIT_MULTIPLE',
-}
-
-// This kind of event is not defined in TypeScript
-interface SubmitEvent extends Event {
-  submitter: HTMLFormElement;
 }
 
 @Component({
@@ -40,12 +31,12 @@ interface SubmitEvent extends Event {
     JsonPipe,
     CurrencyPipe,
     FormBlocksComponent,
+    FromCoreComponent,
   ],
 })
 export class FormComponent implements OnInit, OnChanges {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
-  @Input() draggable = false;
 
   formData: UntypedFormGroup;
   questions: FormBlocksSet;
@@ -63,7 +54,6 @@ export class FormComponent implements OnInit, OnChanges {
   state: State = State.Init;
 
   STATE = State;
-  ACTION = Action;
 
   utilsService: UtilsService = inject(UtilsService);
   schemaService: SchemaService = inject(SchemaService);
@@ -99,27 +89,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayFieldMessages = false;
   }
 
-  onSubmit($event: SubmitEvent): void {
-    if (!$event || $event.type !== 'submit') {
-      return;
-    }
-
-    const action: Action = $event.submitter.name as Action;
-    console.log('Submit action: ', action);
-
-    switch (action) {
-      case Action.SubmitOne:
-        this.submitOne();
-        break;
-      case Action.SubmitMultiple:
-        this.submitMultiple(this.batchItems);
-        break;
-      default:
-        return;
-    }
-  }
-
-  private submitOne() {
+  submitOne() {
     if (!this.isFormValid()) {
       this.displayFieldMessages = true;
       console.log('Submit: Form is not valid!');
@@ -138,13 +108,8 @@ export class FormComponent implements OnInit, OnChanges {
     return this.formData.valid;
   }
 
-  private submitMultiple(batchItems: any[]) {
-    this.batchSubmit([...batchItems]); // todo: need to deep clone ?
-  }
-
-  onReset($event: Event) {
-    $event.preventDefault();
-    this.resetForm();
+  submitMultiple() {
+    this.batchSubmit([...this.batchItems]); // todo: need to deep clone ?
   }
 
   addBatchItem(): void {
@@ -254,7 +219,7 @@ export class FormComponent implements OnInit, OnChanges {
     );
   }
 
-  private resetForm(): void {
+  resetForm(): void {
     this.errors = [];
     this.displayFieldMessages = false;
     this.formData.reset(this.initValue);

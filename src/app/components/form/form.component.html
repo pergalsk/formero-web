@@ -12,20 +12,12 @@
 
 <!-- Form blocks -->
 <div *ngIf="[STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)">
-  <form
-    [formGroup]="formData"
-    (ngSubmit)="onSubmit($event)"
-    (reset)="onReset($event)"
-    [class.field-messages]="displayFieldMessages"
-    autocomplete="off"
-    class="flx-col"
-  >
-    <app-form-blocks
-      [form]="formData"
-      [questions]="questions"
-      [displayMessages]="displayFieldMessages"
-      [draggable]="draggable"
-    />
+  <app-form-core
+    [questions]="blocks"
+    [formData]="formData"
+    [displayFieldMessages]="displayFieldMessages"
+    [draggable]="false"
+  />
 
     <!-- Calculation partial result -->
     <h2 *ngIf="showSums">
@@ -33,118 +25,104 @@
       <!--{{ partialSum | currency }}-->
     </h2>
 
-    <!-- Reset button -->
-    <button type="reset" class="btn btn-tertiary btn-wired" [disabled]="state === STATE.Submitting">
-      Resetovať polia
-    </button>
+  <!-- Reset button -->
+  <button
+    class="btn btn-tertiary btn-wired"
+    [disabled]="state === STATE.Submitting"
+    (click)="resetForm()"
+  >
+    Resetovať polia
+  </button>
 
-    <!-- Add batch item button -->
-    <button
-      *ngIf="questions.options?.batch && state !== STATE.Editing"
-      type="button"
-      class="btn btn-secondary btn-wired"
-      (click)="addBatchItem()"
-      [disabled]="state === STATE.Submitting"
-    >
-      {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
-    </button>
+  <!-- Add batch item button -->
+  <button
+    *ngIf="questions.options?.batch && state !== STATE.Editing"
+    type="button"
+    class="btn btn-secondary btn-wired"
+    (click)="addBatchItem()"
+    [disabled]="state === STATE.Submitting"
+  >
+    {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
+  </button>
 
-    <!-- Cancel batch item changes button -->
-    <button
-      *ngIf="state === STATE.Editing"
-      type="button"
-      class="btn btn-tertiary btn-wired"
-      (click)="cancelBatchItemChanges()"
-    >
-      Zrušiť zmeny
-    </button>
+  <!-- Cancel batch item changes button -->
+  <button
+    *ngIf="state === STATE.Editing"
+    type="button"
+    class="btn btn-tertiary btn-wired"
+    (click)="cancelBatchItemChanges()"
+  >
+    Zrušiť zmeny
+  </button>
 
-    <!-- Save batch item changes button -->
-    <button
-      *ngIf="state === STATE.Editing"
-      type="button"
-      (click)="saveBatchItemChanges()"
-      class="btn btn-tertiary"
-    >
-      Potvrdiť zmeny
-    </button>
+  <!-- Save batch item changes button -->
+  <button
+    *ngIf="state === STATE.Editing"
+    type="button"
+    (click)="saveBatchItemChanges()"
+    class="btn btn-tertiary"
+  >
+    Potvrdiť zmeny
+  </button>
 
-    <!-- Submit alone button -->
-    <button
-      *ngIf="!batchItems.length"
-      type="submit"
-      class="btn btn-secondary"
-      [name]="ACTION.SubmitOne"
-      [disabled]="state === STATE.Submitting"
-    >
-      {{ questions.options?.batch ? 'Odoslať samostatne' : 'Odoslať' }}
-    </button>
+  <!-- Submit alone button -->
+  <button
+    *ngIf="!batchItems.length"
+    class="btn btn-secondary"
+    [disabled]="state === STATE.Submitting"
+    (click)="submitOne()"
+  >
+    {{ questions.options?.batch ? 'Odoslať samostatne' : 'Odoslať' }}
+  </button>
 
-    <!-- Batch form items list -->
-    <div
-      *ngIf="
-        [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state) &&
-        batchItems.length
-      "
-      class="full-width-container flx-col stick-bottom"
-    >
-      <app-panel [type]="5" class="fit" classList="flx-col">
-        <div class="flx-row">
-          <div class="flx-fill label-title">Na odoslanie</div>
-          <div *ngIf="showSums" class="label-title">
-            Spolu: XY
-            <!--{{ totalSum | currency }}-->
-          </div>
+  <!-- Batch form items list -->
+  <div
+    *ngIf="
+      [STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state) &&
+      batchItems.length
+    "
+    class="full-width-container flx-col stick-bottom"
+  >
+    <app-panel [type]="5" class="fit" classList="flx-col">
+      <div class="flx-row">
+        <div class="flx-fill label-title">Na odoslanie</div>
+        <div *ngIf="showSums" class="label-title">
+          Spolu: XY
+          <!--{{ totalSum | currency }}-->
         </div>
+      </div>
 
-        <app-quick-info
-          [items]="batchItems"
-          [keys]="quickInfoFieldsKeys"
-          [displaySum]="showSums"
+      <app-quick-info
+        [items]="batchItems"
+        [keys]="quickInfoFieldsKeys"
+        [displaySum]="showSums"
+        [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+        (edit)="onEditBatchItem($event)"
+        (delete)="onDeleteBatchItem($event)"
+      ></app-quick-info>
+
+      <div class="flx-row">
+        <!-- Delete all batch items button -->
+        <button
+          type="button"
+          class="btn btn-secondary btn-wired btn-small"
+          (click)="deleteAllBatchItems()"
           [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-          (edit)="onEditBatchItem($event)"
-          (delete)="onDeleteBatchItem($event)"
-        ></app-quick-info>
+        >
+          Zmazať všetky ({{ batchItems.length }})
+        </button>
 
-        <div class="flx-row">
-          <!-- Delete all batch items button -->
-          <button
-            type="button"
-            class="btn btn-secondary btn-wired btn-small"
-            (click)="deleteAllBatchItems()"
-            [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-          >
-            Zmazať všetky ({{ batchItems.length }})
-          </button>
-
-          <!-- Submit all batch items button -->
-          <button
-            type="submit"
-            class="btn btn-primary btn-small flx-fill"
-            [name]="ACTION.SubmitMultiple"
-            [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
-          >
-            Odoslať všetky ({{ batchItems.length }})
-          </button>
-        </div>
-      </app-panel>
-    </div>
-
-    <!-- LOG form data-->
-
-    <!--<pre>
-displayMessages: {{ displayFieldMessages }}
--&#45;&#45;
-formData.errors:  {{ formData.errors | json }}
-formData.invalid: {{ formData.invalid | json }}
-formData.touched: {{ formData.touched | json }}
-formData.dirty:   {{ formData.dirty | json }}
--&#45;&#45;
-</pre>-->
-
-    <!--<pre>{{ formRawValue | json }}</pre>-->
-    <!--<pre>{{ formData | json }}</pre>-->
-  </form>
+        <!-- Submit all batch items button -->
+        <button
+          class="btn btn-primary btn-small flx-fill"
+          [disabled]="[STATE.Submitting, STATE.Editing].includes(state)"
+          (click)="submitMultiple()"
+        >
+          Odoslať všetky ({{ batchItems.length }})
+        </button>
+      </div>
+    </app-panel>
+  </div>
 </div>
 
 <!-- Todo: Move to own route -->
