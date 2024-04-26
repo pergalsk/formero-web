@@ -48,7 +48,12 @@
   </button>
 
   <!-- Cancel batch item changes button -->
-  <button type="button" class="btn btn-tertiary btn-wired" (click)="cancelBatchItemChanges()">
+  <button
+    *ngIf="state === STATE.Editing"
+    type="button"
+    class="btn btn-tertiary btn-wired"
+    (click)="cancelBatchItemChanges()"
+  >
     Zrušiť zmeny
   </button>
 
