@@ -21,61 +21,63 @@
 
   <!-- Calculation partial result -->
   @if (showSums) {
-    <h2>
+    <h2 class="mt-gap">
       Suma: XY
       <!--{{ partialSum | currency }}-->
     </h2>
   }
 
-  <!-- Reset button -->
-  <button
-    class="btn btn-tertiary btn-wired"
-    [disabled]="state === STATE.Submitting"
-    (click)="resetForm()"
-  >
-    Resetovať polia
-  </button>
+  <div class="flx-col mt-gap">
+    <!-- Reset button -->
+    <button
+      class="btn btn-tertiary btn-wired"
+      [disabled]="state === STATE.Submitting"
+      (click)="resetForm()"
+    >
+      Resetovať polia
+    </button>
 
-  <!-- Add batch item button -->
-  <button
-    *ngIf="questions.options?.batch && state !== STATE.Editing"
-    type="button"
-    class="btn btn-secondary btn-wired"
-    [disabled]="state === STATE.Submitting"
-    (click)="addBatchItem()"
-  >
-    {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
-  </button>
+    <!-- Add batch item button -->
+    <button
+      *ngIf="questions.options?.batch && state !== STATE.Editing"
+      type="button"
+      class="btn btn-secondary btn-wired"
+      [disabled]="state === STATE.Submitting"
+      (click)="addBatchItem()"
+    >
+      {{ batchItems.length ? 'Pridať ďalšieho člena domácnosti' : 'Pridať ako člena domácnosti' }}
+    </button>
 
-  <!-- Cancel batch item changes button -->
-  <button
-    *ngIf="state === STATE.Editing"
-    type="button"
-    class="btn btn-tertiary btn-wired"
-    (click)="cancelBatchItemChanges()"
-  >
-    Zrušiť zmeny
-  </button>
+    <!-- Cancel batch item changes button -->
+    <button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      class="btn btn-tertiary btn-wired"
+      (click)="cancelBatchItemChanges()"
+    >
+      Zrušiť zmeny
+    </button>
 
-  <!-- Save batch item changes button -->
-  <button
-    *ngIf="state === STATE.Editing"
-    type="button"
-    class="btn btn-tertiary"
-    (click)="saveBatchItemChanges()"
-  >
-    Potvrdiť zmeny
-  </button>
+    <!-- Save batch item changes button -->
+    <button
+      *ngIf="state === STATE.Editing"
+      type="button"
+      class="btn btn-tertiary"
+      (click)="saveBatchItemChanges()"
+    >
+      Potvrdiť zmeny
+    </button>
 
-  <!-- Submit alone button -->
-  <button
-    *ngIf="!batchItems.length"
-    class="btn btn-secondary"
-    [disabled]="state === STATE.Submitting"
-    (click)="submitOne()"
-  >
-    {{ questions.options?.batch ? 'Odoslať samostatne' : 'Odoslať' }}
-  </button>
+    <!-- Submit alone button -->
+    <button
+      *ngIf="!batchItems.length"
+      class="btn btn-secondary"
+      [disabled]="state === STATE.Submitting"
+      (click)="submitOne()"
+    >
+      {{ questions.options?.batch ? 'Odoslať samostatne' : 'Odoslať' }}
+    </button>
+  </div>
 
   <!-- Batch form items list -->
   @if (
