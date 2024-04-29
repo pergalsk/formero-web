@@ -15,8 +15,18 @@ export enum InitState {
 
 @Component({
   selector: 'app-form-page',
-  templateUrl: './form-page.component.html',
-  styleUrls: ['./form-page.component.scss'],
+  template: `
+    <div class="form-wrapper">
+      <span *ngIf="state === STATE.Initializing">Loading...</span>
+      <span *ngIf="state === STATE.Error">Loading ERROR.</span>
+
+      <app-form
+        *ngIf="state === STATE.Success"
+        [blocks]="blocks"
+        [calculations]="calculations"
+      ></app-form>
+    </div>
+  `,
   standalone: true,
   imports: [NgIf, FormComponent],
 })
