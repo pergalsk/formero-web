@@ -48,7 +48,7 @@ import { PanelModule } from 'primeng/panel';
         </div>
 
         <aside>
-          <p-card class="sticky">
+          <p-card class="">
             <p-tabView>
               <p-tabPanel header="Formulár">
                 <div class="flx-col gap-small">
