@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormeroQuestionTextbox } from '@app/Question';
-import { FormeroFieldMessagesComponent } from '../../common/formero-field-messages/formero-field-messages.component';
+import { FormeroFieldMessagesComponent } from '@app/components';
 import { NgIf } from '@angular/common';
 
 @Component({
