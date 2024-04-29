@@ -37,6 +37,7 @@ export enum State {
 export class FormComponent implements OnInit, OnChanges {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
+  @Input() draggable = false;
 
   formData: UntypedFormGroup;
   questions: FormBlocksSet;
