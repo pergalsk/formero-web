@@ -38,7 +38,7 @@ import { OrderListModule } from 'primeng/orderlist';
     JsonPipe,
   ],
   template: `
-    @if (draggable) {
+    @if (draggable && questions.blocks.length > 1) {
       <p-orderList [value]="questions.blocks" [dragdrop]="true" [responsive]="true">
         <ng-template let-question pTemplate="item">
           <app-panel [type]="question?.layout?.panel">
