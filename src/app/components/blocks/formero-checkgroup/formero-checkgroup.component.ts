@@ -20,7 +20,7 @@ import { NgIf, NgFor } from '@angular/common';
       <div class="label-description" [textContent]="props.description"></div>
 
       <div class="input-box" [class.ng-invalid]="form.controls[props.key]?.invalid">
-        <ng-container *ngIf="displayAllChecked">
+        @if (displayAllChecked) {
           <label for="all-checked">
             <input
               type="checkbox"
@@ -31,11 +31,10 @@ import { NgIf, NgFor } from '@angular/common';
             />
             <span>Všetky</span>
           </label>
-
           <hr />
-        </ng-container>
+        }
 
-        <ng-container *ngFor="let option of props.options; index as i">
+        @for (option of props.options; track i; let i = $index) {
           <label
             class="checkbox-label"
             [formArrayName]="props.key"
@@ -44,7 +43,7 @@ import { NgIf, NgFor } from '@angular/common';
             <input type="checkbox" [formControlName]="i" [id]="props.key + '_' + i" />
             <span>{{ option.label }}</span>
           </label>
-        </ng-container>
+        }
       </div>
     </ng-container>
 
