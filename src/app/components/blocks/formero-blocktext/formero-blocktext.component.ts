@@ -1,16 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormeroBlockText } from '@app/Blocks';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-formero-blocktext',
-  templateUrl: './formero-blocktext.component.html',
-  styleUrls: ['./formero-blocktext.component.scss'],
   standalone: true,
+  template: `<p [innerHTML]="props.content"></p>`,
 })
-export class FormeroBlocktextComponent implements OnInit {
-  @Input() props: FormeroBlockText;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+export class FormeroBlocktextComponent {
+  @Input() props: any;
 }

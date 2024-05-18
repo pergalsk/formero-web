@@ -1,5 +1,7 @@
 import { ValidatorFn } from '@angular/forms';
 
+export type SchemaBlock = any;
+
 export type SchemaBlockBase = {
   // blockType?: string; // as static
   // uiTitle?: string; // as static

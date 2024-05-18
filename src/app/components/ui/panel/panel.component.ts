@@ -23,14 +23,19 @@ const panelTypes = {
 
 @Component({
   selector: 'app-panel',
-  templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.scss'],
+  template: `
+    <section class="panel" [ngClass]="class" [class.panel-selected]="selected">
+      <!--{{ class }}-->
+      <ng-content></ng-content>
+    </section>
+  `,
   standalone: true,
   imports: [NgClass],
 })
 export class PanelComponent implements OnInit {
   @Input() type = 0;
   @Input() classList = '';
+  @Input() selected = false;
 
   class = '';
 

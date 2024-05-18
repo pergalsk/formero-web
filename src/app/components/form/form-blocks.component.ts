@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { JsonPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormBlocksSet } from '@services/schema.service';
 import { PanelComponent } from '@components/ui/panel/panel.component';
 import {
@@ -15,6 +15,7 @@ import {
   FormeroValidationComponent,
 } from '@app/components';
 import { OrderListModule } from 'primeng/orderlist';
+import { SchemaBlock } from '@app/schema/schema';
 
 @Component({
   selector: 'app-form-blocks',
@@ -38,72 +39,80 @@ import { OrderListModule } from 'primeng/orderlist';
     JsonPipe,
   ],
   template: `
-    @if (draggable && questions.blocks.length > 1) {
-      <p-orderList [value]="questions.blocks" [dragdrop]="true" [responsive]="true">
-        <ng-template let-question pTemplate="item">
-          <app-panel [type]="question?.layout?.panel">
-            <ng-container
-              *ngTemplateOutlet="blocksTpl; context: { $implicit: question }"
-            ></ng-container>
+    @if (draggable && blocks.length > 1) {
+      <p-orderList [value]="blocks" [dragdrop]="true" [responsive]="true">
+        <ng-template let-block pTemplate="item">
+          <app-panel
+            [type]="block?.layout?.panel"
+            [selected]="block.key === selectedKey"
+            (click)="onPanelSelect(block)"
+          >
+            <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: block }" />
           </app-panel>
         </ng-template>
       </p-orderList>
     } @else {
-      <app-panel *ngFor="let question of questions.blocks" [type]="question?.layout?.panel">
-        <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: question }" />
+      <app-panel
+        *ngFor="let block of blocks"
+        [type]="block?.layout?.panel"
+        [selected]="block.key === selectedKey"
+        (click)="onPanelSelect(block)"
+      >
+        <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: block }" />
       </app-panel>
     }
 
-    <ng-template #blocksTpl let-question>
-      <app-formero-title *ngIf="question.getBlockType() === 'title'" [props]="question" />
+    <ng-template #blocksTpl let-block>
+      <!--<pre>{{ block | json }}</pre>-->
+      <app-formero-title *ngIf="block.type === 'title'" [props]="block" />
 
-      <app-formero-blocktext *ngIf="question.getBlockType() === 'blocktext'" [props]="question" />
+      <app-formero-blocktext *ngIf="block.type === 'blocktext'" [props]="block" />
 
       <app-formero-textbox
-        *ngIf="question.getBlockType() === 'textbox'"
-        [props]="question"
+        *ngIf="block.type === 'textbox'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-textarea
-        *ngIf="question.getBlockType() === 'textarea'"
-        [props]="question"
+        *ngIf="block.type === 'textarea'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-dropdown
-        *ngIf="question.getBlockType() === 'dropdown'"
-        [props]="question"
+        *ngIf="block.type === 'dropdown'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-radiogroup
-        *ngIf="question.getBlockType() === 'radiogroup'"
-        [props]="question"
+        *ngIf="block.type === 'radiogroup'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-checkgroup
-        *ngIf="question.getBlockType() === 'checkgroup'"
-        [props]="question"
+        *ngIf="block.type === 'checkgroup'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-agreement
-        *ngIf="question.getBlockType() === 'agreement'"
-        [props]="question"
+        *ngIf="block.type === 'agreement'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
 
       <app-formero-validation
-        *ngIf="question.getBlockType() === 'validation'"
-        [props]="question"
+        *ngIf="block.type === 'validation'"
+        [props]="block"
         [form]="form"
         [displayMessages]="displayMessages"
       />
@@ -112,8 +121,20 @@ import { OrderListModule } from 'primeng/orderlist';
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormBlocksComponent {
-  @Input() form: UntypedFormGroup;
-  @Input() questions: FormBlocksSet;
+  @Input() form: FormGroup;
+  @Input() blocks: FormBlocksSet['blocks'];
   @Input() displayMessages: boolean;
   @Input() draggable: boolean = false;
+  @Input() selectable: boolean = false;
+
+  @Output() select: EventEmitter<SchemaBlock> = new EventEmitter<SchemaBlock>();
+
+  selectedKey = '';
+
+  onPanelSelect(block: SchemaBlock): void {
+    if (this.selectable) {
+      this.selectedKey = block.key;
+      this.select.emit(block);
+    }
+  }
 }

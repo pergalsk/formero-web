@@ -29,4 +29,8 @@
     @include typo.text-small();
     color: var.$secondary-text-color;
   }
+
+  &.panel-selected {
+    box-shadow: 0 0 0 3px #60a5d5;
+  }
 }

@@ -1,4 +1,14 @@
-import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { NgIf, NgFor, JsonPipe, CurrencyPipe } from '@angular/common';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaService, FormBlocksSet } from '@services/schema.service';
@@ -8,6 +18,7 @@ import { QuickInfoComponent } from '../common/quick-info/quick-info.component';
 import { PanelComponent } from '../ui/panel/panel.component';
 import { FormBlocksComponent } from '@components/form/form-blocks.component';
 import { FromCoreComponent } from '@components/form/from-core.component';
+import { SchemaBlock } from '@app/schema/schema';
 
 export enum State {
   Init = 'INIT',
@@ -38,6 +49,9 @@ export class FormComponent implements OnInit, OnChanges {
   @Input() blocks: FormBlocksSet;
   @Input() calculations: any;
   @Input() draggable = false;
+  @Input() selectable = false;
+
+  @Output() select: EventEmitter<SchemaBlock> = new EventEmitter<SchemaBlock>();
 
   formData: UntypedFormGroup;
   questions: FormBlocksSet;
@@ -59,14 +73,16 @@ export class FormComponent implements OnInit, OnChanges {
   utilsService: UtilsService = inject(UtilsService);
   schemaService: SchemaService = inject(SchemaService);
   calculationsService: CalculationsService = inject(CalculationsService);
+  changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    // todo: this is called 2x
     this.initialize();
   }
 
-  ngOnChanges(): void {
-    // todo: this is called 2x
+  ngOnChanges(changes: SimpleChanges): void {
+    if (Object.values(changes).every(({ firstChange }) => firstChange)) {
+      return;
+    }
     this.initialize();
   }
 
@@ -75,7 +91,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.calculationSchema = this.calculations;
     this.showSums = !!this.calculations;
 
-    this.formData = this.schemaService.buildForm(this.questions);
+    this.formData = this.schemaService.initEmptyForm();
     this.initValue = this.schemaService.extractFormInitValue(this.questions.blocks);
     this.sharedFieldsKeys = this.schemaService.keysByProp('shared', this.questions?.blocks);
     this.quickInfoFieldsKeys = this.schemaService.keysByProp('quickInfo', this.questions.blocks);
@@ -222,5 +238,11 @@ export class FormComponent implements OnInit, OnChanges {
 
   get formRawValue() {
     return this.formData.getRawValue();
+  }
+
+  onSelect(block: SchemaBlock) {
+    if (this.selectable) {
+      this.select.emit(block);
+    }
   }
 }

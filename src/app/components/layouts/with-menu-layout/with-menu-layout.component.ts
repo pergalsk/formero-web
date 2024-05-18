@@ -24,7 +24,6 @@ import { AsyncPipe } from '@angular/common';
       </main>
 
       <footer>
-        <hr />
         <span>Copyright (c) 2022 | -pg-</span>
       </footer>
     </div>

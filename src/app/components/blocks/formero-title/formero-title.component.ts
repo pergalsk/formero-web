@@ -1,16 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormeroBlockTitle } from '@app/Blocks';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-formero-title',
-  templateUrl: './formero-title.component.html',
-  styleUrls: ['./formero-title.component.scss'],
   standalone: true,
+  template: `
+    <h2 class="heading-type-1">
+      <span>{{ props.content }}</span>
+    </h2>
+  `,
 })
-export class FormeroTitleComponent implements OnInit {
-  @Input() props: FormeroBlockTitle;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+export class FormeroTitleComponent {
+  @Input() props: any;
 }

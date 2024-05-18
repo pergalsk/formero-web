@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { JsonPipe } from '@angular/common';
 import { FormBlocksComponent } from '@components/form/form-blocks.component';
-import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { FormBlocksSet } from '@services/schema.service';
+import { SchemaBlock } from '@app/schema/schema';
 
 @Component({
   selector: 'app-form-core',
   standalone: true,
-  imports: [FormBlocksComponent, ReactiveFormsModule],
+  imports: [JsonPipe, FormBlocksComponent, ReactiveFormsModule],
   exportAs: 'appFormCore',
   template: `
     <form
@@ -18,9 +20,11 @@ import { FormBlocksSet } from '@services/schema.service';
     >
       <app-form-blocks
         [form]="formData"
-        [questions]="questions"
+        [blocks]="blocks"
         [displayMessages]="displayFieldMessages"
         [draggable]="draggable"
+        [selectable]="selectable"
+        (select)="onSelect($event)"
       />
     </form>
 
@@ -34,14 +38,23 @@ formData.touched: {{ formData.touched | json }}
 formData.dirty:   {{ formData.dirty | json }}
 -&#45;&#45;
 </pre>-->
-    <!--<pre>{{ formRawValue | json }}</pre>-->
-    <!--<pre>{{ formData | json }}</pre>-->
+    <!--<pre>{{ formData.getRawValue() | json }}</pre>-->
+    <!--<pre>{{ formData.errors | json }}</pre>-->
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FromCoreComponent {
-  @Input() questions: FormBlocksSet;
-  @Input() formData: UntypedFormGroup;
+  @Input() blocks: FormBlocksSet['blocks'];
+  @Input() formData: FormGroup;
   @Input() displayFieldMessages: boolean = false;
   @Input() draggable: boolean = false;
+  @Input() selectable: boolean = false;
+
+  @Output() select: EventEmitter<SchemaBlock> = new EventEmitter<SchemaBlock>();
+
+  onSelect(block: SchemaBlock): void {
+    if (this.selectable) {
+      this.select.emit(block);
+    }
+  }
 }

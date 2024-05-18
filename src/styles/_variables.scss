@@ -22,11 +22,11 @@ $default-font-size: clamp(1rem, /*1vw*/ /*0.9375vw*/ 0.8vw, 1.75rem);
 
 // global UI
 $content-max-width: none; //35rem;
-$content-margin: 1.7777rem;
+$content-margin: 1rem;
 $form-max-width: 45rem;
 $sidebar-left-min-width: 12rem;
 $sidebar-left-max-width: 20rem;
-$sidebar-right-min-width: 20rem;
+$sidebar-right-min-width: 30rem; // 20rem;
 $sidebar-right-max-width: 30rem;
 
 $border-radius-big: 1.7777rem;

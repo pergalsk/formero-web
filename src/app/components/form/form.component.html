@@ -13,10 +13,12 @@
 <!-- Form blocks -->
 @if ([STATE.Init, STATE.Submitting, STATE.SubmitError, STATE.Editing].includes(state)) {
   <app-form-core
-    [questions]="blocks"
+    [blocks]="questions.blocks"
     [formData]="formData"
     [displayFieldMessages]="displayFieldMessages"
     [draggable]="draggable"
+    [selectable]="selectable"
+    (select)="onSelect($event)"
   />
 
   <!-- Calculation partial result -->

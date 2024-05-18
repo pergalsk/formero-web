@@ -42,7 +42,27 @@ export class ValidatorsService {
     actualChecked > requiredChecked ? { maxChecked: { requiredChecked, actualChecked } } : null,
   );
 
-  processRawValidators(rawValidator: RawValidatorInfo): ValidatorFn | null {
+  hasRequiredValidators(rawValidators: RawValidatorInfo[]): boolean {
+    if (!Array.isArray(rawValidators) || rawValidators.length === 0) {
+      return false;
+    }
+
+    return rawValidators.some((rawValidator: RawValidatorInfo) =>
+      this.isRequiredType(rawValidator.type),
+    );
+  }
+
+  processRawValidators(rawValidators: RawValidatorInfo[]): ValidatorFn[] {
+    if (!Array.isArray(rawValidators) || rawValidators.length === 0) {
+      return [];
+    }
+
+    return rawValidators
+      .map((rawValidator: RawValidatorInfo) => this.processRawValidator(rawValidator))
+      .filter((validator: ValidatorFn | null) => validator); // filter falsy values
+  }
+
+  processRawValidator(rawValidator: RawValidatorInfo): ValidatorFn | null {
     let validatorFn: ValidatorFn | null;
 
     switch (rawValidator.type) {

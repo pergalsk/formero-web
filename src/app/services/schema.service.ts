@@ -1,20 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import {
-  AbstractControlOptions,
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  ValidatorFn,
-} from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ValidatorsService } from './validators.service';
 import { UtilsService } from './utils.service';
-import { FormeroValidation, FormValidationBlocksSet } from '../Validations';
-import { FormeroBlockTitle, FormeroBlockText, FormTextBlocksSet } from '../Blocks';
+import { FormValidationBlocksSet } from '../Validations';
+import { FormTextBlocksSet } from '../Blocks';
 import { FormeroQuestionCheckgroup, FormQuestionBlocksSet } from '../Question';
 import { SCHEMA_BLOCKS } from '@app/schema/schema-blocks-injection-token';
 
@@ -62,7 +55,7 @@ export class SchemaService {
 
   getQuestions(schemaId: number) {
     return this.loadFormSchema(schemaId).pipe(
-      map((formSchema) => this.processFormSchema(formSchema)),
+      map((schema) => ({ ...schema, blocks: this.processBlocks(schema.blocks) })),
       catchError(this.handleError('Formulár sa nepodarilo načítať.')),
     );
   }
@@ -75,89 +68,47 @@ export class SchemaService {
     return this.httpClient.get<SchemasListItem[]>('/api/schema');
   }
 
-  processFormSchema(formSchema) {
-    if (!Array.isArray(formSchema.blocks) || !formSchema.blocks.length) {
-      return formSchema;
+  processBlocks(blocks) {
+    if (!Array.isArray(blocks)) {
+      return [];
     }
 
-    // Process form blocks
-    formSchema.blocks = formSchema.blocks
-      .map((rawFormBlock) => this.processRawFormBlock(rawFormBlock))
-      .filter((formBlock) => formBlock) // filter falsy values
+    return blocks
+      .filter((block) => this.schemaBlocks.find((item): boolean => block.type === item.type))
       .sort(this.utilsService.sortByOrderProp);
-
-    return formSchema;
   }
 
-  processRawFormBlock(rawFormBlock) {
-    if (Array.isArray(rawFormBlock.validators) && rawFormBlock.validators.length) {
-      rawFormBlock.required = rawFormBlock.validators.some((rawValidatorInfo: RawValidatorInfo) =>
-        this.validatorsService.isRequiredType(rawValidatorInfo.type),
-      );
-
-      rawFormBlock.validators = rawFormBlock.validators
-        .map((rawValidatorInfo: RawValidatorInfo) =>
-          this.validatorsService.processRawValidators(rawValidatorInfo),
-        )
-        .filter((validator: ValidatorFn | null) => validator); // filter falsy values
-    }
-
-    const constructorFnName = this.schemaBlocks.find((item): boolean => {
-      return rawFormBlock.type === item.blockType;
-    });
-    return constructorFnName ? new constructorFnName({ ...rawFormBlock }) : null;
-  }
-
-  buildForm(formBlockSet: FormBlocksSet): UntypedFormGroup {
-    const controlsConfig: { [key: string]: any } = {};
-
-    const options: AbstractControlOptions = {
-      validators: [],
-      updateOn: 'change',
-    };
-
-    // todo: refactor to switch-case
-    for (const block of formBlockSet.blocks) {
-      if (block instanceof FormeroValidation) {
-        // todo: HANDLE MULTIPLE VALIDATORS OF THE SAME KIND
-
-        options.validators = [...block.validators]; // set as global form validators
-      } else if (block instanceof FormeroQuestionCheckgroup) {
-        const { key, options: opt, validators } = block;
-        const controls: UntypedFormControl[] = opt.map(
-          (option) =>
-            new UntypedFormControl({
-              value: option.value || false,
-              disabled: option.disabled || false,
-            }),
-        );
-        controlsConfig[key] = new UntypedFormArray(controls, validators);
-      } else if (block instanceof FormeroBlockText || block instanceof FormeroBlockTitle) {
-      } else {
-        const { key, value, validators } = block;
-        controlsConfig[key] = [value, validators];
-      }
-    }
-
-    return this.formBuilder.group(controlsConfig, options);
+  initEmptyForm(): FormGroup {
+    return this.formBuilder.group(
+      {},
+      {
+        validators: [],
+        updateOn: 'change',
+      },
+    );
   }
 
   extractFormInitValue(formBlocks): { [key: string]: any } {
+    const withValue = ['textbox', 'textarea', 'dropdown', 'radiogroup', 'checkgroup', 'agreement'];
+
     const initValue: { [key: string]: any } = {};
 
     for (const formBlock of formBlocks) {
-      if (typeof formBlock.getValue === 'function') {
-        initValue[formBlock.key] = formBlock.getValue();
+      if (withValue.includes(formBlock.type)) {
+        if (formBlock.type === 'checkgroup') {
+          initValue[formBlock.key] = formBlock?.options.map((option) => option.value) || [];
+        } else {
+          initValue[formBlock.key] = formBlock.value;
+        }
       }
     }
 
     return initValue;
   }
 
-  // Get keys of shared form fields.
   keysByProp(propName: string = '', formBlocks): string[] {
     return formBlocks?.length
-      ? formBlocks.filter((formBlock) => formBlock.shared).map((formBlock) => formBlock[propName])
+      ? formBlocks.filter((formBlock) => !!formBlock[propName]).map((formBlock) => formBlock.key)
       : [];
   }
 

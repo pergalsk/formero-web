@@ -32,21 +32,21 @@ export class BlockPaletteComponent {
     return arr.flat();
   }
 
-  itemAction(classNameFn) {
-    this.action.emit(classNameFn);
+  itemAction(defaultProps): void {
+    this.action.emit(defaultProps);
   }
 
-  collectBy_UiType(acc, classNameFn) {
-    if (!acc[classNameFn.uiType]) {
-      acc[classNameFn.uiType] = [classNameFn];
+  collectBy_UiType(acc, connector) {
+    if (!acc[connector.uiType]) {
+      acc[connector.uiType] = [connector];
     } else {
-      acc[classNameFn.uiType].push(classNameFn);
+      acc[connector.uiType].push(connector);
     }
     return acc;
   }
 
-  sortBy_uiOrder(classNameFnA, classNameFnB) {
-    return classNameFnA.uiOrder - classNameFnB.uiOrder;
+  sortBy_uiOrder(connectorA, connectorB): number {
+    return connectorA.uiOrder - connectorB.uiOrder;
   }
 
   mapMenuSections(groups) {
@@ -61,11 +61,11 @@ export class BlockPaletteComponent {
     };
   }
 
-  mapMenuSectionItems(classNameFn) {
+  mapMenuSectionItems(connector) {
     return {
-      label: classNameFn.uiTitle,
+      label: connector.uiTitle,
       icon: 'pi pi-box',
-      command: () => this.itemAction(classNameFn),
+      command: () => this.itemAction(connector.getDefaults()),
     };
   }
 }
