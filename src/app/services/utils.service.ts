@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid_v4 } from 'uuid';
+import { customAlphabet } from 'nanoid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  constructor() {}
+  // Nano ID Collision Calculator: https://zelark.github.io/nano-id-cc/
+  private readonly nanoid = customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    16,
+  );
 
   sortByOrderProp = (a, b): number => a.order - b.order;
 
@@ -129,5 +134,9 @@ export class UtilsService {
 
   uuid() {
     return uuid_v4();
+  }
+
+  generateId() {
+    return this.nanoid();
   }
 }

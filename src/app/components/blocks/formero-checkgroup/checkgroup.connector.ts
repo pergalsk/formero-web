@@ -44,7 +44,7 @@ export class CheckgroupConnector {
     return {
       ...this.defaults,
       type: this.type,
-      key: this.utilsService.uuid(),
+      key: this.utilsService.generateId(),
       ...params,
     };
   }
