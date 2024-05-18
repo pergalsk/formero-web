@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { UtilsService } from '@services/utils.service';
-import { FormBlocksSet } from '@services/schema.service';
-import { FormeroQuestionTextbox } from '@app/Question';
+import { SchemaService } from '@services/schema.service';
 import { FormComponent } from '@components/form/form.component';
 import { BlockPaletteComponent } from '@components/ui/block-palette/block-palette.component';
 import { DividerModule } from 'primeng/divider';
@@ -14,6 +20,12 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
+import { FromCoreComponent } from '@components/form/from-core.component';
+import { FormGroup } from '@angular/forms';
+import { Connectors, SCHEMA_BLOCKS } from '@app/schema/schema-blocks-injection-token';
+import { TextboxConnector } from '@components/blocks/formero-textbox/textbox.connector';
+import { SchemaBlock } from '@app/schema/schema';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-form-create-page',
@@ -31,42 +43,42 @@ import { PanelModule } from 'primeng/panel';
     DropdownModule,
     ButtonModule,
     PanelModule,
+    FromCoreComponent,
   ],
   template: `
     <div class="page">
-      <div class="flx-row">
+      <div class="flx-row" style="height: 100%">
         <aside>
           <app-block-palette class="sticky" (action)="onAction($event)"></app-block-palette>
         </aside>
 
         <div class="flx-fill">
-          <p-panel header="{{ formBlocksSet.title }}">
+          <p-panel header="{{ previewFormOpt.title }}">
             <div class="form-wrapper flx-fill">
-              <app-form [blocks]="formBlocksSet" [calculations]="null" [draggable]="true" />
+              <app-form
+                [blocks]="previewFormOpt"
+                [calculations]="null"
+                [draggable]="true"
+                [selectable]="true"
+                (select)="onPreviewSelect($event)"
+              />
             </div>
           </p-panel>
         </div>
 
         <aside>
-          <p-card class="">
-            <p-tabView>
+          <p-card>
+            <p-tabView [(activeIndex)]="serviceTabIndex">
               <p-tabPanel header="Formulár">
                 <div class="flx-col gap-small">
-                  Globálne nastavenia formulára sa zobrazia po kliknutí na tlačidlo nastavenia. Pre
-                  zobrazenie nastavení jednotlivých blokov, je potrebné kliknúť na príslušný blok.
-                </div>
-
-                <p-divider />
-
-                <div class="flx-col gap-small">
-                  <label for="form-title"><b>Názov</b></label>
+                  <label for="form-title"><b>Názov formulára</b></label>
                   <small id="form-title-help"><em>Zobrazí sa v hornej časti formulára.</em></small>
                   <input
                     pInputText
                     type="text"
                     id="form-title"
                     aria-describedby="form-title-help"
-                    value="{{ formBlocksSet.title }}"
+                    value="{{ previewFormOpt.title }}"
                   />
                 </div>
 
@@ -121,7 +133,7 @@ import { PanelModule } from 'primeng/panel';
                       id="form-result"
                       rows="10"
                       aria-describedby="result-text-help"
-                      >{{ formBlocksSet.successInfo }}</textarea
+                      >{{ previewFormOpt.successInfo }}</textarea
                     >
                   </div>
                 </div>
@@ -132,12 +144,19 @@ import { PanelModule } from 'primeng/panel';
               </p-tabPanel>
 
               <p-tabPanel header="Blok">
-                Tu budú zobrazené možnosti pre každú časť formulára. Stačí len vyplniť a nastaviť
-                požadované texty a vzhľad. Zmena sa prejaví okamžite.
-
-                <p-divider />
-
-                <pre>{{ formBlocksSet | json }}</pre>
+                <pre>{{ previewFormOpt | json }}</pre>
+                @if (serviceFormBlocks.length) {
+                  <app-form-core
+                    [blocks]="serviceFormBlocks"
+                    [formData]="serviceForm"
+                    [displayFieldMessages]="displayFieldMessages"
+                    [draggable]="false"
+                    [selectable]="false"
+                  />
+                  <pre>{{ serviceForm?.getRawValue() | json }}</pre>
+                } @else {
+                  Pre zobrazenie možností kliknite na niektorý z pridaných blokov formulára.
+                }
               </p-tabPanel>
             </p-tabView>
           </p-card>
@@ -145,12 +164,25 @@ import { PanelModule } from 'primeng/panel';
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormCreatePageComponent {
+export class FormCreatePageComponent implements OnInit, OnDestroy {
   utilsService: UtilsService = inject(UtilsService);
+  schemaService: SchemaService = inject(SchemaService);
+  schemaBlocks: any = inject(SCHEMA_BLOCKS);
+  changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef);
+  textboxConn = inject(TextboxConnector);
 
-  formBlocksSet: FormBlocksSet = {
+  serviceForm: FormGroup = this.schemaService.initEmptyForm();
+  serviceFormBlocks = [];
+  serviceFormSubscription: Subscription = null;
+
+  stateStorage = {};
+  serviceTabIndex = 0; // show first tab: global form settings
+  selectedPreviewBlockKey: string | null = null;
+  displayFieldMessages = true;
+
+  previewFormOpt: any = {
     id: 0,
     title: 'Nový formulár_2024-04-13',
     successInfo: 'Formulár úspešne odoslaný!',
@@ -158,7 +190,7 @@ export class FormCreatePageComponent {
     options: {
       batch: true,
     },
-    blocks: [new FormeroQuestionTextbox({ key: this.utilsService.uuid() })], // todo: new key as UUID
+    blocks: [],
   };
 
   formTemplates: { name: string; code: string }[] = [
@@ -170,12 +202,79 @@ export class FormCreatePageComponent {
     { name: 'Kontrastný tmavý', code: 'contrast-dark' },
   ];
 
-  onAction(classNameFn): void {
-    const instance = new classNameFn({ key: this.utilsService.uuid() });
+  ngOnInit(): void {
+    this.addPreviewBlock(this.textboxConn.getDefaults());
+  }
 
-    this.formBlocksSet = {
-      ...this.formBlocksSet,
-      blocks: [...this.formBlocksSet.blocks, instance],
+  ngOnDestroy(): void {
+    if (this.serviceFormSubscription) {
+      this.serviceFormSubscription.unsubscribe();
+      this.serviceFormSubscription = null;
+    }
+  }
+
+  onAction(defaultProps): void {
+    this.addPreviewBlock(defaultProps);
+  }
+
+  addPreviewBlock(defaultProps): void {
+    this.previewFormOpt = {
+      ...this.previewFormOpt,
+      blocks: [...this.previewFormOpt.blocks, { ...defaultProps }],
     };
+    // TODO: rethink:
+    this.changeDetector.detectChanges(); // manually trigger change detection
+  }
+
+  onPreviewSelect({ type, key }): void {
+    if (this.selectedPreviewBlockKey === key) {
+      // already selected block
+      return;
+    }
+
+    this.selectedPreviewBlockKey = key;
+
+    if (this.serviceFormSubscription) {
+      this.serviceFormSubscription.unsubscribe();
+      this.serviceFormSubscription = null;
+    }
+
+    this.serviceTabIndex = 1; // show tab with block settings
+
+    const connector = this.getConnector(type);
+
+    if (!this.isFunction(connector?.getServiceBlocks)) {
+      this.serviceFormBlocks = [];
+      return;
+    }
+
+    this.serviceFormBlocks = connector?.getServiceBlocks();
+    this.serviceForm = this.schemaService.initEmptyForm();
+
+    if (this.stateStorage[key]) {
+      this.serviceForm.setValue(this.stateStorage[key]);
+    }
+    this.serviceFormSubscription = this.serviceForm.valueChanges.subscribe(() =>
+      this.serviceFormValueChanges(key),
+    );
+
+    // TODO: investigate and do it tha Angular way
+    this.changeDetector.detectChanges(); // manually trigger change detection
+  }
+
+  serviceFormValueChanges(key: string): void {
+    this.stateStorage[key] = this.serviceForm.getRawValue();
+
+    // const { label, description } = rawValue;
+    // this.previewFormOpt.blocks[0].label = label;
+    // this.previewFormOpt.blocks[0].description = description;
+  }
+
+  getConnector(blockType: SchemaBlock): any {
+    return this.schemaBlocks.find(({ type }) => type === blockType);
+  }
+
+  isFunction(value: any): boolean {
+    return typeof value === 'function';
   }
 }
