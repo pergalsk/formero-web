@@ -251,15 +251,16 @@ export class FormCreatePageComponent implements OnInit, OnDestroy {
     this.serviceFormBlocks = connector?.getServiceBlocks();
     this.serviceForm = this.schemaService.initEmptyForm();
 
-    if (this.stateStorage[key]) {
-      this.serviceForm.setValue(this.stateStorage[key]);
-    }
-    this.serviceFormSubscription = this.serviceForm.valueChanges.subscribe(() =>
-      this.serviceFormValueChanges(key),
-    );
-
-    // TODO: investigate and do it tha Angular way
+    // TODO: investigate and do it the Angular way
     this.changeDetector.detectChanges(); // manually trigger change detection
+    setTimeout(() => {
+      if (this.stateStorage[key]) {
+        this.serviceForm.setValue(this.stateStorage[key]);
+      }
+      this.serviceFormSubscription = this.serviceForm.valueChanges.subscribe(() =>
+        this.serviceFormValueChanges(key),
+      );
+    });
   }
 
   serviceFormValueChanges(key: string): void {
