@@ -144,7 +144,7 @@ import { Subscription } from 'rxjs';
               </p-tabPanel>
 
               <p-tabPanel header="Blok">
-                <pre>{{ previewFormOpt | json }}</pre>
+                <!--<pre>{{ previewFormOpt | json }}</pre>-->
                 @if (serviceFormBlocks.length) {
                   <app-form-core
                     [blocks]="serviceFormBlocks"
