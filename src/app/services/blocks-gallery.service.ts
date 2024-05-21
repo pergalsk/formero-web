@@ -54,25 +54,53 @@ export class BlocksGalleryService {
     return {
       key: 'layout',
       type: 'dropdown',
-      value: 1,
+      value: -1,
       label: 'Štýl',
       layout: { panel: 1 },
       options: [
         {
+          value: -1,
+          label: 'Predvoelný',
+        },
+        {
+          value: 0,
+          label: 'S pozadím',
+        },
+        {
           value: 1,
-          label: 'Štýl 1',
+          label: 'Bez pozadia',
         },
         {
           value: 2,
-          label: 'Štýl 2',
+          label: 'Zvýraznený',
         },
         {
           value: 3,
-          label: 'Štýl 3',
+          label: 'S okrajom',
         },
         {
           value: 4,
-          label: 'Štýl 4',
+          label: 'Iba okraj bez pozadia',
+        },
+        {
+          value: 5,
+          label: 'Zvýraznený s okrajom',
+        },
+        {
+          value: 6,
+          label: 'Menší text',
+        },
+        {
+          value: 7,
+          label: 'Menší text bez pozadia',
+        },
+        {
+          value: 8,
+          label: 'Zvýraznený s menším textom',
+        },
+        {
+          value: 9,
+          label: 'Menší text s okrajom',
         },
       ],
     };
