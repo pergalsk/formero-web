@@ -26,7 +26,7 @@ export class BlocksGalleryService {
 
   quickinfo() {
     return {
-      key: 'quickinfo',
+      key: 'quickInfo',
       type: 'agreement',
       value: false,
       label: 'Zobraziť v sumárnej tabuľke',
