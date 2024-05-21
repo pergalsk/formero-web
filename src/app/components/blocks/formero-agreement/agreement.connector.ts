@@ -45,35 +45,8 @@ export class AgreementConnector {
         key: 'options',
         label: 'Text na odsúhlasenie',
         value: this.defaults.options,
-        validators: [
-          { type: 'required', params: [] },
-          { type: 'maxLength', params: [1500] },
-        ],
         layout: { panel: 1 },
-      },
-      {
-        key: 'validators',
-        type: 'checkgroup',
-        label: 'Validácie',
-        layout: { panel: 1 },
-        options: [
-          {
-            value: false,
-            label: 'Povinné',
-          },
-          {
-            value: false,
-            label: 'Minimálny počet znakov',
-          },
-          {
-            value: false,
-            label: 'Maximálny počet znakov',
-          },
-          {
-            value: false,
-            label: 'Emailova adresa',
-          },
-        ],
+        validators: [{ type: 'maxLength', params: [1500] }],
       },
       this.blockGallery.layout(),
       this.blockGallery.quickinfo(),
