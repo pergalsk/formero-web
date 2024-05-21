@@ -258,13 +258,32 @@ export class FormCreatePageComponent implements OnInit, OnDestroy {
         this.serviceForm.setValue(this.stateStorage[key]);
       }
       this.serviceFormSubscription = this.serviceForm.valueChanges.subscribe(() =>
-        this.serviceFormValueChanges(key),
+        this.serviceFormValueChanges(key, connector),
       );
     });
   }
 
-  serviceFormValueChanges(key: string): void {
-    this.stateStorage[key] = this.serviceForm.getRawValue();
+  serviceFormValueChanges(key: string, connector: any): void {
+    const rawValue = this.serviceForm.getRawValue();
+    this.stateStorage[key] = rawValue;
+
+    if (typeof connector.transform === 'function') {
+      const blocks = this.previewFormOpt.blocks;
+      const blockIndex = blocks.findIndex((block: any) => block.key == key);
+
+      if (blockIndex > -1) {
+        blocks[blockIndex] = {
+          ...blocks[blockIndex],
+          ...connector.transform(rawValue),
+        };
+
+        this.previewFormOpt = {
+          ...this.previewFormOpt,
+          blocks: structuredClone(blocks),
+        };
+      }
+      this.changeDetector.detectChanges(); // manually trigger change detection
+    }
 
     // const { label, description } = rawValue;
     // this.previewFormOpt.blocks[0].label = label;

@@ -50,6 +50,33 @@ export class BlocksGalleryService {
     };
   }
 
+  validators() {
+    return {
+      key: 'validators',
+      type: 'checkgroup',
+      label: 'Validácie',
+      layout: { panel: 1 },
+      options: [
+        {
+          value: false,
+          label: 'Povinné',
+        },
+        {
+          value: false,
+          label: 'Minimálny počet znakov (3)',
+        },
+        {
+          value: false,
+          label: 'Maximálny počet znakov (1500)',
+        },
+        {
+          value: false,
+          label: 'Emailova adresa',
+        },
+      ],
+    };
+  }
+
   layout() {
     return {
       key: 'layout',

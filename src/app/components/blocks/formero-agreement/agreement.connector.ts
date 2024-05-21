@@ -49,6 +49,7 @@ export class AgreementConnector {
         validators: [{ type: 'maxLength', params: [1500] }],
       },
       this.blockGallery.layout(),
+      this.blockGallery.validators(),
       this.blockGallery.quickinfo(),
       this.blockGallery.shared(),
     ];

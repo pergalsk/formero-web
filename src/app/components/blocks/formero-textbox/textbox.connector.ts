@@ -43,8 +43,29 @@ export class TextboxConnector {
       this.blockGallery.label(this.defaults.label),
       this.blockGallery.description(this.defaults.description),
       this.blockGallery.layout(),
+      this.blockGallery.validators(),
       this.blockGallery.quickinfo(),
       this.blockGallery.shared(),
     ];
+  }
+
+  transform(value: any) {
+    return {
+      ...value,
+      layout: { panel: parseInt(value.layout, 10) ?? 2 },
+      validators: value.validators
+        .map((flag: boolean, index: number) => {
+          return (
+            flag &&
+            [
+              { type: 'required', params: [] },
+              { type: 'minLength', params: [3] },
+              { type: 'maxLength', params: [1500] },
+              { type: 'emailPattern', params: [] },
+            ][index]
+          );
+        })
+        .filter(Boolean),
+    };
   }
 }
