@@ -144,7 +144,6 @@ import { Subscription } from 'rxjs';
               </p-tabPanel>
 
               <p-tabPanel header="Blok">
-                <!--<pre>{{ previewFormOpt | json }}</pre>-->
                 @if (serviceFormBlocks.length) {
                   <app-form-core
                     [blocks]="serviceFormBlocks"
@@ -213,7 +212,7 @@ export class FormCreatePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAction(defaultProps): void {
+  onAction(defaultProps: any): void {
     this.addPreviewBlock(defaultProps);
   }
 
@@ -276,7 +275,7 @@ export class FormCreatePageComponent implements OnInit, OnDestroy {
 
     if (typeof connector.transform === 'function') {
       const blocks = this.previewFormOpt.blocks;
-      const blockIndex = blocks.findIndex((block: any) => block.key == key);
+      const blockIndex = blocks.findIndex((block: any) => block.key === key);
 
       if (blockIndex > -1) {
         blocks[blockIndex] = {
