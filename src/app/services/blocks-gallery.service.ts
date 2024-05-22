@@ -77,11 +77,11 @@ export class BlocksGalleryService {
     };
   }
 
-  layout() {
+  layout(defaultValue = -1) {
     return {
       key: 'layout',
       type: 'dropdown',
-      value: -1,
+      value: defaultValue,
       label: 'Štýl',
       layout: { panel: 1 },
       options: [
