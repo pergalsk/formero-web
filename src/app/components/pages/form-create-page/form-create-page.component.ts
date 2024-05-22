@@ -217,11 +217,18 @@ export class FormCreatePageComponent implements OnInit, OnDestroy {
     this.addPreviewBlock(defaultProps);
   }
 
-  addPreviewBlock(defaultProps): void {
-    this.previewFormOpt = {
-      ...this.previewFormOpt,
-      blocks: [...this.previewFormOpt.blocks, { ...defaultProps }],
-    };
+  addPreviewBlock(defaultProps: any): void {
+    const { blocks } = this.previewFormOpt;
+
+    const selectedIndex = blocks.findIndex(
+      (block: any) => block.key === this.selectedPreviewBlockKey,
+    );
+
+    const newIndex = selectedIndex > -1 ? selectedIndex + 1 : blocks.length;
+    blocks.splice(newIndex, 0, { ...defaultProps });
+
+    this.previewFormOpt = { ...this.previewFormOpt, blocks: structuredClone(blocks) };
+
     // TODO: rethink:
     this.changeDetector.detectChanges(); // manually trigger change detection
   }
