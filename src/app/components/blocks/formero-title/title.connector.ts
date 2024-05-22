@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { BlockGroupType } from '@app/schema/schema';
 import { UtilsService } from '@services/utils.service';
+import { BlocksGalleryService } from '@services/blocks-gallery.service';
 
 @Injectable({ providedIn: 'root' })
 export class TitleConnector {
   utilsService: UtilsService = inject(UtilsService);
+  blockGallery: BlocksGalleryService = inject(BlocksGalleryService);
 
   private readonly type = 'title';
   private readonly uiTitle = 'Nadpis sekcie';
@@ -37,6 +39,14 @@ export class TitleConnector {
         validators: [{ type: 'maxLength', params: [50] }],
         layout: { panel: 1 },
       },
+      this.blockGallery.layout(1),
     ];
+  }
+
+  transform(value: any) {
+    return {
+      ...value,
+      layout: { panel: parseInt(value.layout, 10) ?? 1 },
+    };
   }
 }
