@@ -25,7 +25,6 @@ const panelTypes = {
   selector: 'app-panel',
   template: `
     <section class="panel" [ngClass]="class" [class.panel-selected]="selected">
-      <!--{{ class }}-->
       <ng-content></ng-content>
     </section>
   `,
@@ -38,8 +37,6 @@ export class PanelComponent implements OnInit {
   @Input() selected = false;
 
   class = '';
-
-  constructor() {}
 
   ngOnInit(): void {
     this.class = [panelTypes[this.type] || panelTypes[0], this.classList].join(' ');
