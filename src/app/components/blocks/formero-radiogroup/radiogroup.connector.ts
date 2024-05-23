@@ -16,7 +16,7 @@ export class RadiogroupConnector {
   private readonly defaults = {
     key: '',
     order: 0,
-    value: 'val1',
+    value: null,
     label: 'Nadpis otázky',
     description: 'Popis otázky',
     validators: [],
