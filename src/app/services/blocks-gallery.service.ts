@@ -82,12 +82,12 @@ export class BlocksGalleryService {
       key: 'layout',
       type: 'dropdown',
       value: defaultValue,
-      label: 'Štýl',
+      label: 'Štýl panelu',
       layout: { panel: 1 },
       options: [
         {
           value: -1,
-          label: 'Predvoelný',
+          label: 'Predvolený',
         },
         {
           value: 0,
