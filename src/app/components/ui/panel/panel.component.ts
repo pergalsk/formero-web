@@ -1,13 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-const classMap = {
-  PLAIN: 'panel-plain',
-  BOXED: '',
-  'BOXED|VIVID': 'panel-vivid',
-  'BOXED|BORDER': 'panel-border',
-};
-
 const panelTypes = {
   0: '',
   1: 'panel-plain',
