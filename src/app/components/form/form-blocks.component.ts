@@ -42,80 +42,76 @@ import { SchemaBlock } from '@app/schema/schema';
     @if (draggable && blocks.length > 1) {
       <p-orderList [value]="blocks" [dragdrop]="true" [responsive]="true">
         <ng-template let-block pTemplate="item">
-          <app-panel
-            [type]="block?.layout?.panel"
-            [selected]="block.key === selectedKey"
-            (click)="onPanelSelect(block)"
-          >
-            <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: block }" />
-          </app-panel>
+          <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: block }" />
         </ng-template>
       </p-orderList>
     } @else {
-      <app-panel
-        *ngFor="let block of blocks"
-        [type]="block?.layout?.panel"
-        [selected]="block.key === selectedKey"
-        (click)="onPanelSelect(block)"
-      >
+      @for (block of blocks; track $index) {
         <ng-container *ngTemplateOutlet="blocksTpl; context: { $implicit: block }" />
-      </app-panel>
+      }
     }
 
     <ng-template #blocksTpl let-block>
-      <!--<pre>{{ block | json }}</pre>-->
-      <app-formero-title *ngIf="block.type === 'title'" [props]="block" />
+      <app-panel
+        [type]="block?.layout?.panel"
+        [selectable]="selectable"
+        [selected]="block.key === selectedKey"
+        (click)="onPanelSelect(block)"
+      >
+        <!--<pre>{{ block | json }}</pre>-->
+        <app-formero-title *ngIf="block.type === 'title'" [props]="block" />
 
-      <app-formero-blocktext *ngIf="block.type === 'blocktext'" [props]="block" />
+        <app-formero-blocktext *ngIf="block.type === 'blocktext'" [props]="block" />
 
-      <app-formero-textbox
-        *ngIf="block.type === 'textbox'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-textbox
+          *ngIf="block.type === 'textbox'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-textarea
-        *ngIf="block.type === 'textarea'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-textarea
+          *ngIf="block.type === 'textarea'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-dropdown
-        *ngIf="block.type === 'dropdown'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-dropdown
+          *ngIf="block.type === 'dropdown'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-radiogroup
-        *ngIf="block.type === 'radiogroup'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-radiogroup
+          *ngIf="block.type === 'radiogroup'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-checkgroup
-        *ngIf="block.type === 'checkgroup'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-checkgroup
+          *ngIf="block.type === 'checkgroup'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-agreement
-        *ngIf="block.type === 'agreement'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-agreement
+          *ngIf="block.type === 'agreement'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
 
-      <app-formero-validation
-        *ngIf="block.type === 'validation'"
-        [props]="block"
-        [form]="form"
-        [displayMessages]="displayMessages"
-      />
+        <app-formero-validation
+          *ngIf="block.type === 'validation'"
+          [props]="block"
+          [form]="form"
+          [displayMessages]="displayMessages"
+        />
+      </app-panel>
     </ng-template>
   `,
   // changeDetection: ChangeDetectionStrategy.OnPush,
