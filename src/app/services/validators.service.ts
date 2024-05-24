@@ -172,9 +172,10 @@ export class ValidatorsService {
   isRequiredType(type: string): boolean {
     return [
       'required',
-      'groupRequiredValidator',
+      'minLength',
       'minCheckedValidator',
       'checkedValidator',
+      'groupRequiredValidator',
     ].includes(type);
   }
 }
