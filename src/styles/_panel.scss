@@ -6,6 +6,7 @@
   background-color: var.$panel-primary-bg-color;
   border-radius: var.$panel-border-radius;
   box-shadow: var.$panel-box-shadow;
+  transition: box-shadow 0.25s;
 
   &.panel-vivid {
     background-color: var.$panel-secondary-bg-color;
@@ -30,7 +31,17 @@
     color: var.$secondary-text-color;
   }
 
+  &.panel-selectable {
+    &:hover:not(.panel-selected) {
+      box-shadow:
+        var.$panel-box-shadow,
+        inset 0 0 0 3px rgba(96, 165, 213, 0.2);
+    }
+  }
+
   &.panel-selected {
-    box-shadow: 0 0 0 3px #60a5d5;
+    box-shadow:
+      var.$panel-box-shadow,
+      inset 0 0 0 3px #60a5d5;
   }
 }

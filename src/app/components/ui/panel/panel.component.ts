@@ -24,7 +24,12 @@ const panelTypes = {
 @Component({
   selector: 'app-panel',
   template: `
-    <section class="panel" [ngClass]="class" [class.panel-selected]="selected">
+    <section
+      class="panel"
+      [ngClass]="class"
+      [class.panel-selectable]="selectable"
+      [class.panel-selected]="selectable && selected"
+    >
       <ng-content></ng-content>
     </section>
   `,
@@ -34,6 +39,7 @@ const panelTypes = {
 export class PanelComponent implements OnInit {
   @Input() type = 0;
   @Input() classList = '';
+  @Input() selectable = false;
   @Input() selected = false;
 
   class = '';
