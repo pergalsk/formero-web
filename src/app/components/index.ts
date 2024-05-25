@@ -1,7 +1,6 @@
 export * from './common/formero-field-messages/formero-field-messages.component';
 
 export * from './blocks/formero-title/formero-title.component';
-export * from './blocks/formero-blocktext/formero-blocktext.component';
 export * from './blocks/formero-textbox/formero-textbox.component';
 export * from './blocks/formero-textarea/formero-textarea.component';
 export * from './blocks/formero-dropdown/formero-dropdown.component';

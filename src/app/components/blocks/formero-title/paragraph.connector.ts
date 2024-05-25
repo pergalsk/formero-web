@@ -4,19 +4,20 @@ import { UtilsService } from '@services/utils.service';
 import { BlocksGalleryService } from '@services/blocks-gallery.service';
 
 @Injectable({ providedIn: 'root' })
-export class TitleConnector {
+export class ParagraphConnector {
   utilsService: UtilsService = inject(UtilsService);
   blockGallery: BlocksGalleryService = inject(BlocksGalleryService);
 
-  private readonly type = 'title';
-  private readonly uiTitle = 'Nadpis sekcie';
+  private readonly type = 'paragraph';
+  private readonly uiTitle = 'Odstavec';
   private readonly uiType = BlockGroupType.TEXT;
   private readonly uiOrder = 10;
 
   private readonly defaults = {
     key: '',
     order: 0,
-    content: 'Text nadpisu',
+    label: 'Nadpis odseku',
+    description: 'Dlhší štrukturovaný text odseku.',
     layout: { panel: 1 },
   };
 
@@ -31,15 +32,12 @@ export class TitleConnector {
 
   getServiceBlocks() {
     return [
-      {
-        type: 'textbox',
-        key: 'content',
-        label: 'Titulok',
-        value: this.defaults.content,
-        validators: [{ type: 'maxLength', params: [50] }],
-        layout: { panel: 1 },
-      },
+      this.blockGallery.label(this.defaults.label),
+      this.blockGallery.description(this.defaults.description),
       this.blockGallery.layout(1),
+      this.blockGallery.validators(),
+      this.blockGallery.quickinfo(),
+      this.blockGallery.shared(),
     ];
   }
 

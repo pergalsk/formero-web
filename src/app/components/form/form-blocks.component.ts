@@ -5,7 +5,6 @@ import { FormBlocksSet } from '@services/schema.service';
 import { PanelComponent } from '@components/ui/panel/panel.component';
 import {
   FormeroAgreementComponent,
-  FormeroBlocktextComponent,
   FormeroDropdownComponent,
   FormeroRadiogroupComponent,
   FormeroTextareaComponent,
@@ -26,7 +25,6 @@ import { SchemaBlock } from '@app/schema/schema';
     NgForOf,
     PanelComponent,
     FormeroTitleComponent,
-    FormeroBlocktextComponent,
     FormeroTextboxComponent,
     FormeroTextareaComponent,
     FormeroDropdownComponent,
@@ -59,9 +57,7 @@ import { SchemaBlock } from '@app/schema/schema';
         (click)="onPanelSelect(block)"
       >
         <!--<pre>{{ block | json }}</pre>-->
-        <app-formero-title *ngIf="block.type === 'title'" [props]="block" />
-
-        <app-formero-blocktext *ngIf="block.type === 'blocktext'" [props]="block" />
+        <app-formero-title *ngIf="block.type === 'paragraph'" [props]="block" />
 
         <app-formero-textbox
           *ngIf="block.type === 'textbox'"

@@ -7,8 +7,7 @@ import { DropdownConnector } from '@components/blocks/formero-dropdown/dropdown.
 import { RadiogroupConnector } from '@components/blocks/formero-radiogroup/radiogroup.connector';
 import { TextareaConnector } from '@components/blocks/formero-textarea/textarea.connector';
 import { TextboxConnector } from '@components/blocks/formero-textbox/textbox.connector';
-import { BlocktextConnector } from '@components/blocks/formero-blocktext/blocktext.connector';
-import { TitleConnector } from '@components/blocks/formero-title/title.connector';
+import { ParagraphConnector } from '@components/blocks/formero-title/paragraph.connector';
 
 export type Connectors =
   | AgreementConnector
@@ -17,8 +16,7 @@ export type Connectors =
   | RadiogroupConnector
   | TextareaConnector
   | TextboxConnector
-  | BlocktextConnector
-  | TitleConnector
+  | ParagraphConnector
   | ValidationConnector;
 
 export const SCHEMA_BLOCKS: InjectionToken<Connectors> = new InjectionToken<Connectors>(
@@ -32,7 +30,6 @@ export const schemaBlocksProviders: Provider[] = [
   { provide: SCHEMA_BLOCKS, useExisting: RadiogroupConnector, multi: true },
   { provide: SCHEMA_BLOCKS, useExisting: TextareaConnector, multi: true },
   { provide: SCHEMA_BLOCKS, useExisting: TextboxConnector, multi: true },
-  { provide: SCHEMA_BLOCKS, useExisting: BlocktextConnector, multi: true },
-  { provide: SCHEMA_BLOCKS, useExisting: TitleConnector, multi: true },
+  { provide: SCHEMA_BLOCKS, useExisting: ParagraphConnector, multi: true },
   { provide: SCHEMA_BLOCKS, useExisting: ValidationConnector, multi: true },
 ];
