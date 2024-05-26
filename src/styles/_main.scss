@@ -82,7 +82,7 @@ body {
 .main-form {
   display: flex;
   flex-direction: column;
-  gap: var.$content-margin;
+  gap: var.$form-layout-margin;
 }
 
 .error-message {
@@ -251,8 +251,8 @@ pre {
   background-position: center;
   padding-top: 6rem;
   padding-bottom: 6rem;
-  margin-top: var.$content-margin;
-  margin-bottom: var.$content-margin;
+  margin-top: var.$form-layout-margin;
+  margin-bottom: var.$form-layout-margin;
 }
 
 .active-link {

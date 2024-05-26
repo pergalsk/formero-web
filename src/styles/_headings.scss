@@ -11,12 +11,6 @@ h6 {
   text-align: center;
   color: var.$title-text-color;
 
-  span {
-    display: inline-block;
-    padding-bottom: math.div(1rem, 6);
-    border-bottom: var.decoration-border(var.$brand-color);
-  }
-
   &.heading-type-0 {
     span {
       padding-bottom: 0;
@@ -30,10 +24,22 @@ h6 {
 
   &.heading-type-2 {
     span {
-      padding: 0.4em 0.4em 0.1em;
+      padding: 0.4em 0.5em 0.2em;
       background-color: var.$brand-color;
       border-bottom: 0;
+      border-radius: 0.3rem;
     }
+  }
+
+  // this selects p element
+  & + p {
+    margin-top: var.$form-layout-margin;
+  }
+
+  span {
+    display: inline-block;
+    padding-bottom: math.div(1rem, 6);
+    border-bottom: var.decoration-border(var.$brand-color);
   }
 }
 
