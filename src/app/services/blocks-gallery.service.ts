@@ -6,7 +6,7 @@ export class BlocksGalleryService {
     return {
       key: 'label',
       type: 'textbox',
-      label: 'Názov',
+      label: 'Titulok',
       value,
       validators: [{ type: 'maxLength', params: [100] }],
       layout: { panel: 1 },
